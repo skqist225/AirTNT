@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -28,6 +30,9 @@ public class State {
     @ManyToOne
     @JoinColumn(referencedColumnName = "id", name = "country_id")
     private Country country;
+
+    @OneToMany(mappedBy = "state")
+    private Set<City> cities = new HashSet<>();
 
     public State(int id) {
         this.id = id;

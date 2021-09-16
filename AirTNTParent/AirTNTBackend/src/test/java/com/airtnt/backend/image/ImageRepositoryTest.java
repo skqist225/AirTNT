@@ -18,7 +18,6 @@ class ImageRepositoryTest {
     public void testAddImage() {
         Image image = Image.builder().image("").build();
 
-
         repository.save(image);
     }
 

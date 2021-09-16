@@ -21,11 +21,15 @@ public class City {
     @Column(nullable = false)
     private String name;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "state_id", referencedColumnName = "id")
     private State state;
 
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
+
+    public City(int id) {
+        this.id = id;
+    }
 }

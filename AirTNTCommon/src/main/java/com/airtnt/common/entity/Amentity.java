@@ -34,6 +34,7 @@ public class Amentity extends BaseEntity {
 		this.description = description;
 	}
 
-
-
+	public Amentity(int id) {
+		super(id);
+	}
 }

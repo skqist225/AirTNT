@@ -35,4 +35,8 @@ public class BaseEntity {
 	@Column(name = "updated_at")
 	private Date updatedDate;
 
+	public BaseEntity(int id) {
+		this.id = id;
+	}
+
 }

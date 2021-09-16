@@ -11,12 +11,15 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Entity
+
 @Data
 @AllArgsConstructor
-@Table(name = "images")
+@NoArgsConstructor
 @Builder
+@Entity
+@Table(name = "images")
 public class Image {
 
 	@Id
@@ -24,9 +27,8 @@ public class Image {
 	private int id;
 	
 	private String image;
-	
-	@ManyToOne
-	@JoinColumn(name = "room_id")
-	private Room room;
-	
+
+	public Image(int id) {
+		this.id = id;
+	}
 }

@@ -1,9 +1,10 @@
 package com.airtnt.common.entity;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
-
-import lombok.*;
-
 import java.util.*;
 
 
@@ -11,108 +12,112 @@ import java.util.*;
 @Setter
 @Entity
 @Table(name = "rooms")
-public class Room extends BaseEntity{
+public class Room extends BaseEntity {
 
-	@Builder
-	public Room(int id, boolean status, Date createdDate, Date updatedDate, Set<Image> images, byte rating, List<Review> reviews, Country country, State state,
-			City city, String bedRoomCount, String bathRoomCount, String accomodatesCount, String bedCount,
-			Category category, String description, Set<Amentity> amentities, float latitude, float longtitude,
-			float price, PriceType priceType, String mininumStay, StayType stayType, User host, Set<Rule> rules) {
-		super(id, status, createdDate, updatedDate);
-		this.name = name;
-		this.images = images;
-		this.rating = rating;
-		this.reviews = reviews;
-		this.country = country;
-		this.state = state;
-		this.city = city;
-		this.bedRoomCount = bedRoomCount;
-		this.bathRoomCount = bathRoomCount;
-		this.accomodatesCount = accomodatesCount;
-		this.bedCount = bedCount;
-		this.category = category;
-		this.description = description;
-		this.amentities = amentities;
-		this.latitude = latitude;
-		this.longtitude = longtitude;
-		this.price = price;
-		this.priceType = priceType;
-		this.mininumStay = mininumStay;
-		this.stayType = stayType;
-		this.host = host;
-		this.rules = rules;
-	}
+    @Column(nullable = false, length = 512, unique = true)
+    private String name;
 
-	@Column(nullable = false, length = 512)
-	private String name;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(
+            name="room_id",
+            referencedColumnName = "id"
+    )
+    private Set<Image> images = new HashSet<>();
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "room", orphanRemoval = true)
-	private Set<Image> images = new HashSet<>();
+    @Column(columnDefinition = "smallint")
+    private byte rating;
 
-	@Column(columnDefinition = "smallint")
-	private byte rating;
+    @OneToMany(mappedBy = "room")
+    private List<Review> reviews = new ArrayList<>();
 
-	@OneToMany(mappedBy = "room")
-	private List<Review> reviews = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name = "country_id", referencedColumnName = "id")
+    private Country country;
 
-	@OneToOne
-	@JoinColumn(name = "country_id", referencedColumnName = "id")
-	private Country country;
+    @OneToOne
+    @JoinColumn(name = "state_id", referencedColumnName = "id")
+    private State state;
 
-	@OneToOne
-	@JoinColumn(name = "state_id", referencedColumnName = "id")
-	private State state;
+    @OneToOne
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
+    private City city;
 
-	@OneToOne
-	@JoinColumn(name = "city_id", referencedColumnName = "id")
-	private City city;
+    @Column(columnDefinition = "VARCHAR(10) NOT NULL", name = "bedroom_count")
+    private String bedRoomCount;
 
-	@Column(columnDefinition = "VARCHAR(10) NOT NULL", name = "bedroom_count")
-	private String bedRoomCount;
+    @Column(length = 10, nullable = false, name = "bathroom_count")
+    private String bathRoomCount;
 
-	@Column(length = 10, nullable = false, name = "bathroom_count")
-	private String bathRoomCount;
+    @Column(length = 10, nullable = false, name = "accomodates_count")
+    private String accomodatesCount;
 
-	@Column(length = 10, nullable = false, name = "accomodates_count")
-	private String accomodatesCount;
+    @Column(length = 10, nullable = false, name = "bed_count")
+    private String bedCount;
 
-	@Column(length = 10, nullable = false, name = "bed_count")
-	private String bedCount;
+    @OneToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
 
-	@OneToOne
-	@JoinColumn(name = "category_id", referencedColumnName = "id")
-	private Category category;
+    @Column(columnDefinition = "TEXT NOT NULL")
+    private String description;
 
-	private String description;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "rooms_amentities", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "amentity_id"))
+    private Set<Amentity> amentities = new HashSet<>();
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "rooms_amentities", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "amentity_id"))
-	private Set<Amentity> amentities = new HashSet<>();
+    private float latitude;
+    private float longtitude;
 
-	private float latitude;
+    @Column(nullable = false)
+    private float price;
 
-	private float longtitude;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private PriceType priceType;
 
-	@Column(nullable = false)
-	private float price;
+    @Column(length = 5, nullable = false, columnDefinition = "TINYINT")
+    private int mininumStay;
 
-	@Enumerated(EnumType.STRING)
-	@Column(length = 20, nullable = false)
-	private PriceType priceType;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20, nullable = false)
+    private StayType stayType;
 
-	@Column(length = 5, nullable = false)
-	private String mininumStay;
+    @OneToOne
+    @JoinColumn(name = "host_id", referencedColumnName = "id")
+    private User host;
 
-	@Enumerated(EnumType.STRING)
-	@Column(length = 20, nullable = false)
-	private StayType stayType;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "rooms_rules", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "rule_id"))
+    private Set<Rule> rules = new HashSet<>();
 
-	@OneToOne
-	@JoinColumn(name = "host_id", referencedColumnName = "id")
-	private User host;
-
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "rooms_rules", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "rule_id"))
-	private Set<Rule> rules = new HashSet<>();
+    @Builder
+    public Room(int id, boolean status, Date createdDate, Date updatedDate, Set<Image> images, byte rating, List<Review> reviews, Country country, State state,
+                City city, String bedRoomCount, String bathRoomCount, String accomodatesCount, String bedCount,
+                Category category, String description, Set<Amentity> amentities, float latitude, float longtitude,
+                float price, PriceType priceType, int mininumStay, StayType stayType, User host, Set<Rule> rules, String name) {
+        super(id, status, createdDate, updatedDate);
+        this.name = name;
+        this.images = images;
+        this.rating = rating;
+        this.reviews = reviews;
+        this.country = country;
+        this.state = state;
+        this.city = city;
+        this.bedRoomCount = bedRoomCount;
+        this.bathRoomCount = bathRoomCount;
+        this.accomodatesCount = accomodatesCount;
+        this.bedCount = bedCount;
+        this.category = category;
+        this.description = description;
+        this.amentities = amentities;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+        this.price = price;
+        this.priceType = priceType;
+        this.mininumStay = mininumStay;
+        this.stayType = stayType;
+        this.host = host;
+        this.rules = rules;
+    }
 
 }
