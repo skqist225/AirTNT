@@ -1,14 +1,11 @@
 package com.airtnt.backend.amentity;
 
 import com.airtnt.common.entity.AmentityCategory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class AmentityCategoryRepositoryTest {
@@ -31,7 +28,7 @@ class AmentityCategoryRepositoryTest {
         AmentityCategory amentityCategory4 = AmentityCategory.builder().name("Hệ thống sưởi và làm mát").build();
         AmentityCategory amentityCategory5 = AmentityCategory.builder().name("Internet và văn phòng").build();
 
-        repository.saveAll(List.of(amentityCategory1, amentityCategory2, amentityCategory3,amentityCategory4, amentityCategory5));
+        repository.saveAll(List.of(amentityCategory1, amentityCategory2, amentityCategory3, amentityCategory4, amentityCategory5));
     }
 
     @Test
