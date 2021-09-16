@@ -1,22 +1,18 @@
 package com.airtnt.common.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
@@ -24,7 +20,7 @@ public class User extends BaseEntity {
 	@Builder
 	public User(int id, boolean status, Date createdDate, Date updatedDate, String firstName, String lastName, Sex sex,
 			Date birthday, String email, String password, Role role, String phoneNumber, Room room, Address address,
-			boolean isSupremeHost, boolean isVerified, String about) {
+			boolean isSupremeHost, boolean isVerified, String about, String avatar, List<UserReview> userReviews) {
 		super(id, status, createdDate, updatedDate);
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -39,10 +35,16 @@ public class User extends BaseEntity {
 		this.isSupremeHost = isSupremeHost;
 		this.isVerified = isVerified;
 		this.about = about;
+		this.avatar = avatar;
+		this.userReviews =userReviews;
 	}
 
-	
-	
+	public User(int id) {
+		super(id);
+	}
+
+	private String avatar;
+
 	@Column(nullable = false, length = 48)
 	private String firstName;
 	
@@ -62,7 +64,7 @@ public class User extends BaseEntity {
 	@Column(nullable = false, length = 30)
 	private String password;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "role_id",referencedColumnName = "id")
 	private Role role;
 	
@@ -72,7 +74,7 @@ public class User extends BaseEntity {
 	@OneToOne(mappedBy = "host")
 	private Room room;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id", referencedColumnName = "id")
 	private Address address;
 	
@@ -85,4 +87,15 @@ public class User extends BaseEntity {
 	@Column(length = 1024)
 	private String about;
 
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private List<UserReview> userReviews = new ArrayList<>();
+
+	@Override
+	public String toString() {
+		return "User [firstName=" + firstName + ", lastName=" + lastName + "]";
+	}
+	
+	
+	
 }

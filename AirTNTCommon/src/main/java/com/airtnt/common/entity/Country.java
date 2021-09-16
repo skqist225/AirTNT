@@ -3,7 +3,10 @@ package com.airtnt.common.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -12,6 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"states", "cities"})
 @Builder
 @Entity
 @Table(name = "countries")
@@ -36,4 +40,5 @@ public class Country {
 
     @OneToMany(mappedBy = "country")
     private Set<City> cities = new HashSet<>();
+      
 }

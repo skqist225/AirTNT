@@ -6,9 +6,9 @@ import lombok.*;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@ToString(exclude = {"amentityCategory"})
 @Entity
 @Table(name = "amentities")
 public class Amentity extends BaseEntity {

@@ -1,9 +1,11 @@
 package com.airtnt.common.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -14,16 +16,16 @@ import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
+@ToString
 @MappedSuperclass
 public class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(columnDefinition = "BOOLEAN DEFAULT 1")
-	private boolean status = true;
+	@Column(columnDefinition = "BOOLEAN default 1")
+	private boolean status;
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)

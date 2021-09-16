@@ -55,6 +55,8 @@ class RoomRepositoryTest {
 			rules.add(itr.next());
 		}
 
+		User host = new User(2);
+
 		Room room = Room.builder()
                 .name("A Relaxing Stay at a Historical Hot Spring Ryokan Hotel in Arima(a twin room, up to two people)歴史的木造建築の旅館,景観は庭のツイン【2名定員】")
 				.accomodatesCount("2").bathRoomCount("1").bedCount("2").bedRoomCount("1").description(description)
@@ -68,9 +70,24 @@ class RoomRepositoryTest {
 				.state(state)
 				.country(country)
 				.rules(rules)
+				.host(host)
 				.build();
 
 
 		repository.save(room);
 	}
+
+	@Test
+	public void deleteRoomById() {
+		repository.deleteById(7);
+	}
+	
+	@Test
+	public void getRoomById() {
+		Room room = repository.findById(8).get();
+		
+		System.out.println(room);
+	}
+	
+	
 }

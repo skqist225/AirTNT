@@ -19,8 +19,6 @@
 		<java.version>11</java.version>
 	</properties>
 
-
-
 	<modules>
 		<module>AirTNTBackend</module>
 		<module>AirTNTFrontEnd</module>
@@ -31,6 +29,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
