@@ -21,16 +21,16 @@ public class Promo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column(nullable = false)
 	private String title;
-	
+
 	@Column(name = "code", columnDefinition = "VARCHAR(20) NOT NULL", unique = true)
 	private String promoCode;
-	
+
 	@Column(nullable = false)
 	private String description;
-	
-	@Column(name= "discount_percent",columnDefinition = "DECIMAL(3) NOT NULL DEFAULT 0, check(discount_percent >= 0 and discount_percent <= 100)")
+
+	@Column(name = "discount_percent", columnDefinition = "DECIMAL(3) NOT NULL DEFAULT 0, check(discount_percent >= 0 and discount_percent <= 100)")
 	private byte discountPercent;
 }

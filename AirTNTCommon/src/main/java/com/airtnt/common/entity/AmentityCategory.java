@@ -1,11 +1,9 @@
 package com.airtnt.common.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.*;
-
 
 @Getter
 @Setter
@@ -16,12 +14,11 @@ public class AmentityCategory extends IdAndName {
 
     @Builder
     public AmentityCategory(int id, String name) {
-        super(id,name);
+        super(id, name);
     }
 
-    public AmentityCategory(int id)  {
+    public AmentityCategory(int id) {
         super(id);
     }
-
 
 }

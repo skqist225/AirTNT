@@ -1,10 +1,191 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xml:lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h1>Hello</h1>
-</body>
+<html xml:lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Room Details</title>
+        <link rel="stylesheet" th:href="@{/css/product_details.css}" type="text/css" />
+    </head>
+    <body>
+        <div class="rdt_container">
+            <div class="rdt_header">
+                <h1 class="rdt_name">[[${room.name}]]</h1>
+
+                <div class="rdt_below__header flex">
+                    <div class="rdt_location__info">
+                        <span th:if="${room.city.name != null}"
+                            >[[${room.city.name}]]</span
+                        >
+                        <span th:if="${room.state.name != null}"
+                            >[[${room.state.name}]]</span
+                        >
+                        <span>[[${room.country.name}]]</span>
+                    </div>
+                    <div class="rdt_header__action">
+                        <button class="rdt_button__action">
+                            <div class="rdt_button__inner">
+                                <span>
+                                    <svg
+                                        aria-hidden="true"
+                                        focusable="false"
+                                        role="presentation"
+                                        style="
+                                            display: block;
+                                            fill: none;
+                                            height: 16px;
+                                            width: 16px;
+                                            stroke: currentcolor;
+                                            stroke-width: 2;
+                                            overflow: visible;
+                                        "
+                                        viewBox="0 0 32 32"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <g fill="none">
+                                            <path
+                                                d="M27 18v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-9"
+                                            ></path>
+                                            <path d="M16 3v23V3z"></path>
+                                            <path
+                                                d="M6 13l9.293-9.293a1 1 0 0 1 1.414 0L26 13"
+                                            ></path>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <span>Chia sẻ</span>
+                            </div>
+                        </button>
+                        <button class="rdt_button__action">
+                            <div class="rdt_button__inner">
+                                <span>
+                                    <svg
+                                        aria-hidden="true"
+                                        focusable="false"
+                                        role="presentation"
+                                        style="
+                                            display: block;
+                                            fill: none;
+                                            height: 16px;
+                                            width: 16px;
+                                            stroke: currentcolor;
+                                            stroke-width: 2;
+                                            overflow: visible;
+                                        "
+                                        viewBox="0 0 32 32"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="m16 28c7-4.733 14-10 14-17 0-1.792-.683-3.583-2.05-4.95-1.367-1.366-3.158-2.05-4.95-2.05-1.791 0-3.583.684-4.949 2.05l-2.051 2.051-2.05-2.051c-1.367-1.366-3.158-2.05-4.95-2.05-1.791 0-3.583.684-4.949 2.05-1.367 1.367-2.051 3.158-2.051 4.95 0 7 7 12.267 14 17z"
+                                        ></path>
+                                    </svg>
+                                </span>
+                                <span>Lưu</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <section class="rdt_images grid">
+                    <div class="rdt_images__right">
+                        <img
+                            th:src="@{${thumbnail.imagePath}}"
+                            alt=""
+                            height="470px"
+                            width="600px"
+                            class="image"
+                        />
+                    </div>
+                    <div class="rdt_images__left">
+                        <th:block th:each="image,iter  : ${roomImages}">
+                            <img
+                                th:src="@{${image.imagePath}}"
+                                alt="${image.image}"
+                                width="274px"
+                                height="235px"
+                                class="image"
+                                th:class="${iter.even}? 'roundedBorder'"
+                            />
+                        </th:block>
+                    </div>
+                </section>
+
+                <main class="rdt_body">
+                    <div class="grid__2_1">
+                        <article>
+                            <div class="rdt_room__count">
+                                <h3>
+                                    Phòng riêng tại ryokan. Chủ nhà
+                                    [[${room.host.firstName}]] [[${room.host.lastName}]]
+                                </h3>
+                                <h5>
+                                    [[${room.accomodatesCount}]] khách.
+                                    [[${room.bathRoomCount}]] phòng ngủ .
+                                    [[${room.bedCount}]] giường. [[${room.bedRoomCount}]]
+                                    phòng tắm riêng
+                                </h5>
+                            </div>
+                            <div class="rdt_description">
+                                <p>[[${room.description}]]</p>
+                            </div>
+                            <div class="rdt_amentity">
+                                <h4>Nơi này có những gì cho bạn</h4>
+                                <div>
+                                    <th:block th:each="amt : ${room.amentities}">
+                                        <div style="display: flex; align-items: center">
+                                            <span
+                                                th:remove="tag"
+                                                th:utext="${amt.iconImage}"
+                                            ></span>
+                                            <span style="padding-left: 16px"
+                                                >[[${amt.name}]]</span
+                                            >
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div class="rdt_calender"></div>
+                            <div class="rdt_review"></div>
+                            <div class="rdt_host">
+                                <div class="host_info">
+                                    <div>
+                                        <img
+                                            src="@{${room.host.avatarPath}}"
+                                            alt=""
+                                            class="image"
+                                            width="64px"
+                                            height="64px"
+                                            style="border-radius: 50%"
+                                        />
+                                    </div>
+                                    <div>
+                                        <h1>
+                                            Chủ nhà [[${room.host.firstName}]]
+                                            [[${room.host.lastName}]]
+                                        </h1>
+                                        <div>
+                                            <span>[[${room.host.createdDate}]]</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rdt_rules">
+                                <th:block th:each="rule : ${room.rules}">
+                                    <div style="display: flex; align-items: center">
+                                        <span
+                                            th:remove="tag"
+                                            th:utext="${rule.icon}"
+                                        ></span>
+                                        <span style="padding-left: 16px"
+                                            >[[${rule.title}]]</span
+                                        >
+                                    </div>
+                                </th:block>
+                            </div>
+                        </article>
+
+                        <article></article>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </body>
 </html>

@@ -23,13 +23,13 @@ public class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column(columnDefinition = "BOOLEAN default 1")
 	private boolean status;
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_at", updatable=false, nullable = false)
+	@Column(name = "created_at", updatable = false, nullable = false)
 	private Date createdDate;
 
 	@UpdateTimestamp

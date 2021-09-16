@@ -10,7 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @NoArgsConstructor
 @Entity
@@ -36,7 +35,7 @@ public class User extends BaseEntity {
 		this.isVerified = isVerified;
 		this.about = about;
 		this.avatar = avatar;
-		this.userReviews =userReviews;
+		this.userReviews = userReviews;
 	}
 
 	public User(int id) {
@@ -47,43 +46,42 @@ public class User extends BaseEntity {
 
 	@Column(nullable = false, length = 48)
 	private String firstName;
-	
-	
+
 	@Column(nullable = false, length = 48)
 	private String lastName;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(length = 10, nullable = false)
 	private Sex sex;
-	
+
 	private Date birthday;
-	
+
 	@Column(nullable = false, unique = true)
 	private String email;
-	
+
 	@Column(nullable = false, length = 30)
 	private String password;
-	
+
 	@OneToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "role_id",referencedColumnName = "id")
+	@JoinColumn(name = "role_id", referencedColumnName = "id")
 	private Role role;
-	
+
 	@Column(length = 10, nullable = false)
 	private String phoneNumber;
-	
+
 	@OneToOne(mappedBy = "host")
 	private Room room;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id", referencedColumnName = "id")
 	private Address address;
-	
-	@Column(name = "is_supreme_host",columnDefinition = "BOOLEAN default 0")
+
+	@Column(name = "is_supreme_host", columnDefinition = "BOOLEAN default 0")
 	private boolean isSupremeHost;
-	
-	@Column(name = "is_verified",columnDefinition = "BOOLEAN default 0")
+
+	@Column(name = "is_verified", columnDefinition = "BOOLEAN default 0")
 	private boolean isVerified;
-	
+
 	@Column(length = 1024)
 	private String about;
 
@@ -95,7 +93,9 @@ public class User extends BaseEntity {
 	public String toString() {
 		return "User [firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
-	
-	
-	
+
+	@Transient
+	public String getAvatarPath() {
+		return "/room_images/" + this.avatar;
+	}
 }

@@ -1,0 +1,85 @@
+.rdt_container {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.rdt_name {
+    font-size: 26px;
+    color: #222;
+    line-height: 2.6rem;
+}
+
+.rdt_button__action {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0px -8px;
+    position: relative;
+    text-align: center;
+    width: auto;
+    touch-action: manipulation;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    /* width: 80px; */
+    outline: none;
+    padding: 8px;
+    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
+        -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+    -webkit-tap-highlight-color: transparent;
+    border: none;
+    background: transparent;
+    color: rgb(34, 34, 34);
+    text-decoration: underline;
+}
+
+.rdt_button__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rdt_images {
+    height: 470px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 8px;
+}
+
+.grid__2_1 {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.image {
+    object-fit: cover;
+    vertical-align: bottom;
+}
+
+.image:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.roundedBorder:first-child {
+    border-top-right-radius: 10px;
+}
+
+.roundedBorder:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.host_info {
+    display: flex;
+    align-items: center;
+}
