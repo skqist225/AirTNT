@@ -1,4 +1,4 @@
-package com.airtnt.backend.User;
+package com.airtnt.backend.user;
 
 import com.airtnt.common.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

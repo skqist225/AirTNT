@@ -19,10 +19,10 @@ import lombok.Setter;
 public class Booking extends BaseEntity {
 	
 	@Builder
-	public Booking(int id, boolean status, Date createdDate, Date updatedDate, Date checkinDay, Date checkoutDay,
+	public Booking(Date checkinDay, Date checkoutDay,
 			Date cancelDay, float pricePerDay, float priceForStay, boolean isRefund, float refundPaid, Date bookingDay,
 			float taxPaid, float siteFee) {
-		super(id, status, createdDate, updatedDate);
+		super();
 		this.checkinDay = checkinDay;
 		this.checkoutDay = checkoutDay;
 		this.cancelDay = cancelDay;

@@ -53,6 +53,10 @@ public class Room extends BaseEntity {
 	@Column(length = 10, nullable = false, name = "bed_count")
 	private String bedCount;
 
+	@OneToOne
+	@JoinColumn(name = "currency_id", referencedColumnName = "id")
+	private Currency currency;
+
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
@@ -90,12 +94,12 @@ public class Room extends BaseEntity {
 	private Set<Rule> rules = new HashSet<>();
 
 	@Builder
-	public Room(int id, boolean status, Date createdDate, Date updatedDate, Set<Image> images, byte rating,
+	public Room(Set<Image> images, byte rating,
 			List<Review> reviews, Country country, State state, City city, String bedRoomCount, String bathRoomCount,
 			String accomodatesCount, String bedCount, Category category, String description, Set<Amentity> amentities,
 			float latitude, float longtitude, float price, PriceType priceType, int mininumStay, StayType stayType,
 			User host, Set<Rule> rules, String name) {
-		super(id, status, createdDate, updatedDate);
+		super();
 		this.name = name;
 		this.images = images;
 		this.rating = rating;

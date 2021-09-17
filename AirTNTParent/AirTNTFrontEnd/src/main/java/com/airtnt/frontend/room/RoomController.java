@@ -6,8 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import com.airtnt.common.entity.Image;
@@ -36,8 +38,13 @@ public class RoomController {
 			count++;
 		}
 		secondToFive.remove(firstImage);
+		List<Integer> bedCount = new ArrayList<>();
+		for (int i = 0; i < Integer.parseInt(room.getBedCount()); i++) {
+			bedCount.add(1);
+		}
 
 		model.addAttribute("thumbnail", firstImage);
+		model.addAttribute("numberOfBed", bedCount);
 		model.addAttribute("roomImages", secondToFive);
 		model.addAttribute("room", room);
 

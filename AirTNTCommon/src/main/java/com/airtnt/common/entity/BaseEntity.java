@@ -14,7 +14,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @ToString
@@ -24,8 +23,8 @@ public class BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(columnDefinition = "BOOLEAN default 1")
-	private boolean status;
+	@Column(columnDefinition = "boolean default true")
+	private boolean status = true;
 
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)

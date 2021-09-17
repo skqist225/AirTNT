@@ -4,6 +4,12 @@
         <meta charset="UTF-8" />
         <title>Room Details</title>
         <link rel="stylesheet" th:href="@{/css/product_details.css}" type="text/css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+            rel="stylesheet"
+        />
     </head>
     <body>
         <div class="rdt_container">
@@ -11,126 +17,163 @@
                 <h1 class="rdt_name">[[${room.name}]]</h1>
 
                 <div class="rdt_below__header flex">
-                    <div class="rdt_location__info">
+                    <div class="rdt_location__info text">
                         <span th:if="${room.city.name != null}"
                             >[[${room.city.name}]]</span
                         >
                         <span th:if="${room.state.name != null}"
                             >[[${room.state.name}]]</span
                         >
-                        <span>[[${room.country.name}]]</span>
+                        <span th:if="${room.country.name != null}"
+                            >[[${room.country.name}]]</span
+                        >
                     </div>
                     <div class="rdt_header__action">
-                        <button class="rdt_button__action">
-                            <div class="rdt_button__inner">
-                                <span>
-                                    <svg
-                                        aria-hidden="true"
-                                        focusable="false"
-                                        role="presentation"
-                                        style="
-                                            display: block;
-                                            fill: none;
-                                            height: 16px;
-                                            width: 16px;
-                                            stroke: currentcolor;
-                                            stroke-width: 2;
-                                            overflow: visible;
-                                        "
-                                        viewBox="0 0 32 32"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <g fill="none">
-                                            <path
-                                                d="M27 18v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-9"
-                                            ></path>
-                                            <path d="M16 3v23V3z"></path>
-                                            <path
-                                                d="M6 13l9.293-9.293a1 1 0 0 1 1.414 0L26 13"
-                                            ></path>
-                                        </g>
-                                    </svg>
-                                </span>
-                                <span>Chia sẻ</span>
-                            </div>
-                        </button>
-                        <button class="rdt_button__action">
-                            <div class="rdt_button__inner">
-                                <span>
-                                    <svg
-                                        aria-hidden="true"
-                                        focusable="false"
-                                        role="presentation"
-                                        style="
-                                            display: block;
-                                            fill: none;
-                                            height: 16px;
-                                            width: 16px;
-                                            stroke: currentcolor;
-                                            stroke-width: 2;
-                                            overflow: visible;
-                                        "
-                                        viewBox="0 0 32 32"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="m16 28c7-4.733 14-10 14-17 0-1.792-.683-3.583-2.05-4.95-1.367-1.366-3.158-2.05-4.95-2.05-1.791 0-3.583.684-4.949 2.05l-2.051 2.051-2.05-2.051c-1.367-1.366-3.158-2.05-4.95-2.05-1.791 0-3.583.684-4.949 2.05-1.367 1.367-2.051 3.158-2.051 4.95 0 7 7 12.267 14 17z"
-                                        ></path>
-                                    </svg>
-                                </span>
-                                <span>Lưu</span>
-                            </div>
-                        </button>
+                        <div th:replace="room/saveAndShare.html :: saveAndShare"></div>
                     </div>
                 </div>
 
                 <section class="rdt_images grid">
-                    <div class="rdt_images__right">
+                    <div style="width: 100%; height: 100%">
                         <img
                             th:src="@{${thumbnail.imagePath}}"
-                            alt=""
-                            height="470px"
-                            width="600px"
+                            th:alt="${thumbnail.imageName}"
+                            width="100%"
+                            height="98%"
                             class="image"
                         />
                     </div>
                     <div class="rdt_images__left">
                         <th:block th:each="image,iter  : ${roomImages}">
-                            <img
-                                th:src="@{${image.imagePath}}"
-                                alt="${image.image}"
-                                width="274px"
-                                height="235px"
-                                class="image"
-                                th:class="${iter.even}? 'roundedBorder'"
-                            />
+                            <div style="width: 100%; height: 100%">
+                                <img
+                                    th:src="@{${image.imagePath}}"
+                                    th:alt="${image.imageName}"
+                                    width="100%"
+                                    height="100%"
+                                    class="image"
+                                    th:class="${iter.even}? 'roundedBorder'"
+                                />
+                            </div>
                         </th:block>
+                        <a href="javascript:abc();" style="text-decoration: none">
+                            <div class="rdt_showMoreImage">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 17 17"
+                                    role="presentation"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    style="
+                                        height: 12px;
+                                        width: 12px;
+                                        display: block;
+                                        fill: currentcolor;
+                                    "
+                                >
+                                    <circle cx="1.5" cy="1.5" r="1.5"></circle>
+                                    <circle cx="1.5" cy="8.5" r="1.5"></circle>
+                                    <circle cx="8.5" cy="1.5" r="1.5"></circle>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <circle cx="15.5" cy="1.5" r="1.5"></circle>
+                                    <circle cx="15.5" cy="8.5" r="1.5"></circle>
+                                    <circle cx="1.5" cy="15.5" r="1.5"></circle>
+                                    <circle cx="8.5" cy="15.5" r="1.5"></circle>
+                                    <circle cx="15.5" cy="15.5" r="1.5"></circle>
+                                </svg>
+                                <div style="padding-left: 12px">Hiển thị tất cả ảnh</div>
+                            </div>
+                        </a>
                     </div>
                 </section>
 
                 <main class="rdt_body">
                     <div class="grid__2_1">
                         <article>
-                            <div class="rdt_room__count">
-                                <h3>
-                                    Phòng riêng tại ryokan. Chủ nhà
-                                    [[${room.host.firstName}]] [[${room.host.lastName}]]
-                                </h3>
-                                <h5>
-                                    [[${room.accomodatesCount}]] khách.
-                                    [[${room.bathRoomCount}]] phòng ngủ .
-                                    [[${room.bedCount}]] giường. [[${room.bedRoomCount}]]
-                                    phòng tắm riêng
-                                </h5>
+                            <div class="rdt_room__count flex">
+                                <div>
+                                    <h2 style="font-size: 22px; line-height: 40px">
+                                        Phòng riêng tại ryokan. Chủ nhà
+                                        [[${room.host.firstName}]]
+                                        [[${room.host.lastName}]]
+                                    </h2>
+                                    <p style="font-size: 16px; font-weight: 500">
+                                        [[${room.accomodatesCount}]] khách.
+                                        [[${room.bathRoomCount}]] phòng ngủ .
+                                        [[${room.bedCount}]] giường.
+                                        [[${room.bedRoomCount}]] phòng tắm riêng
+                                    </p>
+                                </div>
+                                <div>
+                                    <img
+                                        th:src="@{${room.host.avatarPath}}"
+                                        alt=""
+                                        class="image"
+                                        width="64px"
+                                        height="64px"
+                                        style="border-radius: 50%"
+                                    />
+                                </div>
                             </div>
-                            <div class="rdt_description">
+                            <div class="rdt_description rdt_body__common">
                                 <p>[[${room.description}]]</p>
                             </div>
-                            <div class="rdt_amentity">
-                                <h4>Nơi này có những gì cho bạn</h4>
+                            <div class="rdt_bedroom_info rdt_body__common">
+                                <h4 class="rdt_amentity__header">Nơi bạn sẽ ngủ nghỉ</h4>
+                                <div class="rdt_room__decor">
+                                    <div
+                                        style="
+                                            display: flex;
+                                            align-items: center;
+                                            margin-bottom: 16px;
+                                        "
+                                    >
+                                        <th:block th:each="bed : ${numberOfBed}">
+                                            <span>
+                                                <svg
+                                                    viewBox="0 0 32 32"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    aria-hidden="true"
+                                                    role="presentation"
+                                                    focusable="false"
+                                                    style="
+                                                        display: block;
+                                                        height: 24px;
+                                                        width: 24px;
+                                                        fill: currentcolor;
+                                                    "
+                                                >
+                                                    <path
+                                                        d="M24 4a2 2 0 0 1 1.995 1.85L26 6v7.839l1.846 5.537a3 3 0 0 1 .115.468l.03.24.009.24V30h-2v-2H6v2H4v-9.675a3 3 0 0 1 .087-.717l.067-.232L6 13.836V6a2 2 0 0 1 1.697-1.977l.154-.018L8 4zm2 18H6v4h20zm-1.388-6H7.387l-1.333 4h19.891zM24 6H8v8h3v-4a2 2 0 0 1 1.85-1.995L13 8h6a2 2 0 0 1 1.995 1.85L21 10v4h3zm-5 4h-6v4h6z"
+                                                    ></path>
+                                                </svg> </span
+                                        ></th:block>
+                                    </div>
+                                    <div style="margin-bottom: 8px; font-size: 16px">
+                                        Phòng ngủ
+                                    </div>
+                                    <div style="font-size: 14px">
+                                        <span
+                                            th:text="${#arrays.length(numberOfBed)}"
+                                        ></span>
+                                        giường đơn
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rdt_amentity rdt_body__common">
+                                <h4 class="rdt_amentity__header">
+                                    Nơi này có những gì cho bạn
+                                </h4>
                                 <div>
                                     <th:block th:each="amt : ${room.amentities}">
-                                        <div style="display: flex; align-items: center">
+                                        <div
+                                            style="
+                                                display: flex;
+                                                align-items: center;
+                                                padding-bottom: 16px;
+                                                height: 40px;
+                                            "
+                                        >
                                             <span
                                                 th:remove="tag"
                                                 th:utext="${amt.iconImage}"
@@ -141,14 +184,23 @@
                                         </div>
                                     </th:block>
                                 </div>
+                                <div class="rdt_anchor__container">
+                                    <a href="" class="rdt_anchor"
+                                        >Hiển thị tất cả
+                                        <span
+                                            th:text="${#arrays.length(room.amentities)}"
+                                        ></span>
+                                        tiện nghi</a
+                                    >
+                                </div>
                             </div>
                             <div class="rdt_calender"></div>
                             <div class="rdt_review"></div>
-                            <div class="rdt_host">
+                            <div class="rdt_host rdt_body__common">
                                 <div class="host_info">
                                     <div>
                                         <img
-                                            src="@{${room.host.avatarPath}}"
+                                            th:src="@{${room.host.avatarPath}}"
                                             alt=""
                                             class="image"
                                             width="64px"
@@ -156,20 +208,34 @@
                                             style="border-radius: 50%"
                                         />
                                     </div>
-                                    <div>
-                                        <h1>
+                                    <div style="margin-left: 20px">
+                                        <h2 style="font-size: 22px; line-height: 26px">
                                             Chủ nhà [[${room.host.firstName}]]
                                             [[${room.host.lastName}]]
-                                        </h1>
-                                        <div>
-                                            <span>[[${room.host.createdDate}]]</span>
+                                        </h2>
+                                        <div
+                                            style="
+                                                padding-top: 8px;
+                                                color: #717171;
+                                                font-size: 14px;
+                                                line-height: 18px;
+                                            "
+                                        >
+                                            [[${room.host.createdDate}]]
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="rdt_rules">
+                            <div class="rdt_rules rdt_body__common">
+                                <h4 class="rdt_amentity__header">Những điều cần biết</h4>
                                 <th:block th:each="rule : ${room.rules}">
-                                    <div style="display: flex; align-items: center">
+                                    <div
+                                        style="
+                                            display: flex;
+                                            align-items: center;
+                                            margin-bottom: 8px;
+                                        "
+                                    >
                                         <span
                                             th:remove="tag"
                                             th:utext="${rule.icon}"
@@ -182,10 +248,229 @@
                             </div>
                         </article>
 
-                        <article></article>
+                        <article class="rdt_booking">
+                            <div
+                                style="
+                                    border: 1px solid rgb(221, 221, 221);
+                                    border-radius: 12px;
+                                    padding: 24px;
+                                    box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
+                                    width: 373px;
+                                    float: right;
+                                "
+                            >
+                                <div style="margin-bottom: 24px">
+                                    <span class="rdt__price"
+                                        >[[${room.currency.symbol}]][[${room.price}]]</span
+                                    >
+                                    <span
+                                        style="font-size: 16px"
+                                        th:text="${room.priceType == 'PER_NIGHT' ? '/ đêm' : '/ tuần'}"
+                                    ></span>
+                                </div>
+                                <div
+                                    style="
+                                        border: 1px solid #b0b0b0;
+                                        border-radius: 10px;
+                                        font-size: 14px;
+                                        overflow: hidden;
+                                        margin-bottom: 20px;
+                                    "
+                                >
+                                    <div class="flex">
+                                        <div
+                                            style="
+                                                padding: 10px 12px 10px;
+                                                width: 50%;
+                                                border: 0.5px solid red;
+                                            "
+                                        >
+                                            <div style="font-weight: 600">Nhận phòng</div>
+                                            <div>7/2/2022</div>
+                                        </div>
+                                        <div
+                                            style="
+                                                padding: 10px 12px 10px;
+                                                width: 50%;
+                                                border: 0.5px solid red;
+                                            "
+                                        >
+                                            <div style="font-weight: 600">Trả phòng</div>
+                                            <div>7/2/2022</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="flex"
+                                        style="height: 56px; padding: 16px 16px 10px 12px"
+                                    >
+                                        <div>
+                                            <div style="font-weight: 600">Khách</div>
+                                            <div>1 khách</div>
+                                        </div>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                height: 100%;
+                                            "
+                                        >
+                                            <svg
+                                                viewBox="0 0 18 18"
+                                                role="presentation"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                style="
+                                                    height: 16px;
+                                                    width: 16px;
+                                                    display: block;
+                                                    fill: currentcolor;
+                                                "
+                                            >
+                                                <path
+                                                    d="m16.29 4.3a1 1 0 1 1 1.41 1.42l-8 8a1 1 0 0 1 -1.41 0l-8-8a1 1 0 1 1 1.41-1.42l7.29 7.29z"
+                                                    fill-rule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button
+                                        data-testid="homes-pdp-cta-btn"
+                                        type="submit"
+                                        class="rdt_booking_button"
+                                    >
+                                        <span class="_163rr5i"
+                                            ><span
+                                                class="_19di23v"
+                                                style="
+                                                    background-position: calc(
+                                                            (100 - var(--mouse-x, 0)) * 1%
+                                                        )
+                                                        calc(
+                                                            (100 - var(--mouse-y, 0)) * 1%
+                                                        );
+                                                    --mouse-x: 96.4371;
+                                                    --mouse-y: 50;
+                                                "
+                                            ></span></span
+                                        ><span class="_tcp689">Đặt phòng </span>
+                                    </button>
+                                </div>
+                                <div
+                                    style="
+                                        font-size: 14px;
+                                        text-align: center;
+                                        margin-top: 8px;
+                                    "
+                                >
+                                    Bạn vẫn chưa bị trừ tiền
+                                </div>
+                                <div class="flex" style="padding-bottom: 12px">
+                                    <button class="rdt_transparent__btn">
+                                        <div class="_m6lwl6">
+                                            [[${room.currency.symbol}]]460 x
+                                            7&nbsp;đêm&nbsp;
+                                        </div>
+                                    </button>
+                                    <div>[[${room.currency.symbol}]]3.222</div>
+                                </div>
+                                <div class="flex" style="padding-bottom: 20px">
+                                    <button class="rdt_transparent__btn">
+                                        <div class="_m6lwl6">
+                                            [[${room.currency.symbol}]]460 x
+                                            7&nbsp;đêm&nbsp;
+                                        </div>
+                                    </button>
+                                    <div>[[${room.currency.symbol}]]3.222</div>
+                                </div>
+                                <div
+                                    class="flex"
+                                    style="
+                                        padding-top: 16px;
+                                        border-top: 1px solid #b0b0b0;
+                                    "
+                                >
+                                    <div>Tổng</div>
+                                    <div>[[${room.currency.symbol}]]3.222</div>
+                                </div>
+                            </div>
+                        </article>
                     </div>
                 </main>
             </div>
         </div>
+
+        <div class="rdt_hidden">
+            <div style="width: 100%; height: 60px; padding: 0 24px">
+                <div class="flex2">
+                    <div>
+                        <button class="" id="closeShowImgBtn">
+                            <span class="_e296pg"
+                                ><svg
+                                    viewBox="0 0 18 18"
+                                    role="presentation"
+                                    aria-hidden="true"
+                                    focusable="false"
+                                    style="
+                                        height: 16px;
+                                        width: 16px;
+                                        display: block;
+                                        fill: currentcolor;
+                                    "
+                                >
+                                    <path
+                                        d="m13.7 16.29a1 1 0 1 1 -1.42 1.41l-8-8a1 1 0 0 1 0-1.41l8-8a1 1 0 1 1 1.42 1.41l-7.29 7.29z"
+                                        fill-rule="evenodd"
+                                    ></path></svg
+                            ></span>
+                        </button>
+                    </div>
+                    <div>
+                        <div class="rdt_header__action">
+                            <div
+                                th:replace="room/saveAndShare.html :: saveAndShare"
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rdt_images_show">
+                <th:block th:each="image,itr : ${room.images}">
+                    <div th:if="${(itr.index + 1) % 3 != 0 && (itr.index + 2) % 3 != 0}">
+                        <img
+                            th:src="@{${image.imagePath}}"
+                            alt=""
+                            width="746px"
+                            th:class="${itr.index + 1}"
+                        />
+                    </div>
+
+                    <img
+                        th:src="@{${image.imagePath}}"
+                        alt=""
+                        width="370px"
+                        height="247px"
+                        th:class="${itr.index + 1}"
+                        style="display: inline-block"
+                        th:if="${(itr.index + 2) % 3 == 0 || (itr.index + 1) % 3 == 0 }"
+                    />
+                </th:block>
+            </div>
+        </div>
+
+        <script>
+            var hiddenSlider = document.getElementsByClassName('rdt_hidden')[0];
+            var closeShowImgBtn = document.getElementById('closeShowImgBtn');
+
+            function abc() {
+                hiddenSlider.classList.add('show');
+            }
+
+            closeShowImgBtn.addEventListener('click', function () {
+                hiddenSlider.classList.remove('show');
+            });
+        </script>
     </body>
 </html>

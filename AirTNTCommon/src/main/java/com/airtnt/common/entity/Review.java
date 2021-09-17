@@ -18,7 +18,6 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"room", "booking", "reviewByUser"})
 @Entity
@@ -26,9 +25,9 @@ import lombok.ToString;
 public class Review extends BaseEntity{
 	
 	@Builder
-	public Review(int id, boolean status, Date createdDate, Date updatedDate, Room room, Booking booking,
+	public Review(Room room, Booking booking,
 			User reviewByUser, String comment, SubRating subRating, int finalRating) {
-		super(id, status, createdDate, updatedDate);
+		super();
 		this.room = room;
 		this.booking = booking;
 		this.reviewByUser = reviewByUser;

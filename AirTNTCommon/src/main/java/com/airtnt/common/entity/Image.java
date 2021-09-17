@@ -31,6 +31,11 @@ public class Image {
 	}
 
 	@Transient
+	public String imageName() {
+		return this.image;
+	}
+
+	@Transient
 	public String getImagePath() {
 		return "/room_images/" + this.image;
 	}

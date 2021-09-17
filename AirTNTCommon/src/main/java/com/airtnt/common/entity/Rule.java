@@ -16,8 +16,8 @@ import java.util.Date;
 public class Rule extends BaseEntity {
 
     @Builder
-    public Rule(int id, boolean status, Date createdDate, Date updatedDate, String title, String icon) {
-        super(id, status, createdDate, updatedDate);
+    public Rule(String title, String icon) {
+        super();
         this.title = title;
         this.icon =icon;
     }

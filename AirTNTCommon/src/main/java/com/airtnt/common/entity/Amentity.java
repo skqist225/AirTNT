@@ -26,8 +26,8 @@ public class Amentity extends BaseEntity {
 	private AmentityCategory amentityCategory;
 
 	@Builder
-	public Amentity(int id, boolean status, Date createdDate, Date updatedDate, String name, String iconImage, AmentityCategory amentityCategory, String description) {
-		super(id, status, createdDate, updatedDate);
+	public Amentity(String name, String iconImage, AmentityCategory amentityCategory, String description) {
+		super();
 		this.name = name;
 		this.iconImage = iconImage;
 		this.amentityCategory = amentityCategory;

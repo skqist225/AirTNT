@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
 
 	@Builder
-	public User(int id, boolean status, Date createdDate, Date updatedDate, String firstName, String lastName, Sex sex,
+	public User(String firstName, String lastName, Sex sex,
 			Date birthday, String email, String password, Role role, String phoneNumber, Room room, Address address,
 			boolean isSupremeHost, boolean isVerified, String about, String avatar, List<UserReview> userReviews) {
-		super(id, status, createdDate, updatedDate);
+		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.sex = sex;

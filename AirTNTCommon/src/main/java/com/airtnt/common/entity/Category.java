@@ -18,30 +18,28 @@ import javax.persistence.*;
 @Entity
 @Table(name = "categories")
 public class Category extends BaseEntity {
-
-	@Builder
-	public Category(int id, boolean status, Date createdDate, Date updatedDate, String name) {
-		super(id, status, createdDate, updatedDate);
-		this.name = name;
-	}
-
 	@Column(nullable = false)
 	private String name;
 
 	@Column(columnDefinition = "TEXT NOT NULL")
 	private String icon;
-	
+
 	@OneToMany(mappedBy = "category")
 	private Set<Room> room = new HashSet<>();
-
-	public Category(int id) {
-		super(id);
-	}
 
 	@Override
 	public String toString() {
 		return "Category [name=" + name + "]";
 	}
-	
-	
+
+	@Builder
+	public Category(String name, String icon) {
+		super();
+		this.name = name;
+		this.icon = icon;
+	}
+
+	public Category(int id) {
+		super(id);
+	}
 }
