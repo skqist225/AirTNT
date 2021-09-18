@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -26,18 +26,18 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "country_id", referencedColumnName = "id")
 	private Country country;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "state_id", referencedColumnName = "id")
 	private State state;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "city_id", referencedColumnName = "id")
 	private City city;
 	
-	@Column(name = "apartmentNo_street")
+	@Column(name = "apartment_no_street")
 	private String AprtNoAndStreet;
 }
