@@ -1,6 +1,5 @@
-package com.airtnt.backend.User;
+package com.airtnt.backend.user;
 
-import com.airtnt.backend.user.UserRepository;
 import com.airtnt.common.entity.*;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -8,11 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserRepositoryTest {
@@ -30,7 +26,7 @@ class UserRepositoryTest {
                 City city = new City(1);
                 Country country = new Country(1);
 
-                Address address = Address.builder().AprtNoAndStreet("121/16/20 DX06").city(city).state(state)
+                Address address = Address.builder().aprtNoAndStreet("121/16/20 DX06").city(city).state(state)
                                 .country(country).build();
 
                 Role host = Role.builder().name("HOST").build();

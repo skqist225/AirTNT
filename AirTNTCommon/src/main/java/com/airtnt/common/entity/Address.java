@@ -14,30 +14,30 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
 @Table(name = "addresses")
 public class Address {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "country_id", referencedColumnName = "id")
+	@JoinColumn(name = "country_id")
 	private Country country;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "state_id", referencedColumnName = "id")
+	@JoinColumn(name = "state_id")
 	private State state;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "city_id", referencedColumnName = "id")
+	@JoinColumn(name = "city_id")
 	private City city;
-	
+
 	@Column(name = "apartment_no_street")
-	private String AprtNoAndStreet;
+	private String aprtNoAndStreet;
+
 }

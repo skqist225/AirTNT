@@ -1,29 +1,26 @@
 package com.airtnt.backend.address;
 
-import com.airtnt.common.entity.City;
-import com.airtnt.common.entity.Country;
 import com.airtnt.common.entity.State;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class StateRepositoryTest {
 
-    @Autowired
-    private StateRepository stateRepository;
+	@Autowired
+	private StateRepository stateRepository;
 
-    @Test
-    public void addTestState() {
-        Country Japan = new Country(1);
+	@Test
+	public void addTestState() {
+		State kansai = State.builder().name("Kansai").build();
+		stateRepository.save(kansai);
+	}
 
-        State kansai = State.builder()
-                .name("Kansai")
-                .country(Japan)
-                .build();
+	@Test
+	public void testFetchCountry() {
+		State state = stateRepository.findById(1).get();
 
-        stateRepository.save(kansai);
-    }
+		System.out.println(state);
+	}
 }

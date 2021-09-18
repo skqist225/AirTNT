@@ -1,37 +1,25 @@
 package com.airtnt.common.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-@ToString(exclude = {"state", "country"})
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "cities")
 public class City {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
-    
-    @ManyToOne
-    @JoinColumn(name = "state_id", referencedColumnName = "id")
-    private State state;
+	@Column(nullable = false, unique = true)
+	private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id", referencedColumnName = "id")
-    private Country country;
-
-    public City(int id) {
-        this.id = id;
-    }
+	public City(int id) {
+		this.id = id;
+	}
 }

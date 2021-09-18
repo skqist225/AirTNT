@@ -1,6 +1,10 @@
 package com.airtnt.common.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.*;
@@ -8,17 +12,21 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "amentity_categories")
-public class AmentityCategory extends IdAndName {
+public class AmentityCategory {
 
-    @Builder
-    public AmentityCategory(int id, String name) {
-        super(id, name);
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-    public AmentityCategory(int id) {
-        super(id);
-    }
+	@Column(unique = true, nullable = false)
+	private String name;
+
+	public AmentityCategory(int id) {
+		this.id = id;
+	}
 
 }

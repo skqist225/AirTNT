@@ -7,6 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,42 +17,31 @@ import lombok.ToString;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString(exclude = {"room", "booking", "reviewByUser"})
+@AllArgsConstructor
+@Builder
+@ToString(exclude = { "room", "booking", "reviewByUser" })
 @Entity
 @Table(name = "reviews")
-public class Review extends BaseEntity{
-	
-	@Builder
-	public Review(Room room, Booking booking,
-			User reviewByUser, String comment, SubRating subRating, int finalRating) {
-		super();
-		this.room = room;
-		this.booking = booking;
-		this.reviewByUser = reviewByUser;
-		this.comment = comment;
-		this.subRating = subRating;
-		this.finalRating = finalRating;
-	}
+public class Review extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "room_id")
 	private Room room;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "booking_id")
 	private Booking booking;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User reviewByUser;
-	
+
 	@Column(nullable = false, length = 1024)
 	private String comment;
-	
+
 	@Embedded
 	private SubRating subRating;
-	
-	@Column(name = "final_rating", columnDefinition = "TINYINT default 0, check(final_rating >= 0 and final_rating <= 5)")
+
+	@Column(columnDefinition = "TINYINT default 0, check(final_rating >= 0 and final_rating <= 5)")
 	private int finalRating;
-	
 }

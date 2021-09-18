@@ -2,18 +2,20 @@ package com.airtnt.common.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-@ToString(exclude = { "country", "cities" })
+@AllArgsConstructor
+@ToString(exclude = { "cities" })
 @Builder
 @Entity
 @Table(name = "states")
@@ -29,11 +31,9 @@ public class State {
 	@Column(columnDefinition = "VARCHAR(10)")
 	private String code;
 
-	@ManyToOne
-	@JoinColumn(name = "country_id", referencedColumnName = "id")
-	private Country country;
-
-	@OneToMany(mappedBy = "state")
+	@Builder.Default
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "state_id")
 	private Set<City> cities = new HashSet<>();
 
 	public State(int id) {
