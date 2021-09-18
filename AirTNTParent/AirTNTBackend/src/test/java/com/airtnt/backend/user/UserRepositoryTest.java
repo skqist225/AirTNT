@@ -1,5 +1,6 @@
-package com.airtnt.backend.user;
+package com.airtnt.backend.User;
 
+import com.airtnt.backend.user.UserRepository;
 import com.airtnt.common.entity.*;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -7,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +31,7 @@ class UserRepositoryTest {
         @SneakyThrows
         @Test
         public void testAddUser() {
-                DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-                Date birthday = dateFormatter.parse("22-05-2000");
+                LocalDateTime birthday = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
 
                 State state = new State(1);
                 City city = new City(1);
@@ -37,7 +40,7 @@ class UserRepositoryTest {
                 Address address = Address.builder().aprtNoAndStreet("121/16/20 DX06").city(city).state(state)
                                 .country(country).build();
 
-                Role host = Role.builder().name("HOST").build();
+                Role host = entityManage.find(Role.class, 1);
 
                 User 陶泉御所坊 = User.builder().about("Tôi tên là 陶泉 御所坊").birthday(birthday).address(address)
                                 .avatar("avatar.png").email("kongngoxilau@gmail.com").firstName("陶泉")
@@ -49,14 +52,13 @@ class UserRepositoryTest {
 
         @Test
         public void testAddAnotherUser() throws ParseException {
-                DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-                Date birthday = dateFormatter.parse("22-05-2000");
+                LocalDateTime birthday = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
 
                 State state = new State(1);
                 City city = new City(1);
                 Country country = new Country(1);
 
-                Address address = Address.builder().AprtNoAndStreet("121/16/5 DX06").city(city).state(state)
+                Address address = Address.builder().aprtNoAndStreet("121/16/5 DX06").city(city).state(state)
                                 .country(country).build();
 
                 Role host = entityManage.find(Role.class, 1);
@@ -71,20 +73,19 @@ class UserRepositoryTest {
 
         @Test
         public void testAddManyUser() throws ParseException {
-                DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-                Date birthday = dateFormatter.parse("22-05-2000");
+                LocalDateTime birthday = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
 
                 State state = new State(1);
                 City city = new City(1);
                 Country country = new Country(1);
 
-                Address address = Address.builder().AprtNoAndStreet("121/16/21 DX06").city(city).state(state)
+                Address address = Address.builder().aprtNoAndStreet("121/16/21 DX06").city(city).state(state)
                                 .country(country).build();
-                Address address2 = Address.builder().AprtNoAndStreet("121/16/22 DX06").city(city).state(state)
+                Address address2 = Address.builder().aprtNoAndStreet("121/16/22 DX06").city(city).state(state)
                                 .country(country).build();
-                Address address3 = Address.builder().AprtNoAndStreet("121/16/23 DX06").city(city).state(state)
+                Address address3 = Address.builder().aprtNoAndStreet("121/16/23 DX06").city(city).state(state)
                                 .country(country).build();
-                Address address4 = Address.builder().AprtNoAndStreet("121/16/24 DX06").city(city).state(state)
+                Address address4 = Address.builder().aprtNoAndStreet("121/16/24 DX06").city(city).state(state)
                                 .country(country).build();
 
                 Role host = entityManage.find(Role.class, 1);

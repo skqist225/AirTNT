@@ -1,5 +1,6 @@
 package com.airtnt.common.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,14 +9,20 @@ import java.util.HashSet;
 
 import javax.persistence.*;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 public class User extends BaseEntity {
 
@@ -31,7 +38,8 @@ public class User extends BaseEntity {
 	@Column(length = 10, nullable = false)
 	private Sex sex;
 
-	private Date birthday;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime birthday;
 
 	@Column(nullable = false, unique = true)
 	private String email;
@@ -56,11 +64,11 @@ public class User extends BaseEntity {
 
 	@Builder.Default
 	@Column(columnDefinition = "boolean default false")
-	private boolean isSupremeHost = false;
+	private boolean SupremeHost = false;
 
 	@Builder.Default
 	@Column(columnDefinition = "boolean default false")
-	private boolean isVerified = false;
+	private boolean Verified = false;
 
 	@Column(length = 1024)
 	private String about;
@@ -88,4 +96,6 @@ public class User extends BaseEntity {
 	public String getAvatarPath() {
 		return "/room_images/" + this.avatar;
 	}
+
+
 }

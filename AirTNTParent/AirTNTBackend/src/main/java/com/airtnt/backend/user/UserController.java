@@ -2,6 +2,10 @@ package com.airtnt.backend.user;
 
 import java.util.List;
 
+import com.airtnt.common.entity.City;
+import com.airtnt.common.entity.Country;
+import com.airtnt.common.entity.Role;
+import com.airtnt.common.entity.State;
 import com.airtnt.common.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +57,26 @@ public class UserController {
 		model.addAttribute("keyword", keyword);
         
         return "users/users";
+    }
+
+    @GetMapping("/users/new")
+    public String newUser(Model model){
+
+        List<Role> listRoles = service.listRoles();
+        List<Country> listCountries = service.listCountries();
+        List<State> listStates = service.listStates();
+        List<City> listCities = service.listCities();
+
+		
+		User user = new User();
+		user.setStatus(true);
+		model.addAttribute("user", user);
+		model.addAttribute("listRoles", listRoles);
+		model.addAttribute("listCountries", listCountries);
+		model.addAttribute("listStates", listStates);
+		model.addAttribute("listCities", listCities);
+		model.addAttribute("pageTitle", "Create New User");
+
+        return "users/user_form";
     }
 }

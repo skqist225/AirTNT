@@ -22,4 +22,12 @@ public class City {
 	public City(int id) {
 		this.id = id;
 	}
+
+	@ManyToOne
+    @JoinColumn(name="country_id")
+    private Country country;
+
+	@ManyToOne
+	@JoinColumn(name="state_id")
+	private State state;
 }

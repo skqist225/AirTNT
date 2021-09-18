@@ -2,6 +2,13 @@ package com.airtnt.backend.user;
 
 import java.util.List;
 
+import com.airtnt.backend.address.CityRepository;
+import com.airtnt.backend.address.CountryRepository;
+import com.airtnt.backend.address.StateRepository;
+import com.airtnt.common.entity.City;
+import com.airtnt.common.entity.Country;
+import com.airtnt.common.entity.Role;
+import com.airtnt.common.entity.State;
 import com.airtnt.common.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
     public static final int USERS_PER_PAGE = 4;
+
+    @Autowired RoleRepository roleRepo;
+    @Autowired CountryRepository countryRepo;
+    @Autowired StateRepository stateRepo;
+    @Autowired CityRepository cityRepo;
     
     @Autowired UserRepository repo;
 
@@ -35,5 +47,21 @@ public class UserService {
 		}
 		
 		return repo.findAll(pageable);
+    }
+
+    public List<Role> listRoles(){
+        return (List<Role>) roleRepo.findAll();
+    }
+
+    public List<Country> listCountries(){
+        return (List<Country>) countryRepo.findAll();
+    }
+
+    public List<State> listStates(){
+        return (List<State>) stateRepo.findAll();
+    }
+
+    public List<City> listCities(){
+        return (List<City>) cityRepo.findAll();
     }
 }
