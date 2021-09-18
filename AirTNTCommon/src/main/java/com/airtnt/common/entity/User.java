@@ -3,44 +3,21 @@ package com.airtnt.common.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
-
-	@Builder
-	public User(String firstName, String lastName, Sex sex,
-			Date birthday, String email, String password, Role role, String phoneNumber, Room room, Address address,
-			boolean isSupremeHost, boolean isVerified, String about, String avatar, List<UserReview> userReviews) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.sex = sex;
-		this.birthday = birthday;
-		this.email = email;
-		this.password = password;
-		this.role = role;
-		this.phoneNumber = phoneNumber;
-		this.room = room;
-		this.address = address;
-		this.isSupremeHost = isSupremeHost;
-		this.isVerified = isVerified;
-		this.about = about;
-		this.avatar = avatar;
-		this.userReviews = userReviews;
-	}
-
-	public User(int id) {
-		super(id);
-	}
 
 	private String avatar;
 
@@ -63,6 +40,7 @@ public class User extends BaseEntity {
 	private String password;
 
 	@ManyToOne
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "role_id")
 	private Role role;
 
@@ -73,21 +51,33 @@ public class User extends BaseEntity {
 	private Room room;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id", referencedColumnName = "id")
+	@JoinColumn(name = "address_id")
 	private Address address;
 
-	@Column(name = "is_supreme_host", columnDefinition = "BOOLEAN default 0")
-	private boolean isSupremeHost;
+	@Builder.Default
+	@Column(columnDefinition = "boolean default false")
+	private boolean isSupremeHost = false;
 
-	@Column(name = "is_verified", columnDefinition = "BOOLEAN default 0")
-	private boolean isVerified;
+	@Builder.Default
+	@Column(columnDefinition = "boolean default false")
+	private boolean isVerified = false;
 
 	@Column(length = 1024)
 	private String about;
 
+	@Builder.Default
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@JoinColumn(name = "user_id")
 	private List<UserReview> userReviews = new ArrayList<>();
+
+	@Builder.Default
+	@ManyToMany
+	@JoinTable(name = "users_favorite_rooms", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
+	private Set<Room> rooms = new HashSet<>();
+
+	public User(int id) {
+		super(id);
+	}
 
 	@Override
 	public String toString() {

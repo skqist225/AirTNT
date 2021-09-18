@@ -2,27 +2,24 @@ package com.airtnt.common.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-@ToString(exclude = {"states", "cities"})
+@AllArgsConstructor
+@ToString
 @Builder
 @Entity
 @Table(name = "countries")
 public class Country {
-
-    public Country(int id) {
-        this.id = id;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -30,13 +27,21 @@ public class Country {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(columnDefinition="VARCHAR(10) NOT NULL", unique = true)
+    @Column(columnDefinition = "VARCHAR(10) NOT NULL", unique = true)
     private String code;
 
-    @OneToMany(mappedBy = "country")
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "country_id")
     private Set<State> states = new HashSet<>();
 
-    @OneToMany(mappedBy = "country")
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "country_id")
     private Set<City> cities = new HashSet<>();
-      
+
+    public Country(int id) {
+        this.id = id;
+    }
+
 }

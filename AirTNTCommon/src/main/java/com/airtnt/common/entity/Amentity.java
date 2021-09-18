@@ -4,9 +4,11 @@ import javax.persistence.*;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@ToString(exclude = {"amentityCategory"})
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "amentities")
 public class Amentity extends BaseEntity {
@@ -18,19 +20,10 @@ public class Amentity extends BaseEntity {
 	private String iconImage;
 
 	private String description;
-	
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	@JoinColumn(name = "category_id", referencedColumnName = "id")
-	private AmentityCategory amentityCategory;
 
-	@Builder
-	public Amentity(String name, String iconImage, AmentityCategory amentityCategory, String description) {
-		super();
-		this.name = name;
-		this.iconImage = iconImage;
-		this.amentityCategory = amentityCategory;
-		this.description = description;
-	}
+	@ManyToOne
+	@JoinColumn(name = "amtcategory_id")
+	private AmentityCategory amentityCategory;
 
 	public Amentity(int id) {
 		super(id);

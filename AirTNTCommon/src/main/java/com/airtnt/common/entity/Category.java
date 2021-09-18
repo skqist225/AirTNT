@@ -1,9 +1,6 @@
 package com.airtnt.common.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +9,9 @@ import javax.persistence.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "categories")
 public class Category extends BaseEntity {
@@ -22,19 +21,13 @@ public class Category extends BaseEntity {
 	@Column(columnDefinition = "TEXT NOT NULL")
 	private String icon;
 
+	@Builder.Default
 	@OneToMany(mappedBy = "category")
 	private Set<Room> room = new HashSet<>();
 
 	@Override
 	public String toString() {
 		return "Category [name=" + name + "]";
-	}
-
-	@Builder
-	public Category(String name, String icon) {
-		super();
-		this.name = name;
-		this.icon = icon;
 	}
 
 	public Category(int id) {

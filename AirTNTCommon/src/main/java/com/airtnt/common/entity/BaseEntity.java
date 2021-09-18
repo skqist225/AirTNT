@@ -1,18 +1,18 @@
 package com.airtnt.common.entity;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.*;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
+@Getter
+@Setter
 @NoArgsConstructor
-@Data
 @ToString
 @MappedSuperclass
 public class BaseEntity {
