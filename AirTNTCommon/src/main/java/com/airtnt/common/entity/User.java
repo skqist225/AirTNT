@@ -62,8 +62,8 @@ public class User extends BaseEntity {
 	@Column(nullable = false, length = 30)
 	private String password;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "role_id", referencedColumnName = "id")
+	@ManyToOne
+	@JoinColumn(name = "role_id")
 	private Role role;
 
 	@Column(length = 10, nullable = false)
