@@ -14,7 +14,7 @@ public class CurrencyRepositoryTest {
 
     @Test
     public void testAddCurrency() {
-        Currency usDollar = Currency.builder().unit("USDDD").symbol("$$$").build();
+        Currency usDollar = Currency.builder().unit("USD").symbol("$").build();
 
         currencyRepository.save(usDollar);
     }

@@ -29,11 +29,11 @@ class AmentityCategoryRepositoryTest {
 
 	@Test
 	void testAddListAmentityCategory() {
-		AmentityCategory amentityCategory1 = AmentityCategory.builder().name("Dịch vụ").build();
-		AmentityCategory amentityCategory2 = AmentityCategory.builder().name("Phòng ngủ và giặt ủi").build();
-		AmentityCategory amentityCategory3 = AmentityCategory.builder().name("Giải trí").build();
-		AmentityCategory amentityCategory4 = AmentityCategory.builder().name("Hệ thống sưởi và làm mát").build();
-		AmentityCategory amentityCategory5 = AmentityCategory.builder().name("Internet và văn phòng").build();
+		AmentityCategory amentityCategory1 = AmentityCategory.builder().name("Phòng ngủ và giặt ủi").build();
+		AmentityCategory amentityCategory2 = AmentityCategory.builder().name("Giải trí").build();
+		AmentityCategory amentityCategory3 = AmentityCategory.builder().name("Hệ thống sưởi và làm mát").build();
+		AmentityCategory amentityCategory4 = AmentityCategory.builder().name("Internet và văn phòng").build();
+		AmentityCategory amentityCategory5 = AmentityCategory.builder().name("Dịch vụ").build();
 
 		Iterator<AmentityCategory> amentityCategories = repository.saveAll(
 				List.of(amentityCategory1, amentityCategory2, amentityCategory3, amentityCategory4, amentityCategory5))
@@ -42,6 +42,12 @@ class AmentityCategoryRepositoryTest {
 		amentityCategories.forEachRemaining(result::add);
 
 		assertThat(result.size()).isEqualTo(5);
+	}
+
+	@Test
+	void testAdd() {
+		AmentityCategory amentityCategory6 = AmentityCategory.builder().name("Không bao gồm").build();
+		repository.save(amentityCategory6);
 	}
 
 	@Test

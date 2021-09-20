@@ -45,7 +45,7 @@ public class Room extends BaseEntity {
 	private City city;
 
 	@Column(columnDefinition = "VARCHAR(10) NOT NULL", name = "bedroom_count")
-	private String bedRoomCount;
+	private String bedroomCount;
 
 	@Column(length = 10, nullable = false)
 	private String bathroomCount;
@@ -89,7 +89,7 @@ public class Room extends BaseEntity {
 	@Column(length = 20, nullable = false)
 	private StayType stayType;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "host_id")
 	private User host;
 
@@ -101,7 +101,7 @@ public class Room extends BaseEntity {
 	@Override
 	public String toString() {
 		return "Room [name=" + name + ", images=" + images + ", rating=" + rating + ", reviews=" + reviews
-				+ ", country=" + country + ", state=" + state + ", city=" + city + ", bedRoomCount=" + bedRoomCount
+				+ ", country=" + country + ", state=" + state + ", city=" + city + ", bedRoomCount=" + bedroomCount
 				+ ", bathRoomCount=" + bathroomCount + ", accomodatesCount=" + accomodatesCount + ", bedCount="
 				+ bedCount + ", category=" + category + ", description=" + description + ", amentities=" + amentities
 				+ ", latitude=" + latitude + ", longtitude=" + longtitude + ", price=" + price + ", priceType="

@@ -17,6 +17,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -55,8 +57,9 @@ public class User extends BaseEntity {
 	@Column(length = 10, nullable = false)
 	private String phoneNumber;
 
-	@OneToOne(mappedBy = "host")
-	private Room room;
+	@Builder.Default
+	@OneToMany(mappedBy = "host")
+	private List<Room> room = new ArrayList<>();
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id")
@@ -96,6 +99,5 @@ public class User extends BaseEntity {
 	public String getAvatarPath() {
 		return "/room_images/" + this.avatar;
 	}
-
 
 }

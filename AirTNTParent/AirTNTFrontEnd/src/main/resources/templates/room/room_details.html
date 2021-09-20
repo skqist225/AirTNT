@@ -10,8 +10,11 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
             rel="stylesheet"
         />
+        <div th:replace="header :: css"></div>
     </head>
     <body>
+        <div th:replace="header :: content"></div>
+
         <div class="rdt_container">
             <div class="rdt_header">
                 <h1 class="rdt_name">[[${room.name}]]</h1>
@@ -29,7 +32,7 @@
                         >
                     </div>
                     <div class="rdt_header__action">
-                        <div th:replace="room/saveAndShare.html :: saveAndShare"></div>
+                        <div th:replace="room/room_fragment :: saveAndShare"></div>
                     </div>
                 </div>
 
@@ -99,9 +102,9 @@
                                     </h2>
                                     <p style="font-size: 16px; font-weight: 500">
                                         [[${room.accomodatesCount}]] khách.
-                                        [[${room.bathRoomCount}]] phòng ngủ .
+                                        [[${room.bathroomCount}]] phòng ngủ .
                                         [[${room.bedCount}]] giường.
-                                        [[${room.bedRoomCount}]] phòng tắm riêng
+                                        [[${room.bedroomCount}]] phòng tắm riêng
                                     </p>
                                 </div>
                                 <div>
@@ -261,7 +264,8 @@
                             >
                                 <div style="margin-bottom: 24px">
                                     <span class="rdt__price"
-                                        >[[${room.currency.symbol}]][[${room.price}]]</span
+                                        >[[${room.currency.symbol}]]
+                                        [[${room.price}]]</span
                                     >
                                     <span
                                         style="font-size: 16px"
@@ -429,9 +433,7 @@
                     </div>
                     <div>
                         <div class="rdt_header__action">
-                            <div
-                                th:replace="room/saveAndShare.html :: saveAndShare"
-                            ></div>
+                            <div th:replace="room/room_fragment :: saveAndShare"></div>
                         </div>
                     </div>
                 </div>

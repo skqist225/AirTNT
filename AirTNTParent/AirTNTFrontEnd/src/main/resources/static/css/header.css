@@ -1,0 +1,109 @@
+.header {
+    height: 80px;
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 1px solid #ebebeb;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+
+.header__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 80px;
+    height: 100%;
+}
+
+.header__right {
+    width: 46%;
+}
+
+.header__left {
+    width: 46%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.button_container {
+    width: 46px;
+    height: 42px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.account__button {
+    appearance: none;
+    background: transparent;
+    border: 1px solid #dddddd;
+    color: #222222;
+    cursor: pointer;
+    display: -webkit-inline-box;
+    display: -moz-inline-box;
+    display: -ms-inline-flexbox;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    margin: 0px;
+    outline: none;
+    overflow: visible;
+    padding: 5px 5px 5px 12px;
+    text-align: inherit;
+    text-decoration: none;
+    user-select: auto;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 21px;
+    height: 42px;
+    position: relative;
+    vertical-align: middle;
+    transition: box-shadow 0.2s ease;
+    z-index: 1;
+}
+
+.header__user-avatar {
+    background-color: currentcolor;
+    border-radius: 50%;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.headerr__become-host {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px;
+    display: inline-block;
+    appearance: none;
+    background: transparent;
+    border: 0px;
+    cursor: pointer;
+    border-radius: 30px;
+    line-height: 18px;
+    margin: 0px;
+    outline: none;
+    overflow: visible;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    z-index: 1;
+    color: #222222;
+}
+
+.header__become-host:hover {
+    background-color: rgb(179, 219, 192);
+    cursor: pointer;
+    height: 42px;
+    width: 150px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

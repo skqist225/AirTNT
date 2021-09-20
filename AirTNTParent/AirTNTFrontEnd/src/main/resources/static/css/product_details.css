@@ -9,6 +9,10 @@
     width: 1200px;
     max-width: 95%;
     margin: 0 auto;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
 }
 
 .rdt_name {
@@ -235,7 +239,7 @@
 }
 
 .rdt_hidden {
-    z-index: 29;
+    z-index: 999;
     background-color: #fff;
     transform: translate(-100%, -51%);
     width: 100%;
@@ -243,7 +247,7 @@
 }
 
 .rdt_hidden.show {
-    transform: translate(0%, -51%);
+    transform: translate(0%, 1.7%);
 }
 
 .rdt_images_show {

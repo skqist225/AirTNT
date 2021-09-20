@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = { "room" })
 @Builder
 @Entity
 @Table(name = "categories")
@@ -25,12 +26,12 @@ public class Category extends BaseEntity {
 	@OneToMany(mappedBy = "category")
 	private Set<Room> room = new HashSet<>();
 
-	@Override
-	public String toString() {
-		return "Category [name=" + name + "]";
-	}
-
 	public Category(int id) {
 		super(id);
+	}
+
+	@Transient
+	public String getIconPath() {
+		return "/category_images/" + this.icon;
 	}
 }

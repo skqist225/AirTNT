@@ -21,7 +21,7 @@ public class RoomController {
 	@Autowired
 	private RoomService roomService;
 
-	@GetMapping("/room/{id}")
+	@GetMapping("/rooms/{id}")
 	public String getRoomById(@PathVariable("id") int id, Model model) {
 		Room room = roomService.getRoomById(id);
 

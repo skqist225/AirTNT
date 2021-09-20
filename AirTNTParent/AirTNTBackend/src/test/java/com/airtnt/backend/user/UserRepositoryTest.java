@@ -26,7 +26,8 @@ class UserRepositoryTest {
         @Autowired
         private UserRepository userRepository;
 
-        @Autowired EntityManager entityManage;
+        @Autowired
+        EntityManager entityManage;
 
         @SneakyThrows
         @Test
@@ -36,6 +37,8 @@ class UserRepositoryTest {
                 State state = new State(1);
                 City city = new City(1);
                 Country country = new Country(1);
+
+                Role host = new Role(1);
 
                 Address address = Address.builder().aprtNoAndStreet("121/16/20 DX06").city(city).state(state)
                                 .country(country).build();
@@ -114,15 +117,14 @@ class UserRepositoryTest {
 
         }
 
-
         @Test
-        public void testGetUser(){
+        public void testGetUser() {
                 Optional<User> user = userRepository.findById(1);
                 assertThat(user.isPresent());
         }
 
         @Test
-        public void tesFindUserByEmail(){
+        public void tesFindUserByEmail() {
                 User user = userRepository.findByEmail("kongngoxilau@gmail.com");
                 assertThat(user).isNotNull();
         }
