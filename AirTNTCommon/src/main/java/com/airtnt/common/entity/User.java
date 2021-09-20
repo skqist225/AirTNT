@@ -23,8 +23,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Getter
-@Setter
 @Table(name = "users")
 public class User extends BaseEntity {
 
