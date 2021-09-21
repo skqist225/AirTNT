@@ -1,4 +1,4 @@
-package com.airtnt.backend.User;
+package com.airtnt.backend.user;
 
 import com.airtnt.backend.user.UserRepository;
 import com.airtnt.common.entity.*;
@@ -37,8 +37,6 @@ class UserRepositoryTest {
                 State state = new State(1);
                 City city = new City(1);
                 Country country = new Country(1);
-
-                Role host = new Role(1);
 
                 Address address = Address.builder().aprtNoAndStreet("121/16/20 DX06").city(city).state(state)
                                 .country(country).build();

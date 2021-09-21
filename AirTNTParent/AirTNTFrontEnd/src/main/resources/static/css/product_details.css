@@ -243,10 +243,13 @@
     background-color: #fff;
     transform: translate(-100%, -51%);
     width: 100%;
+    height: fit-content;
     transition: all 1s ease;
+    display: none;
 }
 
 .rdt_hidden.show {
+    display: block;
     transform: translate(0%, 1.7%);
 }
 
@@ -272,4 +275,114 @@
     background: transparent;
     transition: -ms-transform 0.25s ease 0s, -webkit-transform 0.25s ease 0s,
         transform 0.25s ease 0s;
+}
+
+.rdt__fullScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background-color: #222;
+    display: none;
+}
+
+.rdt__fullScreen.block {
+    display: block;
+}
+
+.shareSvg.white,
+.loveSvg.white,
+.backIcon.white {
+    stroke: #fff !important;
+}
+
+#rdt__imagesFullScreenContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#innerContainer {
+    width: 720px;
+    height: 480px;
+    position: relative;
+}
+
+.bigImage {
+    width: 720px;
+    height: 480px;
+    object-fit: cover;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.bigImage.active {
+    opacity: 1;
+}
+
+.nextImage {
+    appearance: none;
+    display: inline-block;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    margin: 0px;
+    padding: 0px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    touch-action: manipulation;
+    position: relative;
+    background: transparent;
+    transition: -ms-transform 0.25s ease 0s, -webkit-transform 0.25s ease 0s,
+        transform 0.25s ease 0s;
+}
+
+.prevImage {
+    appearance: none;
+    display: inline-block;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    margin: 0px;
+    padding: 0px;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    touch-action: manipulation;
+    position: relative;
+    background: transparent;
+    transition: -ms-transform 0.25s ease 0s, -webkit-transform 0.25s ease 0s,
+        transform 0.25s ease 0s;
+}
+
+#button__changeImage {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+}
+
+._1lyyzem {
+    width: 48px;
+    height: 48px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+._1lyyzem:hover {
+    background-color: #484848;
 }

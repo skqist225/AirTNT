@@ -17,6 +17,10 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    public Category getCategoryById(int categoryId) {
+        return categoryRepository.findById(categoryId).get();
+    }
+
     public List<Category> getAllCategory() {
         List<Category> categories = new ArrayList<>();
 
@@ -26,10 +30,4 @@ public class CategoryService {
         return categories;
     }
 
-    public Set<Room> getRoomsByCategoryId(int id) {
-        Category category = categoryRepository.findById(id).get();
-        Set<Room> rooms = category.getRoom();
-
-        return rooms;
-    }
 }

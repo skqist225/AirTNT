@@ -48,7 +48,7 @@ public class User extends BaseEntity {
 	private String password;
 
 	@ManyToOne
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne
 	@JoinColumn(name = "role_id")
 	private Role role;
 
