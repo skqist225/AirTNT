@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,10 +26,7 @@ public class City {
 	}
 
 	@ManyToOne
-    @JoinColumn(name="country_id")
-    private Country country;
-
-	@ManyToOne
+	@JsonManagedReference
 	@JoinColumn(name="state_id")
 	private State state;
 }

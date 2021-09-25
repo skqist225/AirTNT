@@ -18,6 +18,6 @@ public class StateRestController {
     @GetMapping("/states/list_state_by_country/{id}")
     public List<State> listAll(@PathVariable("id") Integer id){
         Country country = new Country(id);
-        return repo.findAllByOrderByNameAsc(country);
+        return repo.findByCountryOrderByNameAsc(country);
     }
 }

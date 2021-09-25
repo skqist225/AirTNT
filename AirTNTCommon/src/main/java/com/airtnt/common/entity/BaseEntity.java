@@ -18,7 +18,7 @@ import java.util.Date;
 public class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Column(columnDefinition = "boolean default true")
 	private boolean status = true;

@@ -1,10 +1,9 @@
 package com.airtnt.backend.address;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.airtnt.common.entity.City;
-import com.airtnt.common.entity.Country;
+import com.airtnt.common.entity.State;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +15,11 @@ public class CityRestControler {
     
     @Autowired CityRepository repo;
 
-    @GetMapping("/cities/list_by_states_and_country/{stateId}/{countryId}")
+    @GetMapping("/cities/list_by_state/{stateId}")
     public List<City> listAll(
-            @PathVariable("stateId") Integer stateId,
-            @PathVariable("countryId") Integer countryId
+            @PathVariable("stateId") Integer stateId
         ){
-            Country country = new Country(countryId);
-            List<City> listCities = repo.findAllByOrderByNameAsc(country);
-
-            Iterator<City> it = listCities.iterator();
-
-            while(it.hasNext()){
-                City c = it.next();
-                if(c.getState().getId() != stateId) it.remove();
-            }
-            return listCities;
-    }
+            State state = new State(stateId);
+            return repo.findByStateOrderByNameAsc(state);
+        }
 }

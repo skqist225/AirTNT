@@ -1,6 +1,7 @@
 package com.airtnt.backend.user;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.airtnt.backend.address.CityRepository;
 import com.airtnt.backend.address.CountryRepository;
@@ -26,8 +27,6 @@ public class UserService {
 
     @Autowired RoleRepository roleRepo;
     @Autowired CountryRepository countryRepo;
-    @Autowired StateRepository stateRepo;
-    @Autowired CityRepository cityRepo;
     
     @Autowired UserRepository repo;
 
@@ -49,6 +48,25 @@ public class UserService {
 		return repo.findAll(pageable);
     }
 
+    public User save(User user){
+        // boolean isUpdatingUser = (user.getId() != null);
+		
+		// if(isUpdatingUser) {
+		// 	User existingUser = Repo.findById(user.getId()).get();
+			
+		// 	if(user.getPassword().isEmpty()) {
+		// 		user.setPassword(existingUser.getPassword());
+		// 	} else {
+		// 		encodePassword(user);
+		// 	}
+			
+		// } else {
+		// 	encodePassword(user);			
+		// }
+		
+		return repo.save(user);
+    }
+
     public List<Role> listRoles(){
         return (List<Role>) roleRepo.findAll();
     }
@@ -57,11 +75,42 @@ public class UserService {
         return (List<Country>) countryRepo.findAll();
     }
 
-    public List<State> listStates(){
-        return (List<State>) stateRepo.findAll();
+    public boolean isEmailUnique(Integer id, String email) {
+        User userByEmail = repo.findByEmail(email);
+		
+		if(userByEmail == null) return true;
+		
+		boolean isCreatingNew = (id ==null);
+		
+		if(isCreatingNew) {
+			if(userByEmail !=null) return false;
+		} else {
+			if(userByEmail.getId() != id) {
+				return false;
+			}
+		}
+		
+		return true;
     }
 
-    public List<City> listCities(){
-        return (List<City>) cityRepo.findAll();
-    }
+    public User get(Integer id) throws UserNotFoundException {
+		try {
+			return repo.findById(id).get();
+		}catch(NoSuchElementException ex) {
+			throw new UserNotFoundException("Could not find any user with ID " + id);
+		}
+	}
+	
+	public void  delete(Integer id) throws UserNotFoundException {
+		Long countById =  repo.countById(id);
+		if((countById == null || countById == 0)) {
+			throw new UserNotFoundException("Could not find any user with ID " + id);
+		}
+		
+		repo.deleteById(id);
+	}
+	
+	public void updateUserEnabledStatus(Integer id, boolean enabled) {
+		repo.updateStatus(id, enabled);
+	}
 }

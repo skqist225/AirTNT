@@ -1,5 +1,6 @@
 package com.airtnt.common.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,8 +39,8 @@ public class User extends BaseEntity {
 	@Column(length = 10, nullable = false)
 	private Sex sex;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-	private LocalDateTime birthday;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate birthday;
 
 	@Column(nullable = false, unique = true)
 	private String email;

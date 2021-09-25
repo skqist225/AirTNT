@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StateRepository extends CrudRepository<State, Integer> {
-    public List<State> findAllByOrderByNameAsc(Country country);
+    public List<State> findAllByOrderByNameAsc();
+    public List<State> findByCountryOrderByNameAsc(Country country);
 }

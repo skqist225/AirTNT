@@ -40,4 +40,11 @@ public class Address {
 	@Column(name = "apartment_no_street")
 	private String aprtNoAndStreet;
 
+	public Address(Country country, State state, City city, String aprtNoAndStreet) {
+		this.country = country;
+		this.state = state;
+		this.city = city;
+		this.aprtNoAndStreet = aprtNoAndStreet;
+	}
+
 }

@@ -1,18 +1,13 @@
 package com.airtnt.backend.user;
 
-import com.airtnt.backend.user.UserRepository;
 import com.airtnt.common.entity.*;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +27,8 @@ class UserRepositoryTest {
         @SneakyThrows
         @Test
         public void testAddUser() {
-                LocalDateTime birthday = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
-
+                LocalDate birthday = LocalDate.of(2020,2,12);
+                
                 State state = new State(1);
                 City city = new City(1);
                 Country country = new Country(1);
@@ -53,7 +48,7 @@ class UserRepositoryTest {
 
         @Test
         public void testAddAnotherUser() throws ParseException {
-                LocalDateTime birthday = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
+                LocalDate birthday = LocalDate.of(2020,2,12);
 
                 State state = new State(1);
                 City city = new City(1);
@@ -74,7 +69,7 @@ class UserRepositoryTest {
 
         @Test
         public void testAddManyUser() throws ParseException {
-                LocalDateTime birthday = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
+                LocalDate birthday = LocalDate.of(2020,2,12);
 
                 State state = new State(1);
                 City city = new City(1);
