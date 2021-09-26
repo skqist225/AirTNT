@@ -30,6 +30,7 @@ $(document).ready(function () {
   buttonAddCategory.click(function () {
     if (buttonAddCategory.val() == "Add") {
       addCategory();
+      return;
     }
     changeFormCategoryToNew();
   });
@@ -39,7 +40,15 @@ $(document).ready(function () {
   });
 
   buttonDeleteCategory.click(function () {
-    deleteCategory();
+    showDeleteConfirmModal("deleteCategory");
+  });
+
+  $("#yesButton").click(function (e) {
+    e.preventDefault();
+    if (this.name == "deleteCategory") {
+      deleteCategory();
+    }
+    $("#confirmModal").modal("toggle");
   });
 });
 
@@ -121,7 +130,7 @@ function addCategory() {
 
   formData.append("name", categoryName);
   formData.append("fileImage", $("#fileImage")[0].files[0]);
-  formData.append("status", fieldCategoriesStatus.checked ? true : false);
+  formData.append("status", fieldCategoriesStatus.val());
 
   $.ajax({
     type: "POST",
@@ -164,6 +173,7 @@ function changeFormCategoryToNew() {
   fieldCategoriesName.val("").focus();
   fieldCategoriesImage.attr("src", "");
   fieldCategoriesStatus.prop("checked", true);
+  $("#fileImage").val("");
 }
 
 function changeFormCategoryToSelectedCategory() {
@@ -210,4 +220,11 @@ function loadCategories() {
 function showToastMessage(message) {
   $("#toastMessage").text(message);
   $(".toast").toast("show");
+}
+
+function showDeleteConfirmModal(typeDelete) {
+  $("#yesButton").attr("name", typeDelete);
+  $("#confirmText").text("Are you sure you want to delete");
+
+  $("#confirmModal").modal();
 }
