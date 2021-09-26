@@ -13,6 +13,7 @@ import com.airtnt.common.entity.State;
 import com.airtnt.common.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -166,6 +167,20 @@ public class UserController {
 		String status = enable?"enabled":"disabled";
 		String message = "The user ID " + id + " has been " + status;
 		redirectAttributes.addFlashAttribute("message", message);
+		return "redirect:/users";
+	}
+
+	@GetMapping("/users/delete/{id}")
+	public String deleteUser(
+		@PathVariable("id") Integer id,
+		RedirectAttributes ra
+	){
+		try {
+			service.delete(id);
+			ra.addFlashAttribute("message", "The user ID " + id + " has been deleted successully");	
+		} catch(UserNotFoundException ex) {
+			ra.addFlashAttribute("message", ex.getMessage());
+		}		
 		return "redirect:/users";
 	}
 }

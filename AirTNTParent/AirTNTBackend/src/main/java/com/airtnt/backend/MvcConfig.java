@@ -1,4 +1,4 @@
-package com.airtnt.frontend;
+package com.airtnt.backend;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -8,12 +8,11 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
+public class MvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		exposeDirectory("../room_images", registry);
-		exposeDirectory("../images", registry);
+		exposeDirectory("user-photos", registry);
 		exposeDirectory("../category_images", registry);
 	}
 

@@ -7,18 +7,19 @@ $(document).ready(async function () {
   dropdownStates = $("#states");
   dropdownCities = $("#cities");
   await getStatesByCountry();
-  dropdownStates.val(stateIdLoad).change();
+  if (stateIdLoad) dropdownStates.val(stateIdLoad).change();
   await getCitiesByStates();
-  dropdownCities.val(cityIdLoad).change();
+  if (cityIdLoad) dropdownCities.val(cityIdLoad).change();
 
-  dropdownCountries.on("change", function () {
+  dropdownCountries.on("change", async function () {
     dropdownStates.empty();
     dropdownCities.empty();
-    getStatesByCountry();
-    getCitiesByStates();
+    await getStatesByCountry();
+    await getCitiesByStates();
   });
-  dropdownStates.on("change", function () {
-    getCitiesByStates();
+  dropdownStates.on("change", async function () {
+    dropdownCities.empty();
+    await getCitiesByStates();
   });
 });
 
@@ -37,11 +38,12 @@ async function getStatesByCountry() {
 }
 
 async function getCitiesByStates() {
-  dropdownCities.empty();
   selectedState = $("#states option:selected");
   var stateId = selectedState.val();
+  if (!stateId) return;
   url = contextPath + "cities/list_by_state/" + stateId;
   await $.get(url, function (responseJSON) {
+    dropdownCities.empty();
     $.each(responseJSON, function (index, city) {
       $("<option>").val(city.id).text(city.name).appendTo(dropdownCities);
     });

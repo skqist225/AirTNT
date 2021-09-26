@@ -3,7 +3,6 @@ package com.airtnt.backend.address;
 import java.util.List;
 
 import com.airtnt.common.entity.City;
-import com.airtnt.common.entity.Country;
 import com.airtnt.common.entity.State;
 
 import org.springframework.data.repository.CrudRepository;

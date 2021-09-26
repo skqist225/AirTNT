@@ -1,7 +1,5 @@
 package com.airtnt.backend.user;
 
-import java.util.List;
-
 import com.airtnt.common.entity.User;
 
 import org.springframework.data.domain.Page;

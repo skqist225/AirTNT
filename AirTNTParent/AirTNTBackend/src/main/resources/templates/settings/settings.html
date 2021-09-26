@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeLeaf.org"
+  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+  xml:lang="en"
+>
+  <head th:replace="fragments::page_head('Settings', 'none')"> </head>
+
+  <body>
+    <div class="container-fluid">
+      <div th:replace="navigation::menu"></div>
+
+      <div>
+        <h1>Settings</h1>
+      </div>
+
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link active"
+            id="categories-tab"
+            data-toggle="tab"
+            href="#categories"
+            role="tab"
+            aria-controls="categories"
+            aria-selected="true"
+            >Categories</a
+          >
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div
+          class="tab-pane fade show active"
+          id="categories"
+          role="tabpanel"
+          aria-labelledby="home-tab"
+        >
+          <th:block th:replace="settings/categories::content"></th:block>
+        </div>
+      </div>
+    </div>
+
+    <div th:replace="fragments :: confirm_modal"></div>
+
+    <div
+      class="toast justify-content-center d-flex"
+      role="alert"
+      aria-live="polite"
+      aria-atomic="true"
+      data-delay="3000"
+    >
+      <div role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+          <span id="toastMessage"></span>
+        </div>
+      </div>
+    </div>
+
+    <div th:replace="fragments::footer"></div>
+    <script type="text/javascript">
+      MAX_FILE_SIZE = 1024000;
+      moduleURL = "[[@{/settings}]]";
+      contextPath = "[[@{/}]]";
+      var csrfHeaderName = "[[${_csrf.headerName}]]";
+      var csrfValue = "[[${_csrf.token}]]";
+    </script>
+    <script th:src="@{/js/common_form.js}"></script>
+    <script th:src="@{/js/settings/categories.js}"></script>
+  </body>
+</html>

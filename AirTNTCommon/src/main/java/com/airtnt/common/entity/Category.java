@@ -32,6 +32,15 @@ public class Category extends BaseEntity {
 
 	@Transient
 	public String getIconPath() {
-		return "/category_images/" + this.icon;
+		return "category_images/" + this.icon;
+	}
+
+	public Category(String name) {
+		this.name = name;
+	}
+
+	public Category(int id, String name) {
+		super(id);
+		this.name = name;
 	}
 }
