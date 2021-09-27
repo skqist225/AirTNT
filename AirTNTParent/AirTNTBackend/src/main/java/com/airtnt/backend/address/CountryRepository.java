@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CountryRepository extends CrudRepository<Country, Integer> {
     public List<Country> findALLByOrderByNameAsc();
+
+    public Country findByName(String name);
 }

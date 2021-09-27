@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Getter
@@ -26,7 +27,7 @@ public class City {
 	}
 
 	@ManyToOne
-	@JsonManagedReference
+	@JsonBackReference
 	@JoinColumn(name="state_id")
 	private State state;
 }

@@ -36,12 +36,12 @@ public class State {
 	private String code;
 
 	@ManyToOne
-	@JsonManagedReference
+	@JsonBackReference
 	@JoinColumn(name = "country_id")
 	private Country country;
 
 	@Builder.Default
-	@JsonBackReference
+	@JsonManagedReference
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "state")
 	private Set<City> cities = new HashSet<>();
 

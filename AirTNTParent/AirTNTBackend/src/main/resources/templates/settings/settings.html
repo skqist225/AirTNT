@@ -51,6 +51,30 @@
             >Rules</a
           >
         </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="countries-tab"
+            data-toggle="tab"
+            href="#countries"
+            role="tab"
+            aria-controls="countries"
+            aria-selected="false"
+            >Countries</a
+          >
+        </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="states-tab"
+            data-toggle="tab"
+            href="#states"
+            role="tab"
+            aria-controls="states"
+            aria-selected="false"
+            >States</a
+          >
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <div
@@ -76,6 +100,22 @@
           aria-labelledby="rules-tab"
         >
           <th:block th:replace="settings/rules::content"></th:block>
+        </div>
+        <div
+          class="tab-pane"
+          id="countries"
+          role="tabpanel"
+          aria-labelledby="countries-tab"
+        >
+          <th:block th:replace="settings/countries::content"></th:block>
+        </div>
+        <div
+          class="tab-pane"
+          id="states"
+          role="tabpanel"
+          aria-labelledby="countries-tab"
+        >
+          <th:block th:replace="settings/states::content"></th:block>
         </div>
       </div>
     </div>
@@ -111,5 +151,7 @@
     <script th:src="@{/js/settings/categories.js}"></script>
     <script th:src="@{/js/settings/amentities.js}"></script>
     <script th:src="@{/js/settings/rules.js}"></script>
+    <script th:src="@{/js/settings/countries.js}"></script>
+    <script th:src="@{/js/settings/states.js}"></script>
   </body>
 </html>
