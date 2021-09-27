@@ -27,20 +27,42 @@
             >Categories</a
           >
         </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="amentities-tab"
+            data-toggle="tab"
+            href="#amentities"
+            role="tab"
+            aria-controls="amentities"
+            aria-selected="false"
+            >Amentities</a
+          >
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <div
-          class="tab-pane fade show active"
+          class="tab-pane active"
           id="categories"
           role="tabpanel"
-          aria-labelledby="home-tab"
+          aria-labelledby="category-tab"
         >
           <th:block th:replace="settings/categories::content"></th:block>
+        </div>
+        <div
+          class="tab-pane"
+          id="amentities"
+          role="tabpanel"
+          aria-labelledby="amentity-tab"
+        >
+          <th:block th:replace="settings/amentities::content"></th:block>
         </div>
       </div>
     </div>
 
     <div th:replace="fragments :: confirm_modal"></div>
+
+    <div th:replace="fragments :: modal_dialog"></div>
 
     <div
       class="toast justify-content-center d-flex"
@@ -67,5 +89,6 @@
     </script>
     <script th:src="@{/js/common_form.js}"></script>
     <script th:src="@{/js/settings/categories.js}"></script>
+    <script th:src="@{/js/settings/amentities.js}"></script>
   </body>
 </html>

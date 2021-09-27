@@ -28,4 +28,22 @@ public class Amentity extends BaseEntity {
 	public Amentity(int id) {
 		super(id);
 	}
+
+	public Amentity(int id, String name, String description, AmentityCategory amentityCategory) {
+		super(id);
+		this.name = name;
+		this.description = description;
+		this.amentityCategory = amentityCategory;
+	}
+
+	public Amentity(String name, String description, AmentityCategory amentityCategory) {
+		this.name = name;
+		this.description = description;
+		this.amentityCategory = amentityCategory;
+	}
+
+	@Transient
+	public String getIconImagePath(){
+		return "amentity_images/" + this.iconImage;
+	}
 }

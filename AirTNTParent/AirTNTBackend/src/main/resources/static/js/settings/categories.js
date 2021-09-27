@@ -24,6 +24,7 @@ $(document).ready(function () {
   });
 
   dropDownCategories.on("change", function () {
+    $("#fileImage").prop("required", false);
     changeFormCategoryToSelectedCategory();
   });
 
@@ -100,7 +101,7 @@ function updateCategory() {
   })
     .done(function () {
       $("#dropDownCategories option:selected").val(categoryId);
-      $("#dropDowncategories option:selected").text(categoryName);
+      $("#dropDownCategories option:selected").text(categoryName);
       showToastMessage("The Category has been updated");
 
       selectNewlyAddedCategory(categoryId, categoryName);
@@ -162,6 +163,7 @@ function selectNewlyAddedCategory(categoryId, categoryName) {
   );
 
   dropDownCategories.val(categoryId).change();
+  $("#fileImage").prop("required", false);
 }
 
 function changeFormCategoryToNew() {
@@ -174,6 +176,7 @@ function changeFormCategoryToNew() {
   fieldCategoriesImage.attr("src", "");
   fieldCategoriesStatus.prop("checked", true);
   $("#fileImage").val("");
+  $("#fileImage").prop("required", true);
 }
 
 function changeFormCategoryToSelectedCategory() {
@@ -183,7 +186,7 @@ function changeFormCategoryToSelectedCategory() {
 
   categoryId = dropDownCategories.val();
   labelCategoriesName.text("Selected Category:");
-  selectedCategoryName = $("#dropDowncategories option:selected").text();
+  selectedCategoryName = $("#dropDownCategories option:selected").text();
 
   url = contextPath + "categories/" + categoryId;
   $.get(url, function (category) {
@@ -220,11 +223,4 @@ function loadCategories() {
 function showToastMessage(message) {
   $("#toastMessage").text(message);
   $(".toast").toast("show");
-}
-
-function showDeleteConfirmModal(typeDelete) {
-  $("#yesButton").attr("name", typeDelete);
-  $("#confirmText").text("Are you sure you want to delete");
-
-  $("#confirmModal").modal();
 }
