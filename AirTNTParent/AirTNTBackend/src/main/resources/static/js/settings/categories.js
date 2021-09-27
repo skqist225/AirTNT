@@ -104,7 +104,7 @@ function updateCategory() {
       $("#dropDownCategories option:selected").text(categoryName);
       showToastMessage("The Category has been updated");
 
-      selectNewlyAddedCategory(categoryId, categoryName);
+      changeFormCategoryToSelectedCategory();
     })
     .fail(function () {
       showToastMessage(

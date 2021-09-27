@@ -39,7 +39,7 @@ public class AmentityService {
 
         if(amentity==null) return "OK";
 
-        if(id!=null && amentity.getId()!=id) return "OK";
+        if(id!=null && amentity.getId()==id) return "OK";
 
         return "Duplicated";
     }

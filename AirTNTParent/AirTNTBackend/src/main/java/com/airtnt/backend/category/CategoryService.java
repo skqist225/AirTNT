@@ -19,7 +19,6 @@ public class CategoryService {
 
     public Category save(Category category){
         if(category.getId()!=null){
-            System.out.println("tao day ne");
             Category categoryDB = repo.findById(category.getId()).get();
             categoryDB.setName(category.getName());
             categoryDB.setStatus(category.isStatus());

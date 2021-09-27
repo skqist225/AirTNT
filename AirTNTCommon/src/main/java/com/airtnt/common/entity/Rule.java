@@ -22,4 +22,19 @@ public class Rule extends BaseEntity {
 
 	@Column(columnDefinition = "TEXT NOT NULL")
 	private String icon;
+
+	public Rule(String title) {
+		this.title = title;
+	}
+
+	public Rule(int id, String title) {
+		super(id);
+		this.title = title;
+	}
+
+	@Transient
+	public String getIconPath(){
+		return "rule_images/" + this.icon;
+	}
+
 }

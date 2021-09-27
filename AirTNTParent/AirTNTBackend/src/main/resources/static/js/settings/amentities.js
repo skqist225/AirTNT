@@ -98,45 +98,48 @@ function deleteAmentity() {
     });
 }
 
-function updateAmentity() {
-  if (!validateFormAmentity()) return;
+async function updateAmentity() {
+  try {
+    if (!validateFormAmentity()) return;
 
-  var amentityId = dropDownAmentities.val();
-  var amentityName = fieldAmentityName.val();
-  if (!checkNameUnique(amentityId, amentityName)) return;
+    var amentityId = dropDownAmentities.val();
+    var amentityName = fieldAmentityName.val();
 
-  url = contextPath + "amentities/save";
+    if (!(await checkNameUnique(amentityId, amentityName))) return;
 
-  var formData = new FormData();
-  formData.append("id", amentityId);
-  formData.append("name", amentityName);
-  formData.append("amentityImage", $("#amentityImage")[0].files[0]);
-  formData.append("status", fieldAmentityStatus.val());
-  formData.append("description", fieldAmentityDescription.val());
-  formData.append("amentityCategory", fieldAmentityCategory.val());
+    url = contextPath + "amentities/save";
 
-  $.ajax({
-    type: "POST",
-    url: url,
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader(csrfHeaderName, csrfValue);
-    },
-    data: formData,
-    processData: false,
-    contentType: false,
-  })
-    .done(function () {
-      $("#dropDownAmentities option:selected").val(amentityId);
-      $("#dropDownAmentities option:selected").text(amentityName);
-      showToastMessage("The Amentity has been updated");
+    var formData = new FormData();
+    formData.append("id", amentityId);
+    formData.append("name", amentityName);
+    formData.append("amentityImage", $("#amentityImage")[0].files[0]);
+    formData.append("status", fieldAmentityStatus.val());
+    formData.append("description", fieldAmentityDescription.val());
+    formData.append("amentityCategory", fieldAmentityCategory.val());
 
-      changeFormAmentityToSelectedAmentity();
+    await $.ajax({
+      type: "POST",
+      url: url,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader(csrfHeaderName, csrfValue);
+      },
+      data: formData,
+      processData: false,
+      contentType: false,
     })
-    .fail(function () {
-      showToastMessage(
-        "ERROR: Could not connect to server or server encountered an error"
-      );
-    });
+      .done(function () {
+        $("#dropDownAmentities option:selected").val(amentityId);
+        $("#dropDownAmentities option:selected").text(amentityName);
+        showToastMessage("The Amentity has been updated");
+
+        changeFormAmentityToSelectedAmentity();
+      })
+      .fail(function () {
+        showToastMessage(
+          "ERROR: Could not connect to server or server encountered an error"
+        );
+      });
+  } catch (e) {}
 }
 
 function validateFormAmentity() {
@@ -147,39 +150,43 @@ function validateFormAmentity() {
   }
   return true;
 }
-function addAmentity() {
-  if (!validateFormAmentity()) return;
-  amentityName = fieldAmentityName.val();
-  if (!checkNameUnique(null, amentityName)) return;
-  url = contextPath + "amentities/save";
+async function addAmentity() {
+  try {
+    if (!validateFormAmentity()) return;
+    amentityName = fieldAmentityName.val();
+    if (!(await checkNameUnique(null, amentityName))) return;
+    url = contextPath + "amentities/save";
 
-  var formData = new FormData();
+    var formData = new FormData();
 
-  formData.append("name", amentityName);
-  formData.append("amentityImage", $("#amentityImage")[0].files[0]);
-  formData.append("status", fieldAmentityStatus.val());
-  formData.append("description", fieldAmentityDescription.val());
-  formData.append("amentityCategory", fieldAmentityCategory.val());
+    formData.append("name", amentityName);
+    formData.append("amentityImage", $("#amentityImage")[0].files[0]);
+    formData.append("status", fieldAmentityStatus.val());
+    formData.append("description", fieldAmentityDescription.val());
+    formData.append("amentityCategory", fieldAmentityCategory.val());
 
-  $.ajax({
-    type: "POST",
-    url: url,
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader(csrfHeaderName, csrfValue);
-    },
-    data: formData,
-    processData: false,
-    contentType: false,
-  })
-    .done(function (amentityId) {
-      selectNewlyAddedAmentity(amentityId, amentityName);
-      showToastMessage("The new Amentity has been added");
+    await $.ajax({
+      type: "POST",
+      url: url,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader(csrfHeaderName, csrfValue);
+      },
+      data: formData,
+      processData: false,
+      contentType: false,
     })
-    .fail(function () {
-      showToastMessage(
-        "ERROR: Could not connect to server or server encountered an error"
-      );
-    });
+      .done(function (amentityId) {
+        selectNewlyAddedAmentity(amentityId, amentityName);
+        showToastMessage("The new Amentity has been added");
+      })
+      .fail(function () {
+        showToastMessage(
+          "ERROR: Could not connect to server or server encountered an error"
+        );
+      });
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function selectNewlyAddedAmentity(amentityId, amentityName) {
@@ -256,14 +263,15 @@ function showToastMessage(message) {
   $(".toast").toast("show");
 }
 
-function checkNameUnique(id, name) {
+async function checkNameUnique(id, name) {
   url = contextPath + "amentities/check_name";
 
   params = { id: id, name: name, _csrf: csrfValue };
 
-  $.post(url, params, function (response) {
+  let value = false;
+  await $.post(url, params, function (response) {
     if (response == "OK") {
-      return true;
+      value = true;
     } else if (response == "Duplicated") {
       showWarningModal("There is another amentity having the name " + name);
     } else {
@@ -272,6 +280,5 @@ function checkNameUnique(id, name) {
   }).fail(function () {
     showErrorModal("Could not connect to the server");
   });
-
-  return false;
+  return value;
 }

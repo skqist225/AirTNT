@@ -39,6 +39,18 @@
             >Amentities</a
           >
         </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="rules-tab"
+            data-toggle="tab"
+            href="#rules"
+            role="tab"
+            aria-controls="rules"
+            aria-selected="false"
+            >Rules</a
+          >
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <div
@@ -56,6 +68,14 @@
           aria-labelledby="amentity-tab"
         >
           <th:block th:replace="settings/amentities::content"></th:block>
+        </div>
+        <div
+          class="tab-pane"
+          id="rules"
+          role="tabpanel"
+          aria-labelledby="rules-tab"
+        >
+          <th:block th:replace="settings/rules::content"></th:block>
         </div>
       </div>
     </div>
@@ -90,5 +110,6 @@
     <script th:src="@{/js/common_form.js}"></script>
     <script th:src="@{/js/settings/categories.js}"></script>
     <script th:src="@{/js/settings/amentities.js}"></script>
+    <script th:src="@{/js/settings/rules.js}"></script>
   </body>
 </html>
