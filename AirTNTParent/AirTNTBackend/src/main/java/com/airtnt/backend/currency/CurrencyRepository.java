@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CurrencyRepository extends CrudRepository<Currency, Integer> {
-
+    public Currency findByUnit(String unit);
 }

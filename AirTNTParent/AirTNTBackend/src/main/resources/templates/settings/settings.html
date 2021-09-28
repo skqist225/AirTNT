@@ -87,6 +87,18 @@
             >Cities</a
           >
         </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="currencies-tab"
+            data-toggle="tab"
+            href="#currencies"
+            role="tab"
+            aria-controls="currencies"
+            aria-selected="false"
+            >Currencies</a
+          >
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <div
@@ -137,6 +149,14 @@
         >
           <th:block th:replace="settings/cities::content"></th:block>
         </div>
+        <div
+          class="tab-pane"
+          id="currencies"
+          role="tabpanel"
+          aria-labelledby="currencies-tab"
+        >
+          <th:block th:replace="settings/currencies::content"></th:block>
+        </div>
       </div>
     </div>
 
@@ -174,5 +194,6 @@
     <script th:src="@{/js/settings/countries.js}"></script>
     <script th:src="@{/js/settings/states.js}"></script>
     <script th:src="@{/js/settings/cities.js}"></script>
+    <script th:src="@{/js/settings/currencies.js}"></script>
   </body>
 </html>
