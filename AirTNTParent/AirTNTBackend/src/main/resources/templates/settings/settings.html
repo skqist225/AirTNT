@@ -99,6 +99,18 @@
             >Currencies</a
           >
         </li>
+        <li class="nav-item" role="presentation">
+          <a
+            class="nav-link"
+            id="promos-tab"
+            data-toggle="tab"
+            href="#promos"
+            role="tab"
+            aria-controls="promos"
+            aria-selected="false"
+            >Promos</a
+          >
+        </li>
       </ul>
       <div class="tab-content" id="myTabContent">
         <div
@@ -157,6 +169,14 @@
         >
           <th:block th:replace="settings/currencies::content"></th:block>
         </div>
+        <div
+          class="tab-pane"
+          id="promos"
+          role="tabpanel"
+          aria-labelledby="promos-tab"
+        >
+          <th:block th:replace="settings/promos::content"></th:block>
+        </div>
       </div>
     </div>
 
@@ -195,5 +215,6 @@
     <script th:src="@{/js/settings/states.js}"></script>
     <script th:src="@{/js/settings/cities.js}"></script>
     <script th:src="@{/js/settings/currencies.js}"></script>
+    <script th:src="@{/js/settings/promos.js}"></script>
   </body>
 </html>
