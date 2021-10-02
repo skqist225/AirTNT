@@ -73,7 +73,7 @@ public class Room extends BaseEntity {
 	private Set<Amentity> amentities = new HashSet<>();
 
 	private float latitude;
-	private float longtitude;
+	private float longitude;
 
 	@Column(nullable = false)
 	private float price;
@@ -83,7 +83,7 @@ public class Room extends BaseEntity {
 	private PriceType priceType;
 
 	@Column(length = 5, nullable = false, columnDefinition = "TINYINT")
-	private int mininumStay;
+	private int minimumStay;
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20, nullable = false)
@@ -104,12 +104,19 @@ public class Room extends BaseEntity {
 				+ ", country=" + country + ", state=" + state + ", city=" + city + ", bedRoomCount=" + bedroomCount
 				+ ", bathRoomCount=" + bathroomCount + ", accomodatesCount=" + accomodatesCount + ", bedCount="
 				+ bedCount + ", category=" + category + ", description=" + description + ", amentities=" + amentities
-				+ ", latitude=" + latitude + ", longtitude=" + longtitude + ", price=" + price + ", priceType="
-				+ priceType + ", mininumStay=" + mininumStay + ", stayType=" + stayType + ", host=" + host + ", rules="
+				+ ", latitude=" + latitude + ", longtitude=" + longitude + ", price=" + price + ", priceType="
+				+ priceType + ", mininumStay=" + minimumStay + ", stayType=" + stayType + ", host=" + host + ", rules="
 				+ rules + "]";
 	}
 
 	public Room(int id) {
 		super(id);
+	}
+
+	@Transient
+	public String getImageFirst(){
+		if(!this.images.isEmpty())
+			return "room_images/"+this.images.toArray()[0].toString();
+		else return "images/airtntlogo.png";
 	}
 }

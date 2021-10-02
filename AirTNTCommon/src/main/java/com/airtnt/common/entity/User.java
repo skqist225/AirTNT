@@ -99,4 +99,9 @@ public class User extends BaseEntity {
 		if(this.getId()==null || this.avatar == null) return "/images/avatar.png";
 		return "/user-photos/" + this.getId() + "/" +this.avatar;
 	}
+
+	@Transient
+	public String getFullName(){
+		return this.firstName + " " + this.lastName;
+	}
 }

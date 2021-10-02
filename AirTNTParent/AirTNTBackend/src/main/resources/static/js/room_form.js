@@ -3,28 +3,27 @@ var dropdownStates;
 var dropdownCities;
 
 $(document).ready(async function () {
-  dropdownCountries = $("#countries");
-  dropdownStates = $("#states");
-  dropdownCities = $("#cities");
+  dropdownCountries = $("#country");
+  dropdownStates = $("#state");
+  dropdownCities = $("#city");
   await getStatesByCountry();
-  if (stateIdLoad) dropdownStates.val(stateIdLoad).change();
-  await getCitiesByStates();
-  if (cityIdLoad) dropdownCities.val(cityIdLoad).change();
+  dropdownStates.change();
+  await getCitiesByState();
 
   dropdownCountries.on("change", async function () {
     dropdownStates.empty();
     dropdownCities.empty();
     await getStatesByCountry();
-    await getCitiesByStates();
+    await getCitiesByState();
   });
   dropdownStates.on("change", async function () {
     dropdownCities.empty();
-    await getCitiesByStates();
+    await getCitiesByState();
   });
 });
 
 async function getStatesByCountry() {
-  selectedCountry = $("#countries option:selected");
+  selectedCountry = $("#country option:selected");
   countryId = selectedCountry.val();
   url = contextPath + "states/list_state_by_country/" + countryId;
   await $.get(url, function (responseJSON) {
@@ -36,8 +35,8 @@ async function getStatesByCountry() {
     .fail(function () {});
 }
 
-async function getCitiesByStates() {
-  selectedState = $("#states option:selected");
+async function getCitiesByState() {
+  selectedState = $("#state option:selected");
   var stateId = selectedState.val();
   if (!stateId) return;
   url = contextPath + "cities/list_by_state/" + stateId;
@@ -50,18 +49,18 @@ async function getCitiesByStates() {
     .fail(function () {});
 }
 
-function checkEmailUnique(form) {
-  url = contextPath + "users/check_email";
-  userEmail = $("#email").val();
-  userId = $("#id").val();
+function checkNameUnique(form) {
+  url = contextPath + "rooms/checkName";
+  roomName = $("#name").val();
+  roomId = $("#id").val();
   csrfValue = $("input[name='_csrf']").val();
-  params = { id: userId, email: userEmail, _csrf: csrfValue };
+  params = { id: roomId, name: roomName, _csrf: csrfValue };
 
   $.post(url, params, function (response) {
     if (response == "OK") {
       form.submit();
     } else if (response == "Duplicated") {
-      showWarningModal("There is another user having the email " + userEmail);
+      showWarningModal("There is another room having the name " + roomName);
     } else {
       showErrorModal("Unknown response from server");
     }

@@ -32,7 +32,7 @@ class RoomRepositoryTest {
 		Amentity amentity4 = new Amentity(4);
 		Amentity amentity5 = new Amentity(5);
 		Amentity amentity6 = new Amentity(6);
-		Amentity amentity7 = new Amentity(7);
+		Amentity amentity7 = new Amentity(8);
 
 		Set<Amentity> amentities = new HashSet<>();
 		amentities.addAll(Set.of(amentity1, amentity3, amentity4, amentity5, amentity6, amentity7));
@@ -53,12 +53,12 @@ class RoomRepositoryTest {
 			rules.add(itr.next());
 		}
 
-		User host = new User(2);
+		User host = new User(3);
 
 		Room room = Room.builder().name(
 				"A Relaxing Stay at a Historical Hot Spring Ryokan Hotel in Arima(a twin room, up to two people)歴史的木造建築の旅館,景観は庭のツイン【2名定員】")
 				.accomodatesCount("2").bathroomCount("1").bedCount("2").bedroomCount("1").description(description)
-				.amentities(amentities).images(images).price(364).priceType(PriceType.PER_NIGHT).mininumStay(1)
+				.amentities(amentities).images(images).price(364).priceType(PriceType.PER_NIGHT).minimumStay(1)
 				.stayType(StayType.DAY).city(city).state(state).country(country).rules(rules).host(host).build();
 
 		repository.save(room);
