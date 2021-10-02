@@ -19,7 +19,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = { "cities" })
 @Builder
 @Entity
 @Table(name = "states")

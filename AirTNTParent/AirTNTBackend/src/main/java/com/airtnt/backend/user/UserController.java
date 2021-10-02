@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.airtnt.backend.FileUploadUtil;
 import com.airtnt.backend.address.AddressRepository;
+import com.airtnt.backend.security.AirtntUserDetails;
 import com.airtnt.common.entity.Address;
 import com.airtnt.common.entity.City;
 import com.airtnt.common.entity.Country;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -82,7 +84,7 @@ public class UserController {
 		model.addAttribute("listRoles", listRoles);
 		model.addAttribute("listCountries", listCountries);
 		model.addAttribute("pageTitle", "Create New User");
-		model.addAttribute("address", new Address(new Country(), new State(), new City(), ""));
+		model.addAttribute("addresss", new Address(new Country(), new State(), new City(), ""));
 
         return "users/user_form";
     }
@@ -183,4 +185,30 @@ public class UserController {
 		}		
 		return "redirect:/users";
 	}
+
+	@GetMapping("/account")
+    public String viewDetails(@AuthenticationPrincipal AirtntUserDetails loggedUser,
+        Model model,
+		RedirectAttributes ra
+	){
+			Integer id = loggedUser.getId();
+
+		try{
+			List<Role> listRoles = service.listRoles();
+			List<Country> listCountries = service.listCountries();
+	
+			User user = service.get(id);
+			model.addAttribute("user", user);
+			model.addAttribute("listRoles", listRoles);
+			model.addAttribute("listCountries", listCountries);
+			model.addAttribute("pageTitle", "Edit User (ID: " + id + ")");
+			model.addAttribute("address", user.getAddress());
+	
+			return "users/user_form";
+			
+		} catch(UserNotFoundException ex) {
+			ra.addFlashAttribute("message", ex.getMessage());
+			return "redirect:/users";
+		}
+    }
 }

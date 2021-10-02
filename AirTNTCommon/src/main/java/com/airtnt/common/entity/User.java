@@ -45,7 +45,7 @@ public class User extends BaseEntity {
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(nullable = false, length = 30)
+	@Column(nullable = false, length = 64)
 	private String password;
 
 	@ManyToOne
@@ -103,5 +103,10 @@ public class User extends BaseEntity {
 	@Transient
 	public String getFullName(){
 		return this.firstName + " " + this.lastName;
+	}
+
+	public boolean hasRole(String roleName) {
+		if(roleName == this.getRole().getName()) return true;
+		return false;
 	}
 }

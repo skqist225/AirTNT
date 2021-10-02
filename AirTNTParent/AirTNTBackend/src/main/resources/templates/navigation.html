@@ -3,6 +3,14 @@
   <head> </head>
   <body>
     <div th:fragment="menu">
+      <form
+        th:action="@{/logout}"
+        method="post"
+        th:hidden="true"
+        name="logoutForm"
+      >
+        <input type="submit" />
+      </form>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" th:href="@{/}">
           <img th:src="@{/images/airtnt.png}" width="100" height="40" />
@@ -38,38 +46,22 @@
                 >Settings </span></a
               >
             </li>
-
-            <li class="nav-item active">
-              <a class="nav-link" href="#"
-                >Home <span class="sr-only">(current)</span></a
-              >
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" style="display: flex">
               <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+                class="nav-link cursor-pointer"
+                th:href="@{/account}"
+                sec:authentication="principal.fullname"
               >
-                Dropdown
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
+              <div
+                class="nav-link dropdown-toggle cursor-pointer"
+                data-toggle="dropdown"
+              ></div>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" id="logoutLink" href="">Logout</a>
               </div>
             </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
+
           </ul>
         </div>
       </nav>

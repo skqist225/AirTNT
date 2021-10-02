@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,9 @@ public class UserService {
     @Autowired CountryRepository countryRepo;
     
     @Autowired UserRepository repo;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
     public List<User> findAllUsers(){
         return repo.findAll();
@@ -44,21 +48,26 @@ public class UserService {
 		return repo.findAll(pageable);
     }
 
+	private void encodePassword(User user) {
+		String encodedPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodedPassword);
+	}
+
     public User save(User user){
-        // boolean isUpdatingUser = (user.getId() != null);
+        boolean isUpdatingUser = (user.getId() != null);
 		
-		// if(isUpdatingUser) {
-		// 	User existingUser = Repo.findById(user.getId()).get();
+		if(isUpdatingUser) {
+			User existingUser = repo.findById(user.getId()).get();
 			
-		// 	if(user.getPassword().isEmpty()) {
-		// 		user.setPassword(existingUser.getPassword());
-		// 	} else {
-		// 		encodePassword(user);
-		// 	}
+			if(user.getPassword().isEmpty()) {
+				user.setPassword(existingUser.getPassword());
+			} else {
+				encodePassword(user);
+			}
 			
-		// } else {
-		// 	encodePassword(user);			
-		// }
+		} else {
+			encodePassword(user);			
+		}
 		
 		return repo.save(user);
     }
@@ -108,5 +117,9 @@ public class UserService {
 	
 	public void updateUserEnabledStatus(Integer id, boolean enabled) {
 		repo.updateStatus(id, enabled);
+	}
+
+	public User findById(Integer id){
+		return repo.findById(id).get();
 	}
 }

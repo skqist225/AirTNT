@@ -1,6 +1,5 @@
 package com.airtnt.backend.room;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.airtnt.common.Exception.RoomNotFoundException;
