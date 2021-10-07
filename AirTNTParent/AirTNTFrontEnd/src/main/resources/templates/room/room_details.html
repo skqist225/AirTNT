@@ -3,7 +3,11 @@
     <head>
         <meta charset="UTF-8" />
         <title>Room Details</title>
-        <link rel="stylesheet" th:href="@{/css/product_details.css}" type="text/css" />
+        <link
+            rel="stylesheet"
+            th:href="@{/css/product_details.css}"
+            type="text/css"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -32,7 +36,9 @@
                         >
                     </div>
                     <div class="rdt_header__action">
-                        <div th:replace="room/room_fragment :: saveAndShare"></div>
+                        <div
+                            th:replace="room/room_fragment :: saveAndShare"
+                        ></div>
                     </div>
                 </div>
 
@@ -85,9 +91,15 @@
                                     <circle cx="15.5" cy="8.5" r="1.5"></circle>
                                     <circle cx="1.5" cy="15.5" r="1.5"></circle>
                                     <circle cx="8.5" cy="15.5" r="1.5"></circle>
-                                    <circle cx="15.5" cy="15.5" r="1.5"></circle>
+                                    <circle
+                                        cx="15.5"
+                                        cy="15.5"
+                                        r="1.5"
+                                    ></circle>
                                 </svg>
-                                <div style="padding-left: 12px">Hiển thị tất cả ảnh</div>
+                                <div style="padding-left: 12px">
+                                    Hiển thị tất cả ảnh
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -98,12 +110,22 @@
                         <article>
                             <div class="rdt_room__count flex">
                                 <div>
-                                    <h2 style="font-size: 22px; line-height: 40px">
+                                    <h2
+                                        style="
+                                            font-size: 22px;
+                                            line-height: 40px;
+                                        "
+                                    >
                                         Phòng riêng tại ryokan. Chủ nhà
                                         [[${room.host.firstName}]]
                                         [[${room.host.lastName}]]
                                     </h2>
-                                    <p style="font-size: 16px; font-weight: 500">
+                                    <p
+                                        style="
+                                            font-size: 16px;
+                                            font-weight: 500;
+                                        "
+                                    >
                                         [[${room.accomodatesCount}]] khách.
                                         [[${room.bathroomCount}]] phòng ngủ .
                                         [[${room.bedCount}]] giường.
@@ -125,7 +147,9 @@
                                 <p>[[${room.description}]]</p>
                             </div>
                             <div class="rdt_bedroom_info rdt_body__common">
-                                <h4 class="rdt_amentity__header">Nơi bạn sẽ ngủ nghỉ</h4>
+                                <h4 class="rdt_amentity__header">
+                                    Nơi bạn sẽ ngủ nghỉ
+                                </h4>
                                 <div class="rdt_room__decor">
                                     <div
                                         style="
@@ -134,7 +158,9 @@
                                             margin-bottom: 16px;
                                         "
                                     >
-                                        <th:block th:each="bed : ${numberOfBed}">
+                                        <th:block
+                                            th:each="bed : ${numberOfBed}"
+                                        >
                                             <span>
                                                 <svg
                                                     viewBox="0 0 32 32"
@@ -155,7 +181,12 @@
                                                 </svg> </span
                                         ></th:block>
                                     </div>
-                                    <div style="margin-bottom: 8px; font-size: 16px">
+                                    <div
+                                        style="
+                                            margin-bottom: 8px;
+                                            font-size: 16px;
+                                        "
+                                    >
                                         Phòng ngủ
                                     </div>
                                     <div style="font-size: 14px">
@@ -171,7 +202,9 @@
                                     Nơi này có những gì cho bạn
                                 </h4>
                                 <div>
-                                    <th:block th:each="amt : ${room.amentities}">
+                                    <th:block
+                                        th:each="amt : ${room.amentities}"
+                                    >
                                         <div
                                             style="
                                                 display: flex;
@@ -200,7 +233,50 @@
                                     >
                                 </div>
                             </div>
-                            <div class="rdt_calender"></div>
+                            <div class="rdt_calender">
+                                <h2>3 nights in Baguio</h2>
+                                <div>Từ ngày - đến ngày</div>
+                                <div class="rdt_calender__header">
+                                    <div class="flex3">
+                                        <div class="firstMonth">
+                                            <div>December 2021</div>
+                                            <div class="rdt_calender__body">
+                                                <div class="flex3">
+                                                    <div>Su</div>
+                                                    <div>Mo</div>
+                                                    <div>Tu</div>
+                                                    <div>We</div>
+                                                    <div>Th</div>
+                                                    <div>Fr</div>
+                                                    <div>Sa</div>
+                                                </div>
+                                                <table
+                                                    class="rdt_calender__days"
+                                                ></table>
+                                            </div>
+                                        </div>
+                                        <div class="secondMonth">
+                                            <div>Junary 2022</div>
+                                            <div class="rdt_calender__body">
+                                                <div class="flex3">
+                                                    <div>Su</div>
+                                                    <div>Mo</div>
+                                                    <div>Tu</div>
+                                                    <div>We</div>
+                                                    <div>Th</div>
+                                                    <div>Fr</div>
+                                                    <div>Sa</div>
+                                                </div>
+                                                <table
+                                                    class="
+                                                        rdt_calender__days_plus-1
+                                                    "
+                                                ></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="rdt_review"></div>
                             <div class="rdt_host rdt_body__common">
                                 <div class="host_info">
@@ -215,7 +291,12 @@
                                         />
                                     </div>
                                     <div style="margin-left: 20px">
-                                        <h2 style="font-size: 22px; line-height: 26px">
+                                        <h2
+                                            style="
+                                                font-size: 22px;
+                                                line-height: 26px;
+                                            "
+                                        >
                                             Chủ nhà [[${room.host.firstName}]]
                                             [[${room.host.lastName}]]
                                         </h2>
@@ -233,7 +314,9 @@
                                 </div>
                             </div>
                             <div class="rdt_rules rdt_body__common">
-                                <h4 class="rdt_amentity__header">Những điều cần biết</h4>
+                                <h4 class="rdt_amentity__header">
+                                    Những điều cần biết
+                                </h4>
                                 <th:block th:each="rule : ${room.rules}">
                                     <div
                                         style="
@@ -292,7 +375,9 @@
                                                 border: 0.5px solid red;
                                             "
                                         >
-                                            <div style="font-weight: 600">Nhận phòng</div>
+                                            <div style="font-weight: 600">
+                                                Nhận phòng
+                                            </div>
                                             <div>7/2/2022</div>
                                         </div>
                                         <div
@@ -302,16 +387,23 @@
                                                 border: 0.5px solid red;
                                             "
                                         >
-                                            <div style="font-weight: 600">Trả phòng</div>
+                                            <div style="font-weight: 600">
+                                                Trả phòng
+                                            </div>
                                             <div>7/2/2022</div>
                                         </div>
                                     </div>
                                     <div
                                         class="flex"
-                                        style="height: 56px; padding: 16px 16px 10px 12px"
+                                        style="
+                                            height: 56px;
+                                            padding: 16px 16px 10px 12px;
+                                        "
                                     >
                                         <div>
-                                            <div style="font-weight: 600">Khách</div>
+                                            <div style="font-weight: 600">
+                                                Khách
+                                            </div>
                                             <div>1 khách</div>
                                         </div>
                                         <div
@@ -353,10 +445,22 @@
                                                 class="_19di23v"
                                                 style="
                                                     background-position: calc(
-                                                            (100 - var(--mouse-x, 0)) * 1%
+                                                            (
+                                                                    100 -
+                                                                        var(
+                                                                            --mouse-x,
+                                                                            0
+                                                                        )
+                                                                ) * 1%
                                                         )
                                                         calc(
-                                                            (100 - var(--mouse-y, 0)) * 1%
+                                                            (
+                                                                    100 -
+                                                                        var(
+                                                                            --mouse-y,
+                                                                            0
+                                                                        )
+                                                                ) * 1%
                                                         );
                                                     --mouse-x: 96.4371;
                                                     --mouse-y: 50;
@@ -424,16 +528,67 @@
         </div>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script
+            type="text/javascript"
+            th:src="@{/webjars/jquery/jquery.min.js}"
+        ></script>
         <script>
             const active = 'active';
+            const date = new Date();
+            const month = date.getMonth();
+            const year = date.getFullYear();
 
-            $(document).ready(function () {
+            $(document).ready(async function () {
                 const closeShowImgBtn = $('#closeShowImgBtn');
                 closeShowImgBtn.click(function () {
                     toggleHiddenImages();
                 });
+                const firstMonth = await fetchDaysInMonth(month, year);
+                const secondMonth = await fetchDaysInMonth(month + 1, year);
+
+                const rdt_calender__days = $('.rdt_calender__days').first();
+                const daysInMonthJs1 = getDaysInMonth(firstMonth.daysInMonth);
+                const daysInMonthJs2 = getDaysInMonth(secondMonth.daysInMonth);
+                daysInMonthJs1.forEach(day => {
+                    rdt_calender__days.append(day);
+                });
+                const rdt_calender__days_plus__1 = $(
+                    '.rdt_calender__days_plus-1'
+                ).first();
+                daysInMonthJs2.forEach(day => {
+                    rdt_calender__days_plus__1.append(day);
+                });
             });
+
+            const fetchDaysInMonth = async (month, year) => {
+                const {
+                    data: { daysInMonth, startInWeek },
+                } = await axios.get(
+                    `http://localhost:8001/airtnt/calendar/${month + 1}/${year}`
+                );
+                return Promise.resolve({ daysInMonth, startInWeek });
+            };
+
+            function getDaysInMonth(daysInMonth) {
+                let daysInMonthJs = [];
+                let weeks = daysInMonth.split('*');
+                console.log(weeks);
+                weeks.forEach(week => {
+                    daysInMonthJs.push('<tr class="flex3">');
+                    const weekArray = week.trim().split(' ');
+                    weekArray.forEach(dayInWeek => {
+                        if (dayInWeek.trim() !== '_') {
+                            const dayInHtml = `<td><div data-is-blocked="${false}">${dayInWeek.trim()}</div></td>`;
+                            daysInMonthJs.push(dayInHtml);
+                        } else if (dayInWeek.trim() === '_') {
+                            const dayInHtml = `<td></td>`;
+                            daysInMonthJs.push(dayInHtml);
+                        }
+                    });
+                    daysInMonthJs.push('</tr>');
+                });
+                return daysInMonthJs;
+            }
 
             function toggleHiddenImages() {
                 const hiddenSlider = $('.rdt_hidden').first();
@@ -493,11 +648,16 @@
             async function fetchRoomImages(roomId) {
                 const {
                     data: { images },
-                } = await axios.get('http://localhost:8001/airtnt/homes/' + roomId);
+                } = await axios.get(
+                    'http://localhost:8001/airtnt/homes/' + roomId
+                );
 
                 return images;
             }
         </script>
-        <script type="text/javascript" th:src="@{/js/room/roomSlider.js}"></script>
+        <script
+            type="text/javascript"
+            th:src="@{/js/room/roomSlider.js}"
+        ></script>
     </body>
 </html>

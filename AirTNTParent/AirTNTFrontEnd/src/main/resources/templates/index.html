@@ -22,7 +22,10 @@
                 <div class="flex">
                     <th:block th:each="cat,itr : ${categories}">
                         <div class="cat__container">
-                            <button class="button__container" th:id="${itr.index  + 1}">
+                            <button
+                                class="button__container"
+                                th:id="${itr.index  + 1}"
+                            >
                                 <div>
                                     <img
                                         th:src="@{${cat.iconPath}}"
@@ -32,7 +35,10 @@
                                         class="cat__image"
                                     />
                                 </div>
-                                <div th:text="${cat.name}" class="cat__name"></div>
+                                <div
+                                    th:text="${cat.name}"
+                                    class="cat__name"
+                                ></div>
                                 <input
                                     type="hidden"
                                     th:value="${cat.id}"
@@ -48,9 +54,15 @@
             </section>
         </div>
 
-        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script
+            type="text/javascript"
+            th:src="@{/webjars/jquery/jquery.min.js}"
+        ></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script type="text/javascript" th:src="@{/js/room/roomComponent.js}"></script>
+        <script
+            type="text/javascript"
+            th:src="@{/js/room/roomComponent.js}"
+        ></script>
         <script>
             const active = 'active';
             const imageClassName = '.' + 'cat__image';
@@ -75,7 +87,8 @@
                             this,
                             catContainers,
                             roomsContainer,
-                            globalPage
+                            globalPage,
+                            rooms
                         );
                         globalPage = page;
                         globalCatId = catId;
@@ -101,6 +114,9 @@
             });
         </script>
         <script type="text/javascript" th:src="@{/js/room/room.js}"></script>
-        <script type="text/javascript" th:src="@{/js/room/roomSlider.js}"></script>
+        <script
+            type="text/javascript"
+            th:src="@{/js/room/roomSlider.js}"
+        ></script>
     </body>
 </html>

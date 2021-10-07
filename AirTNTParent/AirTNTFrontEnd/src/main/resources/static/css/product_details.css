@@ -386,3 +386,44 @@
 ._1lyyzem:hover {
     background-color: #484848;
 }
+/* 
+-webkit-box-direction: normal;
+-webkit-box-orient: vertical;
+-webkit-box-pack: center;
+-webkit-box-align: center;
+margin-left: 1px;
+margin-right: 1px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+border-radius: 100%;
+position: relative;
+font-size: 14px;
+line-height: 18px;
+font-weight: 600;
+color: rgb(34, 34, 34);
+border: 1.5px solid rgb(255, 255, 255); */
+
+.rdt-calendar__header {
+    display: flex;
+    align-items: center;
+}
+
+.flex3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.firstMonth {
+    flex: 1;
+    max-width: 50%;
+    padding: 0 13px;
+}
+
+.secondMonth {
+    flex: 1;
+    max-width: 50%;
+    padding: 0 13px;
+}

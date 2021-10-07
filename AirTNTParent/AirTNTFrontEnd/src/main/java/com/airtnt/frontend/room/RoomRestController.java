@@ -1,12 +1,16 @@
 package com.airtnt.frontend.room;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.airtnt.common.entity.Category;
 import com.airtnt.common.entity.Image;
 import com.airtnt.common.entity.Room;
+import com.airtnt.frontend.calendar.CalendarClass;
 import com.airtnt.frontend.category.CategoryService;
 
 import org.json.JSONArray;
@@ -32,6 +36,9 @@ public class RoomRestController {
     public String fetchRoomsByCategoryId(@RequestBody Map<String, Object> payLoad) {
         int id = Integer.parseInt(payLoad.get("catId").toString());
         int page = Integer.parseInt(payLoad.get("page").toString());
+
+        System.out.println("id" + id);
+        System.out.println("page" + page);
 
         Category category = categoryService.getCategoryById(id);
         JSONArray array = new JSONArray();
@@ -71,5 +78,16 @@ public class RoomRestController {
         Set<Image> roomImages = room.getImages();
 
         return new JSONObject().put("images", roomImages).toString();
+    }
+
+    @GetMapping("/calendar/{selectedMonth}/{selectedYear}")
+    public String getCalendayByYearAndMonth(@PathVariable("selectedYear") int selectedYear,
+            @PathVariable("selectedMonth") int selectedMonth) {
+        List<String> daysInMonth = CalendarClass.getDaysInMonth(selectedMonth - 1, selectedYear);
+        String strDaysInMonth = daysInMonth.stream().map(Object::toString).collect(Collectors.joining(" "));
+        GregorianCalendar gCal = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
+        int startInWeek = gCal.get(Calendar.DAY_OF_WEEK); // ngày thứ mấy trong tuần đó
+
+        return new JSONObject().put("daysInMonth", strDaysInMonth).put("startInWeek", startInWeek).toString();
     }
 }

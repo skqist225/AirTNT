@@ -6,7 +6,7 @@ async function fetchRooms(catId, page) {
         page,
     });
 
-    return root;
+    return Promise.resolve(root);
 }
 
 function appendRoomToRoomsContainer(rooms, roomsContainer) {
@@ -41,12 +41,12 @@ function appendRoomToRoomsContainer(rooms, roomsContainer) {
     }
 }
 
-function setActiveTab(catContainer) {
+function setActiveTab(catContainer, self) {
     catContainer.each(function () {
         $(this).removeClass(active);
 
-        const image = $(imageClassName, this);
-        image.removeClass(active);
+        const insideLoopimage = $(imageClassName, this);
+        insideLoopimage.removeClass(active);
     });
 
     $(self).parent().addClass(active);
@@ -54,27 +54,41 @@ function setActiveTab(catContainer) {
     image.addClass(active);
 }
 
-async function fetchRoomsByCategory(self, catContainer, roomsContainer, globalPage) {
+async function fetchRoomsByCategory(
+    self,
+    catContainer,
+    roomsContainer,
+    globalPage,
+    rooms
+) {
     let root = [];
-    setActiveTab(catContainer);
+    rooms = [];
+    setActiveTab(catContainer, self);
 
     const catName = $('.cat__name', self);
     const catId = $('.cat__id', self).val();
 
     if (catName.text() === 'Ryokan') {
         roomsContainer.empty();
+        if (globalPage !== 1) {
+            globalPage = 1;
+        }
 
         root = await fetchRooms(catId, globalPage);
-        root.forEach(room => rooms.push(room));
+        console.log(root);
+        root.forEach(room => {
+            rooms.push(room);
+        });
 
         appendRoomToRoomsContainer(rooms, roomsContainer);
     } else {
         roomsContainer.html(`<p>${catName.text()}</p>`);
     }
+    if (globalPage === 1) {
+        globalPage++;
+    }
 
-    return new Promise((resolve, reject) => {
-        resolve({ catId, page: ++globalPage });
-    });
+    return Promise.resolve({ catId, page: globalPage });
 }
 
 function likeRoom(self) {

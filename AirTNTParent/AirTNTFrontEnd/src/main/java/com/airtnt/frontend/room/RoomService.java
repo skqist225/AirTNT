@@ -16,13 +16,19 @@ import com.airtnt.common.entity.Room;
 
 @Service
 public class RoomService {
-	public final static int MAX_ROOM_PER_FETCH = 20;
+	public static final int MAX_ROOM_PER_FETCH = 20;
 
 	@Autowired
 	private RoomRepository roomRepository;
 
 	public Room getRoomById(int id) {
-		return roomRepository.findById(id).get();
+		Optional<Room> optionalRoom = roomRepository.findById(id);
+		Room room = new Room();
+		if (optionalRoom.isPresent()) {
+			room = optionalRoom.get();
+		}
+
+		return room;
 	}
 
 	public List<Room> getRoomsByCategoryId(Category category, int page) {
