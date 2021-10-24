@@ -34,6 +34,7 @@
     border: none;
     outline: none;
     background-color: transparent;
+    margin-left: 15px;
 }
 
 .account__button {
@@ -95,6 +96,10 @@
     white-space: nowrap;
     z-index: 1;
     color: #222222;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .header__become-host:hover {
@@ -106,4 +111,64 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.loginAndLogoutHidden {
+    display: none;
+    /* display: block; */
+    position: absolute;
+    right: 0;
+    top: 50px;
+    width: 260px;
+    border-radius: 12px;
+    background-color: #fff;
+    -webkit-box-shadow: 5px 6px 17px -7px #000000;
+    box-shadow: 5px 6px 17px -7px #000000;
+    overflow: hidden;
+    transition: all 0.2s ease-out;
+}
+
+.headerBridge {
+    width: 260px;
+    height: 10px;
+    background-color: transparent;
+    position: absolute;
+    right: 0;
+    top: 40px;
+    opacity: 0;
+}
+
+.loginAndLogoutHidden ul {
+    padding-left: 0;
+}
+
+.loginAndLogoutHidden ul li {
+    list-style: none;
+    padding: 8.25px 12.25px;
+    font-size: 16px;
+    color: #222;
+    cursor: pointer;
+}
+
+.loginAndLogoutHidden ul li a {
+    text-decoration: none;
+    color: #222;
+    display: inline-block;
+    width: 100%;
+}
+
+.loginAndLogoutHidden ul li:hover {
+    background-color: palevioletred;
+}
+
+.loginAndLogoutHidden ul li:hover a {
+    color: white;
+}
+
+.loginAndLogoutHidden.active {
+    display: block;
+}
+
+.navMenuHeader {
+    position: relative;
 }

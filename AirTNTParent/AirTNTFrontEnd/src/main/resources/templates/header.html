@@ -7,7 +7,7 @@
         <div class="header__container">
             <div class="header__right">
                 <a
-                    th:href="@{/home}
+                    th:href="@{/}
                "
                 >
                     <img
@@ -44,8 +44,8 @@
                     </button>
                 </div>
 
-                <div>
-                    <button class="account__button">
+                <div class="navMenuHeader">
+                    <div class="account__button">
                         <div>
                             <svg
                                 viewBox="0 0 32 32"
@@ -72,7 +72,11 @@
                         </div>
                         <div>
                             <div
-                                style="height: 30px; overflow: hidden; margin-left: 12px"
+                                style="
+                                    height: 30px;
+                                    overflow: hidden;
+                                    margin-left: 12px;
+                                "
                             >
                                 <img
                                     th:src="@{/images/default_user_imaeg.png}
@@ -81,9 +85,47 @@
                                     class="header__user-avatar"
                                 />
                             </div>
-                            <div></div>
                         </div>
-                    </button>
+                    </div>
+                    <div class="headerBridge"></div>
+                    <div class="loginAndLogoutHidden">
+                        <ul sec:authorize="isAnonymous()">
+                            <li><a th:href="@{/user/register}">Đăng ký</a></li>
+                            <li><a th:href="@{/login}">Đăng nhập</a></li>
+                            <li>
+                                <a th:href="@{/user/rent-house}"
+                                    >Cho thuê nhà</a
+                                >
+                            </li>
+                        </ul>
+                        <div>
+                            <ul sec:authorize="isAuthenticated()">
+                                <li>
+                                    <a th:href="@{/user/register}">Thông báo</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/user/login}">Chuyến đi</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/user/login}"
+                                        >Danh sách yêu thích</a
+                                    >
+                                </li>
+                                <li>
+                                    <a th:href="@{/user/login}">Cho thuê nhà</a>
+                                </li>
+                                <li>
+                                    <a
+                                        th:href="@{/account-settings/personal-info}"
+                                        >Tài khoản</a
+                                    >
+                                </li>
+                                <li>
+                                    <a th:href="@{/user/login}">Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

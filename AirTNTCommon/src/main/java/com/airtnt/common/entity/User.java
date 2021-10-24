@@ -1,14 +1,15 @@
 package com.airtnt.common.entity;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,23 +30,31 @@ public class User extends BaseEntity {
 
 	private String avatar;
 
+	@NotEmpty(message = "Tên không được để trống.")
 	@Column(nullable = false, length = 48)
 	private String firstName;
 
+	@NotEmpty(message = "Họ không được để trống.")
 	@Column(nullable = false, length = 48)
 	private String lastName;
 
+	// @Pattern(regexp = "^MALE|FEMALE|OTHER$", message = "Vui lòng chọn giới
+	// tính.")
 	@Enumerated(EnumType.STRING)
 	@Column(length = 10, nullable = false)
 	private Sex sex;
 
+	@Past(message = "Không chọn ngày lớn hơn hiện tại")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthday;
 
+	@NotEmpty(message = "Email không được để trống.")
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(nullable = false, length = 64)
+	@NotEmpty(message = "Mật khẩu không được để trống.")
+	@Size(min = 8, max = 512, message = "Mật khẩu phải ít nhất 8 kí tự.")
+	@Column(nullable = false, length = 255)
 	private String password;
 
 	@ManyToOne
@@ -53,6 +62,8 @@ public class User extends BaseEntity {
 	@JoinColumn(name = "role_id")
 	private Role role;
 
+	@NotEmpty(message = "Số điện thoại không được để trống.")
+	@Size(min = 10, max = 11, message = "SDT phải ít nhất 10 chữ số và lớn nhất 11 chữ số.")
 	@Column(length = 10, nullable = false)
 	private String phoneNumber;
 
@@ -96,17 +107,19 @@ public class User extends BaseEntity {
 
 	@Transient
 	public String getAvatarPath() {
-		if(this.getId()==null || this.avatar == null) return "/images/avatar.png";
-		return "/user-photos/" + this.getId() + "/" +this.avatar;
+		if (this.getId() == null || this.avatar == null)
+			return "/images/avatar.png";
+		return "/user-photos/" + this.getId() + "/" + this.avatar;
 	}
 
 	@Transient
-	public String getFullName(){
+	public String getFullName() {
 		return this.firstName + " " + this.lastName;
 	}
 
 	public boolean hasRole(String roleName) {
-		if(roleName == this.getRole().getName()) return true;
+		if (roleName == this.getRole().getName())
+			return true;
 		return false;
 	}
 }

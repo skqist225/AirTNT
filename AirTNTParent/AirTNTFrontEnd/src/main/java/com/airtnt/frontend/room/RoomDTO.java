@@ -2,7 +2,6 @@ package com.airtnt.frontend.room;
 
 import java.util.Set;
 
-import com.airtnt.common.entity.Currency;
 import com.airtnt.common.entity.Image;
 import com.airtnt.common.entity.PriceType;
 

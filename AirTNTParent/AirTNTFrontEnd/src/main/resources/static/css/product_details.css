@@ -412,7 +412,7 @@ border: 1.5px solid rgb(255, 255, 255); */
 
 .flex3 {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 }
 
@@ -426,4 +426,66 @@ border: 1.5px solid rgb(255, 255, 255); */
     flex: 1;
     max-width: 50%;
     padding: 0 13px;
+}
+
+.dayInWeek {
+    width: calc(334px / 7);
+    height: 42px;
+    display: flex;
+    align-items: center;
+}
+
+.date {
+    width: calc(334px / 7);
+}
+
+.MonthTitle {
+    text-align: center;
+    padding: 22px 49px;
+}
+
+.secondMonthTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 49px;
+}
+
+.pseudoContainer {
+    flex: 1;
+    text-align: center;
+}
+
+.getTheNextTwoMonth {
+    appearance: none;
+    display: inline-block;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    margin: 0px;
+    padding: 0px;
+    color: rgb(34, 34, 34);
+    cursor: pointer;
+    touch-action: manipulation;
+    position: relative;
+    background: transparent;
+    transition: -ms-transform 0.25s ease 0s, -webkit-transform 0.25s ease 0s,
+        transform 0.25s ease 0s;
+}
+
+.block__date {
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    margin-left: 1px;
+    margin-right: 1px;
+    border-radius: 100%;
+    position: relative;
+    font-size: 14px;
+    line-height: 18px;
+    border: 1.5px solid rgb(255, 255, 255);
+    color: rgb(176, 176, 176);
+    font-weight: 400;
+    text-decoration: line-through;
 }

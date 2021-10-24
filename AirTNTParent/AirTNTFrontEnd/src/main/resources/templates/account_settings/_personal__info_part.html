@@ -1,0 +1,257 @@
+<div
+    th:fragment="content(displayTitle, turnOffEditModeArgs1, textDisplayWhenNormalMode)"
+    th:remove="tag"
+>
+    <div class="personal__info_part">
+        <div style="width: 100%">
+            <div class="personal__info_title">
+                <div
+                    style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        width: 100%;
+                    "
+                >
+                    <div>[[${displayTitle}]]</div>
+                    <input
+                        type="hidden"
+                        th:value="${turnOffEditModeArgs1}"
+                        id="turnOffEditModeArgs1"
+                    />
+
+                    <button class="closeBtn" onclick="turnOffEditMode(this)">
+                        Hủy
+                    </button>
+                </div>
+            </div>
+            <div class="personal__info_text">
+                <div class="displayWhenNormalMode">
+                    <span th:if="${turnOffEditModeArgs1 != 'avatar'}">
+                        [[${textDisplayWhenNormalMode}]]</span
+                    >
+                    <img
+                        th:src="@{${textDisplayWhenNormalMode}}"
+                        alt=""
+                        th:if="${turnOffEditModeArgs1 == 'avatar'}"
+                        width="200px"
+                        height="200px"
+                        style="object-fit: cover"
+                    />
+                </div>
+                <form
+                    th:action="@{/account-settings/update-personal-info}"
+                    th:object="${user}"
+                    th:class="${'formEdit_' + turnOffEditModeArgs1}"
+                    method="post"
+                    enctype="multipart/form-data"
+                >
+                    <input type="hidden" th:field="*{id}" />
+                    <div
+                        style="display: flex"
+                        th:if="${turnOffEditModeArgs1 == 'firstNameAndLastName'}"
+                    >
+                        <div class="form-group">
+                            <label for="firstName">Tên</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Tên"
+                                th:field="*{firstName}"
+                            />
+                            <div
+                                for="firstNameError"
+                                th:if="${#fields.hasErrors('firstName')}"
+                                th:class="${#fields.hasErrors('firstName')}? c-validation"
+                            >
+                                <span style="color: #fff">
+                                    [[${#fields.errors('firstName')[0]}]]
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-left: 15px">
+                            <label for="lastName">Họ</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Họ"
+                                th:field="*{lastName}"
+                            />
+                            <div
+                                for="lastNameError"
+                                th:if="${#fields.hasErrors('lastName')}"
+                                th:class="${#fields.hasErrors('lastName')}? c-validation"
+                            >
+                                <span style="color: #fff">
+                                    [[${#fields.errors('lastName')[0]}]]
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${turnOffEditModeArgs1 == 'sex'}">
+                        <select class="custom-select">
+                            <option>Chọn</option>
+                            <option
+                                th:selected="${userSex == 'Nam'}"
+                                value="MALE"
+                            >
+                                Nam
+                            </option>
+                            <option
+                                th:selected="${userSex == 'Nữ'}"
+                                value="FEMALE"
+                            >
+                                Nữ
+                            </option>
+                            <option
+                                th:selected="${userSex == 'Khác'}"
+                                value="OTHER"
+                            >
+                                Khác
+                            </option>
+                        </select>
+                    </div>
+                    <div
+                        th:if="${turnOffEditModeArgs1 == 'birthday'}"
+                        style="display: flex"
+                    >
+                        <select class="custom-select" name="userMonthOfBirth">
+                            <option disabled value="">Tháng</option>
+                            <option
+                                th:value="${month}"
+                                th:each="month : ${#numbers.sequence(1, 12)}"
+                                th:text="${'tháng ' + month}"
+                                th:selected="${userMonthOfBirth == month}"
+                            ></option>
+                        </select>
+                        <select class="custom-select" name="userDayOfBirth">
+                            <option disabled value="">Ngày</option>
+                            <option
+                                th:value="${day}"
+                                th:each="day : ${#numbers.sequence(1, 31)}"
+                                th:text="${day}"
+                                th:selected="${userDayOfBirth == day}"
+                            ></option>
+                        </select>
+                        <select class="custom-select" name="userYearOfBirth">
+                            <option disabled value="">Năm</option>
+                            <option
+                                th:value="${year}"
+                                th:each="year : ${#numbers.sequence(2025, 1900)}"
+                                th:text="${year}"
+                                th:selected="${userYearOfBirth == year}"
+                            ></option>
+                        </select>
+                    </div>
+                    <div th:if="${turnOffEditModeArgs1 == 'email'}">
+                        <label for=""
+                            >Sử dụng địa chỉ mà bạn luôn có quyền truy
+                            cập.</label
+                        >
+                        <input
+                            type="text"
+                            th:field="*{email}"
+                            class="form-control"
+                        />
+                    </div>
+                    <div th:if="${turnOffEditModeArgs1 == 'password'}">
+                        <div class="form-group">
+                            <label for="">Mật khẩu cũ</label>
+                            <input
+                                type="password"
+                                th:field="*{password}"
+                                class="form-control"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="">Mật khẩu mới</label>
+                            <input
+                                type="password"
+                                th:field="*{password}"
+                                class="form-control"
+                            />
+                        </div>
+                    </div>
+                    <div th:if="${turnOffEditModeArgs1 == 'phoneNumber'}">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1"
+                                    >+84</span
+                                >
+                            </div>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Số điện thoại"
+                                th:field="*{phoneNumber}"
+                            />
+                        </div>
+                    </div>
+                    <div th:if="${turnOffEditModeArgs1 == 'address'}">
+                        <input
+                            type="hidden"
+                            th:value="${user.address.country.name}"
+                            id="userCountryName"
+                        />
+                        <input
+                            type="hidden"
+                            th:value="${user.address.state.name}"
+                            id="userStateName"
+                        />
+                        <div>
+                            <label for="">Quốc gia/khu vực</label>
+                            <select
+                                name="country"
+                                id="countryNameSelect"
+                                class="custom-select"
+                            ></select>
+                        </div>
+                        <div>
+                            <label for="">Tỉnh/thành phố</label>
+                            <select
+                                name="state"
+                                id="stateNameSelect"
+                                class="custom-select"
+                            ></select>
+                        </div>
+                        <div>
+                            <label for="">Địa chỉ đường/phố</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Tên/số nhà + đường/phố"
+                                th:field="*{address.aprtNoAndStreet}"
+                            />
+                        </div>
+                        <div>
+                            <label for="">Căn hộ, phòng (không bắt buộc)</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="Mã ra vào căn hộ, phòng suite, tòa nhà"
+                            />
+                        </div>
+                    </div>
+                    <div th:if="${turnOffEditModeArgs1 == 'avatar'}">
+                        <label for="">Cập nhật ảnh đại diện</label>
+                        <div class="input-group mb-3">
+                            <input
+                                type="file"
+                                class="form-control"
+                                name="userAvatar"
+                                id="userAvatar"
+                            />
+                        </div>
+                    </div>
+                    <button type="submit" class="saveEditBtn">
+                        <span class="_ftj2sg4">Lưu</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <button class="editBtn" th:data-edit="${turnOffEditModeArgs1}">
+            Chỉnh sửa
+        </button>
+    </div>
+</div>

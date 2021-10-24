@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xml:lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Thông tin cá nhân</title>
+
+        <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+        />
+        <link
+            rel="stylesheet"
+            th:href="@{/css/personal_info.css}"
+            type="text/css"
+        />
+
+        <div th:replace="header :: css"></div>
+    </head>
+    <body>
+        <div th:replace="header :: content"></div>
+        <main class="personal__info_page">
+            <div class="page__container">
+                <div>Tài khoản <span>></span> Thông tin cá nhân</div>
+                <h2>Thông tin cá nhân</h2>
+                <div class="personal__info">
+                    <div
+                        th:replace="account_settings/_personal__info_part :: content('Họ và tên', 'firstNameAndLastName', ${user.firstName} + ' ' + ${user.lastName})"
+                    ></div>
+                    <div
+                        th:replace="account_settings/_personal__info_part :: content('Giới tính', 'sex', ${userSex})"
+                    ></div>
+                    <div
+                        th:replace="account_settings/_personal__info_part :: content('Ngày sinh', 'birthday', ${userBirthday})"
+                    ></div>
+                    <div
+                        th:replace="account_settings/_personal__info_part :: content('Địa chỉ email', 'email', ${user.email})"
+                    ></div>
+                    <div
+                        th:replace="account_settings/_personal__info_part :: content('Mật khẩu', 'password', '**********')"
+                    ></div>
+                    <div
+                        th:replace="account_settings/_personal__info_part :: content('Số điện thoại', 'phoneNumber', ${user.phoneNumber})"
+                    ></div>
+                    <div
+                        th:replace="account_settings/_personal__info_part :: content('Địa chỉ', 'address', ${user.address != null ? user.address.country.name : 'Chưa
+                                được cung cấp'})"
+                    ></div>
+                    <div
+                        th:replace="account_settings/_personal__info_part :: content('Ảnh đại diện', 'avatar', ${user.avatarPath})"
+                    ></div>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script
+            type="text/javascript"
+            th:src="@{/webjars/jquery/jquery.min.js}"
+        ></script>
+        <script
+            type="text/javascript"
+            th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"
+            defer
+        ></script>
+        <script th:src="@{/js/user/personal_info.js}"></script>
+    </body>
+</html>

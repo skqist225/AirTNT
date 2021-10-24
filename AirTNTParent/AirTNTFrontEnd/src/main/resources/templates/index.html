@@ -118,5 +118,23 @@
             type="text/javascript"
             th:src="@{/js/room/roomSlider.js}"
         ></script>
+        <script>
+            const headerNavButton =
+                document.getElementsByClassName('account__button')[0];
+            const navMenu = document.getElementsByClassName(
+                'loginAndLogoutHidden'
+            )[0];
+            let isClicked = false;
+
+            headerNavButton.addEventListener('click', function () {
+                if (!isClicked) {
+                    navMenu.classList.add('active');
+                    isClicked = true;
+                } else {
+                    navMenu.classList.remove('active');
+                    isClicked = false;
+                }
+            });
+        </script>
     </body>
 </html>

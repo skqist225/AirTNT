@@ -234,21 +234,28 @@
                                 </div>
                             </div>
                             <div class="rdt_calender">
-                                <h2>3 nights in Baguio</h2>
+                                <h2>7 đêm tại 有馬温泉・六甲山</h2>
                                 <div>Từ ngày - đến ngày</div>
                                 <div class="rdt_calender__header">
                                     <div class="flex3">
                                         <div class="firstMonth">
-                                            <div>December 2021</div>
+                                            <div
+                                                class="
+                                                    MonthTitle
+                                                    firstMonthAndYear
+                                                "
+                                            >
+                                                Tháng MM năm YYY
+                                            </div>
                                             <div class="rdt_calender__body">
                                                 <div class="flex3">
-                                                    <div>Su</div>
-                                                    <div>Mo</div>
-                                                    <div>Tu</div>
-                                                    <div>We</div>
-                                                    <div>Th</div>
-                                                    <div>Fr</div>
-                                                    <div>Sa</div>
+                                                    <div class="date">CN</div>
+                                                    <div class="date">T2</div>
+                                                    <div class="date">T3</div>
+                                                    <div class="date">T4</div>
+                                                    <div class="date">T5</div>
+                                                    <div class="date">T6</div>
+                                                    <div class="date">T7</div>
                                                 </div>
                                                 <table
                                                     class="rdt_calender__days"
@@ -256,16 +263,29 @@
                                             </div>
                                         </div>
                                         <div class="secondMonth">
-                                            <div>Junary 2022</div>
+                                            <div class="secondMonthTitle">
+                                                <div class="pseudoContainer">
+                                                    <div
+                                                        class="
+                                                            secondMonthAndYear
+                                                        "
+                                                    >
+                                                        Tháng MM + 1 năm YYYY
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    th:replace="room/room_fragment :: nextCoupleOfMonth"
+                                                ></div>
+                                            </div>
                                             <div class="rdt_calender__body">
                                                 <div class="flex3">
-                                                    <div>Su</div>
-                                                    <div>Mo</div>
-                                                    <div>Tu</div>
-                                                    <div>We</div>
-                                                    <div>Th</div>
-                                                    <div>Fr</div>
-                                                    <div>Sa</div>
+                                                    <div class="date">CN</div>
+                                                    <div class="date">T2</div>
+                                                    <div class="date">T3</div>
+                                                    <div class="date">T4</div>
+                                                    <div class="date">T5</div>
+                                                    <div class="date">T6</div>
+                                                    <div class="date">T7</div>
                                                 </div>
                                                 <table
                                                     class="
@@ -527,6 +547,8 @@
             </div>
         </div>
 
+        <div th:replace="_footer :: content"></div>
+
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script
             type="text/javascript"
@@ -534,31 +556,84 @@
         ></script>
         <script>
             const active = 'active';
-            const date = new Date();
-            const month = date.getMonth();
-            const year = date.getFullYear();
 
             $(document).ready(async function () {
+                const date = new Date();
+                const month = date.getMonth();
+                const year = date.getFullYear();
+
                 const closeShowImgBtn = $('#closeShowImgBtn');
                 closeShowImgBtn.click(function () {
                     toggleHiddenImages();
                 });
+
+                const firstMonthAndYear = $('.firstMonthAndYear').first();
+                const secondMonthAndYear = $('.secondMonthAndYear').first();
+                const getTheNextTwoMonth = $('.getTheNextTwoMonth').first();
+
+                fetchTheNextCoupleOfMonth(
+                    firstMonthAndYear,
+                    secondMonthAndYear,
+                    month,
+                    year
+                );
+
+                getTheNextTwoMonth.on('click', function () {
+                    const currentFirstMonthInCalendar = secondMonthAndYear
+                        .text()
+                        .split(' ')[1];
+                    const currentYearInCalendar = secondMonthAndYear
+                        .text()
+                        .split(' ')[3];
+
+                    fetchTheNextCoupleOfMonth(
+                        firstMonthAndYear,
+                        secondMonthAndYear,
+                        currentFirstMonthInCalendar * 1,
+                        currentYearInCalendar * 1
+                    );
+                });
+            });
+
+            async function fetchTheNextCoupleOfMonth(
+                firstMonthAndYear,
+                secondMonthAndYear,
+                month,
+                year
+            ) {
+                let secondMonth;
+                if (month === 11) {
+                    secondMonth = await fetchDaysInMonth(0, year + 1);
+                    secondMonthAndYear.html(`Tháng ${1} năm ${year + 1}`);
+                } else {
+                    secondMonth = await fetchDaysInMonth(month + 1, year);
+                    secondMonthAndYear.html(
+                        `Tháng ${month * 1 + 2} năm ${year}`
+                    );
+                }
+
+                firstMonthAndYear.html(`Tháng ${month * 1 + 1} năm ${year}`);
+
                 const firstMonth = await fetchDaysInMonth(month, year);
-                const secondMonth = await fetchDaysInMonth(month + 1, year);
 
                 const rdt_calender__days = $('.rdt_calender__days').first();
-                const daysInMonthJs1 = getDaysInMonth(firstMonth.daysInMonth);
-                const daysInMonthJs2 = getDaysInMonth(secondMonth.daysInMonth);
-                daysInMonthJs1.forEach(day => {
-                    rdt_calender__days.append(day);
-                });
                 const rdt_calender__days_plus__1 = $(
                     '.rdt_calender__days_plus-1'
                 ).first();
+
+                const daysInMonthJs1 = getDaysInMonth(firstMonth.daysInMonth);
+                const daysInMonthJs2 = getDaysInMonth(secondMonth.daysInMonth);
+
+                rdt_calender__days.empty();
+                rdt_calender__days_plus__1.empty();
+
+                daysInMonthJs1.forEach(day => {
+                    rdt_calender__days.append(day);
+                });
                 daysInMonthJs2.forEach(day => {
                     rdt_calender__days_plus__1.append(day);
                 });
-            });
+            }
 
             const fetchDaysInMonth = async (month, year) => {
                 const {
@@ -572,20 +647,19 @@
             function getDaysInMonth(daysInMonth) {
                 let daysInMonthJs = [];
                 let weeks = daysInMonth.split('*');
-                console.log(weeks);
                 weeks.forEach(week => {
-                    daysInMonthJs.push('<tr class="flex3">');
+                    daysInMonthJs.push('<tbody><tr>');
                     const weekArray = week.trim().split(' ');
                     weekArray.forEach(dayInWeek => {
                         if (dayInWeek.trim() !== '_') {
-                            const dayInHtml = `<td><div data-is-blocked="${false}">${dayInWeek.trim()}</div></td>`;
+                            const dayInHtml = `<td><div data-is-blocked="${false}" class="dayInWeek block__date">${dayInWeek.trim()}</div></td>`;
                             daysInMonthJs.push(dayInHtml);
                         } else if (dayInWeek.trim() === '_') {
                             const dayInHtml = `<td></td>`;
                             daysInMonthJs.push(dayInHtml);
                         }
                     });
-                    daysInMonthJs.push('</tr>');
+                    daysInMonthJs.push('</tr></tbody>');
                 });
                 return daysInMonthJs;
             }
@@ -659,5 +733,23 @@
             type="text/javascript"
             th:src="@{/js/room/roomSlider.js}"
         ></script>
+        <script>
+            const headerNavButton =
+                document.getElementsByClassName('account__button')[0];
+            const navMenu = document.getElementsByClassName(
+                'loginAndLogoutHidden'
+            )[0];
+            let isClicked = false;
+
+            headerNavButton.addEventListener('click', function () {
+                if (!isClicked) {
+                    navMenu.classList.add('active');
+                    isClicked = true;
+                } else {
+                    navMenu.classList.remove('active');
+                    isClicked = false;
+                }
+            });
+        </script>
     </body>
 </html>
