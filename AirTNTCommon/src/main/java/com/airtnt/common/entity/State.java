@@ -47,4 +47,10 @@ public class State {
 	public State(int id) {
 		this.id = id;
 	}
+
+	public State(String name, String code, Country country) {
+		this.name = name;
+		this.code = code;
+		this.country = country;
+	}
 }

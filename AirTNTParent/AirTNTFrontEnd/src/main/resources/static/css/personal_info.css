@@ -14,6 +14,10 @@
     justify-content: center;
 }
 
+#userDayOfBirth {
+    margin: 0 20px;
+}
+
 .formEdit_firstNameAndLastName,
 .formEdit_sex,
 .formEdit_birthday,
@@ -88,7 +92,7 @@
     border: none;
     font-size: 16px;
     font-weight: 500;
-    width: 10%;
+    width: 15%;
 }
 
 .editBtn.editMode {
@@ -160,4 +164,44 @@
     background: rgb(0, 132, 137);
     border-color: transparent;
     color: rgb(255, 255, 255);
+}
+
+.c-validation {
+    background: #c51244 !important;
+    padding: 10px 5px !important;
+    border-radius: 2px !important;
+    position: relative;
+    display: inline-block !important;
+    box-shadow: 1px 1px 1px #aaaaaa;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 14px;
+}
+
+.c-validation:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #c51244;
+    position: absolute;
+    top: -10px;
+}
+.c-label:after {
+    color: #c51244 !important;
+}
+
+.c-validation.hidden {
+    display: none !important;
+}
+
+@media (min-width: 991px) {
+    .editBtn {
+        width: 12%;
+    }
+}
+
+.saveEditBtn {
+    margin-top: 20px;
 }

@@ -23,12 +23,15 @@
                     </h4>
                     <form th:action="@{/login}" method="post" id="registerForm">
                         <div th:if="${param.error}">
-                            <p class="text-danger">
+                            <p class="text-danger text-center">
                                 [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
                             </p>
                         </div>
                         <div th:if="${param.logout}">
-                            <p class="text-warning">
+                            <p
+                                class="text-success text-center"
+                                style="font-weight: bold"
+                            >
                                 You have been logged out.
                             </p>
                         </div>
@@ -52,7 +55,7 @@
                                 required
                             />
                         </div>
-                        <div>
+                        <div style="margin-bottom: 15px">
                             <input
                                 type="checkbox"
                                 name="remember-me"

@@ -46,7 +46,13 @@
                     method="post"
                     enctype="multipart/form-data"
                 >
-                    <input type="hidden" th:field="*{id}" />
+                    <input type="hidden" th:value="${user.id}" name="id" />
+                    <input
+                        type="hidden"
+                        name="updatedField"
+                        th:value="${turnOffEditModeArgs1}"
+                    />
+                    <div></div>
                     <div
                         style="display: flex"
                         th:if="${turnOffEditModeArgs1 == 'firstNameAndLastName'}"
@@ -59,13 +65,8 @@
                                 placeholder="Tên"
                                 th:field="*{firstName}"
                             />
-                            <div
-                                for="firstNameError"
-                                th:if="${#fields.hasErrors('firstName')}"
-                                th:class="${#fields.hasErrors('firstName')}? c-validation"
-                            >
-                                <span style="color: #fff">
-                                    [[${#fields.errors('firstName')[0]}]]
+                            <div class="c-validation hidden">
+                                <span style="color: #fff" id="firstNameError">
                                 </span>
                             </div>
                         </div>
@@ -77,13 +78,8 @@
                                 placeholder="Họ"
                                 th:field="*{lastName}"
                             />
-                            <div
-                                for="lastNameError"
-                                th:if="${#fields.hasErrors('lastName')}"
-                                th:class="${#fields.hasErrors('lastName')}? c-validation"
-                            >
-                                <span style="color: #fff">
-                                    [[${#fields.errors('lastName')[0]}]]
+                            <div class="c-validation hidden">
+                                <span style="color: #fff" id="lastNameError">
                                 </span>
                             </div>
                         </div>
@@ -91,7 +87,7 @@
 
                     <div th:if="${turnOffEditModeArgs1 == 'sex'}">
                         <select class="custom-select">
-                            <option>Chọn</option>
+                            <option disabled value="">Chọn</option>
                             <option
                                 th:selected="${userSex == 'Nam'}"
                                 value="MALE"
@@ -116,61 +112,116 @@
                         th:if="${turnOffEditModeArgs1 == 'birthday'}"
                         style="display: flex"
                     >
-                        <select class="custom-select" name="userMonthOfBirth">
-                            <option disabled value="">Tháng</option>
-                            <option
-                                th:value="${month}"
-                                th:each="month : ${#numbers.sequence(1, 12)}"
-                                th:text="${'tháng ' + month}"
-                                th:selected="${userMonthOfBirth == month}"
-                            ></option>
-                        </select>
-                        <select class="custom-select" name="userDayOfBirth">
-                            <option disabled value="">Ngày</option>
-                            <option
-                                th:value="${day}"
-                                th:each="day : ${#numbers.sequence(1, 31)}"
-                                th:text="${day}"
-                                th:selected="${userDayOfBirth == day}"
-                            ></option>
-                        </select>
-                        <select class="custom-select" name="userYearOfBirth">
-                            <option disabled value="">Năm</option>
-                            <option
-                                th:value="${year}"
-                                th:each="year : ${#numbers.sequence(2025, 1900)}"
-                                th:text="${year}"
-                                th:selected="${userYearOfBirth == year}"
-                            ></option>
-                        </select>
+                        <div>
+                            <select
+                                class="custom-select"
+                                name="userMonthOfBirth"
+                                id="userMonthOfBirth"
+                            >
+                                <option disabled value="">Tháng</option>
+                                <option
+                                    th:value="${month}"
+                                    th:each="month : ${#numbers.sequence(1, 12)}"
+                                    th:text="${'tháng ' + month}"
+                                    th:selected="${userMonthOfBirth == month}"
+                                ></option>
+                            </select>
+                            <div class="c-validation hidden">
+                                <span
+                                    style="color: #fff"
+                                    id="userMonthOfBirthError"
+                                >
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <select
+                                class="custom-select"
+                                name="userDayOfBirth"
+                                id="userDayOfBirth"
+                            >
+                                <option disabled value="">Ngày</option>
+                                <option
+                                    th:value="${day}"
+                                    th:each="day : ${#numbers.sequence(1, 31)}"
+                                    th:text="${day}"
+                                    th:selected="${userDayOfBirth == day}"
+                                ></option>
+                            </select>
+                            <div class="c-validation hidden">
+                                <span
+                                    style="color: #fff"
+                                    id="userDayOfBirthError"
+                                >
+                                </span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <select
+                                class="custom-select"
+                                name="userYearOfBirth"
+                                id="userYearOfBirth"
+                            >
+                                <option disabled value="">Năm</option>
+                                <option
+                                    th:value="${year}"
+                                    th:each="year : ${#numbers.sequence(2025, 1900)}"
+                                    th:text="${year}"
+                                    th:selected="${userYearOfBirth == year}"
+                                ></option>
+                            </select>
+                            <div class="c-validation hidden">
+                                <span
+                                    style="color: #fff"
+                                    id="userYearOfBirthError"
+                                >
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div th:if="${turnOffEditModeArgs1 == 'email'}">
-                        <label for=""
+                        <label for="email"
                             >Sử dụng địa chỉ mà bạn luôn có quyền truy
                             cập.</label
                         >
                         <input
-                            type="text"
+                            type="email"
                             th:field="*{email}"
                             class="form-control"
+                            id="email"
+                            required
                         />
+                        <div class="c-validation hidden">
+                            <span style="color: #fff" id="emailError"> </span>
+                        </div>
                     </div>
                     <div th:if="${turnOffEditModeArgs1 == 'password'}">
                         <div class="form-group">
-                            <label for="">Mật khẩu cũ</label>
+                            <label for="oldPassword">Mật khẩu cũ</label>
                             <input
                                 type="password"
-                                th:field="*{password}"
+                                name="oldPassword"
                                 class="form-control"
+                                id="oldPassword"
                             />
+                            <div class="c-validation hidden">
+                                <span style="color: #fff" id="oldPasswordError">
+                                </span>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="">Mật khẩu mới</label>
+                            <label for="newPassword">Mật khẩu mới</label>
                             <input
                                 type="password"
-                                th:field="*{password}"
+                                name="newPassword"
                                 class="form-control"
+                                id="newPassword"
                             />
+                            <div class="c-validation hidden">
+                                <span style="color: #fff" id="newPasswordError">
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div th:if="${turnOffEditModeArgs1 == 'phoneNumber'}">
@@ -186,6 +237,10 @@
                                 placeholder="Số điện thoại"
                                 th:field="*{phoneNumber}"
                             />
+                            <div class="c-validation hidden">
+                                <span style="color: #fff" id="phoneNumberError">
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div th:if="${turnOffEditModeArgs1 == 'address'}">
@@ -202,18 +257,35 @@
                         <div>
                             <label for="">Quốc gia/khu vực</label>
                             <select
-                                name="country"
+                                name="userCountryName"
                                 id="countryNameSelect"
                                 class="custom-select"
-                            ></select>
+                            >
+                                <option
+                                    th:each="c : ${countries}"
+                                    th:value="${c.id}"
+                                    th:text="${c.name}"
+                                    th:selected="${c.name == user.address.country.name}"
+                                ></option>
+                            </select>
                         </div>
                         <div>
                             <label for="">Tỉnh/thành phố</label>
                             <select
-                                name="state"
+                                name="userStateName"
                                 id="stateNameSelect"
                                 class="custom-select"
                             ></select>
+                            <div id="stateNameDivCode"></div>
+                        </div>
+                        <div>
+                            <label for="">Quận/huyện</label>
+                            <select
+                                name="userCityName"
+                                id="cityNameSelect"
+                                class="custom-select"
+                            ></select>
+                            <div id="cityNameDivCode"></div>
                         </div>
                         <div>
                             <label for="">Địa chỉ đường/phố</label>
@@ -230,6 +302,7 @@
                                 type="text"
                                 class="form-control"
                                 placeholder="Mã ra vào căn hộ, phòng suite, tòa nhà"
+                                name="roomNumber"
                             />
                         </div>
                     </div>
@@ -244,7 +317,11 @@
                             />
                         </div>
                     </div>
-                    <button type="submit" class="saveEditBtn">
+                    <button
+                        type="button"
+                        class="saveEditBtn"
+                        th:data-edit="${turnOffEditModeArgs1}"
+                    >
                         <span class="_ftj2sg4">Lưu</span>
                     </button>
                 </form>

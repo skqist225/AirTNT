@@ -54,7 +54,6 @@
                                 th:field="*{lastName}"
                             />
                             <div
-                                for="lastNameError"
                                 th:if="${#fields.hasErrors('lastName')}"
                                 th:class="${#fields.hasErrors('lastName')}? c-validation"
                             >
@@ -71,7 +70,6 @@
                                 th:field="*{birthday}"
                             />
                             <div
-                                for="birthdayError"
                                 th:if="${#fields.hasErrors('birthday')}"
                                 th:class="${#fields.hasErrors('birthday')}? c-validation"
                             >

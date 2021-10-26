@@ -79,10 +79,9 @@
                                 "
                             >
                                 <img
-                                    th:src="@{/images/default_user_imaeg.png}
-                                    "
-                                    alt=""
+                                    alt="User's avatar'"
                                     class="header__user-avatar"
+                                    id="userAvatar"
                                 />
                             </div>
                         </div>
@@ -121,7 +120,7 @@
                                     >
                                 </li>
                                 <li>
-                                    <a th:href="@{/user/login}">Đăng xuất</a>
+                                    <a th:href="@{/logout}">Đăng xuất</a>
                                 </li>
                             </ul>
                         </div>
@@ -130,4 +129,40 @@
             </div>
         </div>
     </header>
+</div>
+
+<div th:remove="tag" th:fragment="javascript">
+    <script>
+        const headerNavButton =
+            document.getElementsByClassName('account__button')[0];
+        const navMenu = document.getElementsByClassName(
+            'loginAndLogoutHidden'
+        )[0];
+        let isClicked = false;
+
+        headerNavButton.addEventListener('click', function () {
+            if (!isClicked) {
+                navMenu.classList.add('active');
+                isClicked = true;
+            } else {
+                navMenu.classList.remove('active');
+                isClicked = false;
+            }
+        });
+
+        async function getLoggedInUserAvatar() {
+            const prefixUrl = 'http://localhost:8001/airtnt';
+
+            const { data } = await axios.get(`${prefixUrl}/user/avatar`);
+            const userAvatar = $('#userAvatar');
+
+            if (data) userAvatar.attr('src', `${prefixUrl}${data}`);
+            else
+                userAvatar.attr(
+                    'src',
+                    `${prefixUrl}/images/default_user_image.png`
+                );
+        }
+        getLoggedInUserAvatar();
+    </script>
 </div>

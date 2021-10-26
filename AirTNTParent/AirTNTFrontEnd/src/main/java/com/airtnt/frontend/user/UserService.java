@@ -58,16 +58,6 @@ public class UserService {
     }
 
     public User save(User user, String updatedField) {
-
-        if (updatedField.equals("password")) {
-            User existingUser = userRepository.findById(user.getId()).get();
-            if (user.getPassword().isEmpty()) {
-                user.setPassword(existingUser.getPassword());
-            } else {
-                encodePassword(user);
-            }
-        }
-
         return userRepository.save(user);
     }
 

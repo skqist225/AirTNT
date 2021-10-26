@@ -77,6 +77,12 @@
     width: 100%;
 }
 
+#userAvatar {
+    object-fit: cover;
+    width: 30px;
+    height: 30px;
+}
+
 .headerr__become-host {
     font-size: 14px;
     font-weight: 600;

@@ -11,24 +11,24 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class AirtntUserDetails implements UserDetails{
+public class AirtntUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1;
 
-	private User user;
+    private User user;
 
-    public AirtntUserDetails(User user){
+    public AirtntUserDetails(User user) {
         this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Role role = user.getRole();
-		List<SimpleGrantedAuthority> authories = new ArrayList<>();
-		
-	    authories.add(new SimpleGrantedAuthority(role.getName()));
-		
-		return authories;
+        List<SimpleGrantedAuthority> authories = new ArrayList<>();
+
+        authories.add(new SimpleGrantedAuthority(role.getName()));
+
+        return authories;
     }
 
     @Override
@@ -68,23 +68,22 @@ public class AirtntUserDetails implements UserDetails{
     }
 
     public String getFullname() {
-		return this.user.getFirstName() + " " + this.user.getLastName();
-	}
+        return this.user.getFirstName() + " " + this.user.getLastName();
+    }
 
-    public Integer getId(){
+    public Integer getId() {
         return this.user.getId();
     }
 
-	public void setFirstName(String firstName){
-		this.user.setFirstName(firstName);
-	}
+    public void setFirstName(String firstName) {
+        this.user.setFirstName(firstName);
+    }
 
-	public void setLastName(String lastName){
-		this.user.setLastName(lastName);
-	}
+    public void setLastName(String lastName) {
+        this.user.setLastName(lastName);
+    }
 
-	public boolean hasRole(String roleName){
-		return user.hasRole(roleName);
-	}
-    
+    public boolean hasRole(String roleName) {
+        return user.hasRole(roleName);
+    }
 }
