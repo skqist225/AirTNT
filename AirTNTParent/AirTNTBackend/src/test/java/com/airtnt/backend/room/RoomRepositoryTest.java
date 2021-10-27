@@ -1,6 +1,5 @@
 package com.airtnt.backend.room;
 
-import com.airtnt.backend.room.RoomRepository;
 import com.airtnt.backend.rule.RuleRepository;
 import com.airtnt.common.entity.*;
 import org.junit.jupiter.api.Test;

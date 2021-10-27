@@ -1,0 +1,12 @@
+<div th:fragment="content(roomGroups)" th:remove="tag">
+    <div class="roomTypesContainer">
+        <div
+            th:each="rt : ${roomGroups}"
+            class="room-type__box"
+            th:value="${rt.id}"
+        >
+            <div class="room-type__name">[[${rt.name}]]</div>
+            <div class="room-type__description">[[${rt.description}]]</div>
+        </div>
+    </div>
+</div>

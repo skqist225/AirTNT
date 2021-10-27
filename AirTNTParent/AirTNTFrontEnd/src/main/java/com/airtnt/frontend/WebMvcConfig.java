@@ -16,6 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		exposeDirectory("../images", registry);
 		exposeDirectory("../category_images", registry);
 		exposeDirectory("../user-photos", registry);
+		exposeDirectory("../room_types", registry);
 	}
 
 	private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry) {
