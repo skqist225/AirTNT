@@ -25,6 +25,8 @@ public class AmentityCategory {
 	@Column(unique = true, nullable = false)
 	private String name;
 
+	private String description;
+
 	public AmentityCategory(int id) {
 		this.id = id;
 	}

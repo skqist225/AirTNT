@@ -12,11 +12,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		exposeDirectory("../room_images", registry);
-		exposeDirectory("../images", registry);
+		exposeDirectory("../amentity_images", registry);
 		exposeDirectory("../category_images", registry);
-		exposeDirectory("../user-photos", registry);
+		exposeDirectory("../images", registry);
+		exposeDirectory("../room_images", registry);
 		exposeDirectory("../room_types", registry);
+		exposeDirectory("../user-photos", registry);
 	}
 
 	private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry) {

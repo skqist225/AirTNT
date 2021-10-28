@@ -3,9 +3,11 @@ package com.airtnt.frontend.host;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.airtnt.common.entity.Amentity;
 import com.airtnt.common.entity.RoomGroup;
 import com.airtnt.common.entity.RoomType;
 import com.airtnt.common.entity.User;
+import com.airtnt.frontend.amentity.AmentityService;
 import com.airtnt.frontend.room_group.RoomGroupService;
 import com.airtnt.frontend.room_type.RoomTypeService;
 import com.airtnt.frontend.user.UserRepository;
@@ -31,6 +33,9 @@ public class HostController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AmentityService amentityService;
 
     @GetMapping("")
     public String index() {
@@ -78,5 +83,17 @@ public class HostController {
         // model.addAttribute("userAvatar", user.getAvatarPath());
         // model.addAttribute("userName", user.getFullName());
         return "become_host/room_info";
+    }
+
+    @GetMapping("amenities")
+    public String AmenitiesSelect(Model model) {
+        List<Amentity> prominentAmentities = amentityService.getAmentities("prominent");
+        List<Amentity> favoriteAmentities = amentityService.getAmentities("favorite");
+        List<Amentity> safeAmentities = amentityService.getAmentities("safe");
+
+        model.addAttribute("prominentAmentities", prominentAmentities);
+        model.addAttribute("favoriteAmentities", favoriteAmentities);
+        model.addAttribute("safeAmentities", safeAmentities);
+        return "become_host/amenities";
     }
 }

@@ -21,6 +21,10 @@ public class Amentity extends BaseEntity {
 
 	private String description;
 
+	private boolean prominent;
+	private boolean favorite;
+	private boolean safe;
+
 	@ManyToOne
 	@JoinColumn(name = "amtcategory_id")
 	private AmentityCategory amentityCategory;
@@ -43,7 +47,7 @@ public class Amentity extends BaseEntity {
 	}
 
 	@Transient
-	public String getIconImagePath(){
+	public String getIconImagePath() {
 		return "amentity_images/" + this.iconImage;
 	}
 }

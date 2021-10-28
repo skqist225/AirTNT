@@ -19,7 +19,7 @@
             rel="stylesheet"
         />
 
-        <link rel="stylesheet" th:href="@{/css/room_info.css}" />
+        <link rel="stylesheet" th:href="@{/css/amentities.css}" />
         <link rel="stylesheet" th:href="@{/css/room_type.css}" />
     </head>
 
@@ -41,8 +41,7 @@
                             class="room-group__left-title"
                             style="text-align: center"
                         >
-                            Điều nào sau đây mô tả chính xác nhất về nơi ở của
-                            bạn?
+                            Cho khách biết chỗ ở của bạn có những gì?
                         </h1>
                     </div>
                     <div class="logoWrapper">
@@ -68,109 +67,39 @@
                             <span style="font-weight: 500">Lưu và thoát</span>
                         </button>
                     </div>
-                    <div class="room-info__right-middle">
-                        <div class="room-info__info">
-                            <div class="room-info__info-title">Khách</div>
-                            <div>
-                                <button
-                                    class="incAndDecBtn"
-                                    data-function="dec"
-                                    data-edit="guestNumber"
-                                    id="guestNumberDecBtn"
-                                >
-                                    -</button
-                                ><span
-                                    style="
-                                        display: inline-block;
-                                        margin: 0 16px;
-                                    "
-                                    id="guestNumber"
-                                    >1</span
-                                ><button
-                                    class="incAndDecBtn"
-                                    data-function="inc"
-                                    data-edit="guestNumber"
-                                >
-                                    +
-                                </button>
+                    <div class="amentities__right-middle">
+                        <div class="fullWidthAndFullHeight flexCol">
+                            <div class="fullWidthAndFullHeight flexCol">
+                                <div class="amentities__header-title">
+                                    Bạn có tiện nghi nào nổi bật không?
+                                </div>
+                                <div>
+                                    <div
+                                        th:replace="become_host/_amenities_partial :: content(${prominentAmentities})"
+                                    ></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="room-info__info">
-                            <div class="room-info__info-title">Giường</div>
-                            <div>
-                                <button
-                                    class="incAndDecBtn"
-                                    data-function="dec"
-                                    data-edit="bedNumber"
-                                    id="bedNumberDecBtn"
-                                >
-                                    -</button
-                                ><span
-                                    style="
-                                        display: inline-block;
-                                        margin: 0 16px;
-                                    "
-                                    id="bedNumber"
-                                    >1</span
-                                ><button
-                                    class="incAndDecBtn"
-                                    data-function="inc"
-                                    data-edit="bedNumber"
-                                >
-                                    +
-                                </button>
+                            <div class="flexCol">
+                                <div>
+                                    Còn những tiện nghi yêu thích của khách sau
+                                    đây thì sao?
+                                </div>
+                                <div>
+                                    <div
+                                        th:replace="become_host/_amenities_partial :: content(${favoriteAmentities})"
+                                    ></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="room-info__info">
-                            <div class="room-info__info-title">Phòng Ngủ</div>
-                            <div>
-                                <button
-                                    class="incAndDecBtn"
-                                    data-function="dec"
-                                    data-edit="bedRoomNumber"
-                                    id="bedRoomNumberDecBtn"
-                                >
-                                    -</button
-                                ><span
-                                    style="
-                                        display: inline-block;
-                                        margin: 0 16px;
-                                    "
-                                    id="bedRoomNumber"
-                                    >1</span
-                                ><button
-                                    class="incAndDecBtn"
-                                    data-function="inc"
-                                    data-edit="bedRoomNumber"
-                                >
-                                    +
-                                </button>
-                            </div>
-                        </div>
-                        <div class="room-info__info">
-                            <div class="room-info__info-title">Phòng tắm</div>
-                            <div>
-                                <button
-                                    class="incAndDecBtn"
-                                    data-function="dec"
-                                    data-edit="bathRoomNumber"
-                                    id="bathRoomNumberDecBtn"
-                                >
-                                    -</button
-                                ><span
-                                    style="
-                                        display: inline-block;
-                                        margin: 0 16px;
-                                    "
-                                    id="bathRoomNumber"
-                                    >1</span
-                                ><button
-                                    class="incAndDecBtn"
-                                    data-function="inc"
-                                    data-edit="bathRoomNumber"
-                                >
-                                    +
-                                </button>
+                            <div class="flexCol">
+                                <div>
+                                    Bạn có tiện nghi nào trong số những tiện
+                                    nghi đảm bảo an toàn này không?
+                                </div>
+                                <div>
+                                    <div
+                                        th:replace="become_host/_amenities_partial :: content(${safeAmentities})"
+                                    ></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -245,7 +174,7 @@
 
             function nextPage() {
                 window.location.href =
-                    'http://localhost:8001/airtnt/become-a-host/amenities';
+                    'http://localhost:8001/airtnt/become-a-host/room-info';
             }
         </script>
     </body>
