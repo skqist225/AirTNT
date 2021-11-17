@@ -23,6 +23,7 @@
     padding: 0 48px;
     max-width: 90%;
     margin: 0 auto;
+    overflow-y: scroll;
 }
 
 .flexCol {
@@ -51,9 +52,24 @@
     margin: 0px 20px;
 }
 
-.amentities__header-title {
+.amentities__title {
     font-size: 22px;
     line-height: 26px;
     padding-left: 8px;
     margin-bottom: 8px;
+    margin: 15px 0;
+}
+
+.prominentAmentities:hover,
+.favoriteAmentities:hover,
+.safeAmentities:hover {
+    box-shadow: 0 0 0 2px #222222;
+    background-color: #f7f7f7;
+}
+
+.prominentAmentities.choosen,
+.favoriteAmentities.choosen,
+.safeAmentities.choosen {
+    box-shadow: 0 0 0 2px #222222;
+    background-color: #f7f7f7;
 }

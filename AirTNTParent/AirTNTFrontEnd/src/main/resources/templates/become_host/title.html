@@ -20,7 +20,9 @@
         />
 
         <link rel="stylesheet" th:href="@{/css/amentities.css}" />
+        <link rel="stylesheet" th:href="@{/css/photos.css}" />
         <link rel="stylesheet" th:href="@{/css/room_type.css}" />
+        <link rel="stylesheet" th:href="@{/css/title.css}" />
     </head>
 
     <!--  -->
@@ -41,7 +43,7 @@
                             class="room-group__left-title"
                             style="text-align: center"
                         >
-                            Cho khách biết chỗ ở của bạn có những gì?
+                            Hãy đặt tên cho chỗ ở của bạn
                         </h1>
                     </div>
                     <div class="logoWrapper">
@@ -67,39 +69,23 @@
                             <span style="font-weight: 500">Lưu và thoát</span>
                         </button>
                     </div>
-                    <div class="amentities__right-middle">
-                        <div class="fullWidthAndFullHeight flexCol">
-                            <div class="fullWidthAndFullHeight flexCol">
-                                <div class="amentities__title">
-                                    Bạn có tiện nghi nào nổi bật không?
-                                </div>
-                                <div>
-                                    <div
-                                        th:replace="become_host/_amenities_partial :: content(${prominentAmentities}, 'prominentAmentities')"
-                                    ></div>
-                                </div>
+                    <div class="title__right-middle">
+                        <div>
+                            <label for="room-name" class="room-name-label"
+                                >Tạo tiêu đề</label
+                            >
+                            <div>
+                                <textarea
+                                    name=""
+                                    id="room-name"
+                                    cols="30"
+                                    rows="10"
+                                    maxlength="50"
+                                    onkeydown="onKeyPress(event);"
+                                ></textarea>
                             </div>
-                            <div class="flexCol">
-                                <div class="amentities__title">
-                                    Còn những tiện nghi yêu thích của khách sau
-                                    đây thì sao?
-                                </div>
-                                <div>
-                                    <div
-                                        th:replace="become_host/_amenities_partial :: content(${favoriteAmentities}, 'favoriteAmentities')"
-                                    ></div>
-                                </div>
-                            </div>
-                            <div class="flexCol">
-                                <div class="amentities__title">
-                                    Bạn có tiện nghi nào trong số những tiện
-                                    nghi đảm bảo an toàn này không?
-                                </div>
-                                <div>
-                                    <div
-                                        th:replace="become_host/_amenities_partial :: content(${safeAmentities}, 'safeAmentities')"
-                                    ></div>
-                                </div>
+                            <div id="numberOfTextPerMaxLength">
+                                <span id="currentLength">0</span>/50
                             </div>
                         </div>
                     </div>
@@ -107,7 +93,7 @@
                     <div class="room-group__right-last">
                         <div>
                             <a
-                                th:href="@{/become-a-host/property-type-group}"
+                                th:href="@{/become-a-host/photos}"
                                 class="room-group__prev-step"
                                 style="
                                     text-decoration: none;
@@ -135,43 +121,17 @@
         ></script>
 
         <script>
-            $(document).ready(function () {
-                const prominentAmentities = $('.prominentAmentities');
-                const favoriteAmentities = $('.favoriteAmentities');
-                const safeAmentities = $('.safeAmentities');
-
-                prominentAmentities.first().addClass('choosen');
-                favoriteAmentities.first().addClass('choosen');
-                safeAmentities.first().addClass('choosen');
-
-                prominentAmentities.each(function () {
-                    $(this).click(function () {
-                        prominentAmentities.each(function () {
-                            $(this).removeClass('choosen');
-                        });
-
-                        $(this).addClass('choosen');
-                    });
-                });
-                favoriteAmentities.each(function () {
-                    $(this).click(function () {
-                        favoriteAmentities.each(function () {
-                            $(this).removeClass('choosen');
-                        });
-
-                        $(this).addClass('choosen');
-                    });
-                });
-                safeAmentities.each(function () {
-                    $(this).click(function () {
-                        safeAmentities.each(function () {
-                            $(this).removeClass('choosen');
-                        });
-
-                        $(this).addClass('choosen');
-                    });
-                });
-            });
+            function onKeyPress(event) {
+                const currentLength = $('#currentLength');
+                const currentValue = currentLength.text();
+                if (event.key === 'Backspace') {
+                    if (currentValue * 1 > 0)
+                        currentLength.text(currentValue * 1 - 1);
+                } else {
+                    if (currentValue * 1 < 50)
+                        currentLength.text(currentValue * 1 + 1);
+                }
+            }
 
             function backtoHomePage() {
                 window.location.href = 'http://localhost:8001/airtnt/';
@@ -179,7 +139,7 @@
 
             function nextPage() {
                 window.location.href =
-                    'http://localhost:8001/airtnt/become-a-host/photos';
+                    'http://localhost:8001/airtnt/become-a-host/description';
             }
         </script>
     </body>

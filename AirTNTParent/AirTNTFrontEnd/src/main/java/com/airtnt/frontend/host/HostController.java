@@ -10,7 +10,6 @@ import com.airtnt.common.entity.User;
 import com.airtnt.frontend.amentity.AmentityService;
 import com.airtnt.frontend.room_group.RoomGroupService;
 import com.airtnt.frontend.room_type.RoomTypeService;
-import com.airtnt.frontend.user.UserRepository;
 import com.airtnt.frontend.user.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +85,7 @@ public class HostController {
     }
 
     @GetMapping("amenities")
-    public String AmenitiesSelect(Model model) {
+    public String amenitiesSelect(Model model) {
         List<Amentity> prominentAmentities = amentityService.getAmentities("prominent");
         List<Amentity> favoriteAmentities = amentityService.getAmentities("favorite");
         List<Amentity> safeAmentities = amentityService.getAmentities("safe");
@@ -95,5 +94,25 @@ public class HostController {
         model.addAttribute("favoriteAmentities", favoriteAmentities);
         model.addAttribute("safeAmentities", safeAmentities);
         return "become_host/amenities";
+    }
+
+    @GetMapping("photos")
+    public String roomImagesSelect(Model model) {
+        return "become_host/photos";
+    }
+
+    @GetMapping("title")
+    public String titleSelect(Model model) {
+        return "become_host/title";
+    }
+
+    @GetMapping("description")
+    public String descriptionSelect(Model model) {
+        return "become_host/description";
+    }
+
+    @GetMapping("price")
+    public String priceSelect(Model model) {
+        return "become_host/price";
     }
 }

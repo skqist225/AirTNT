@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html xml:lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chọn loại chỗ ở thông thường</title>
+
+        <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+        />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <link rel="stylesheet" th:href="@{/css/amentities.css}" />
+        <link rel="stylesheet" th:href="@{/css/photos.css}" />
+        <link rel="stylesheet" th:href="@{/css/room_type.css}" />
+    </head>
+
+    <!--  -->
+    <body>
+        <main class="room-group__main">
+            <div class="room-group__container">
+                <div class="room-group__left">
+                    <div
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            height: 100%;
+                            padding: 0 32px;
+                        "
+                    >
+                        <h1
+                            class="room-group__left-title"
+                            style="text-align: center"
+                        >
+                            Tiếp theo, hãy thêm một số ảnh chụp chỗ ở của bạn
+                        </h1>
+                    </div>
+                    <div class="logoWrapper">
+                        <a
+                            th:href="@{/}
+                       "
+                            style="text-decoration: none"
+                        >
+                            <img
+                                th:src="@{/images/airtntlogo.png}"
+                                alt=""
+                                id="airTntLogo"
+                            />
+                        </a>
+                    </div>
+                </div>
+                <div class="room-group__right">
+                    <div class="room-group__right-first">
+                        <button
+                            class="become-a-host__right-cancelBtn"
+                            onclick="backtoHomePage();"
+                        >
+                            <span style="font-weight: 500">Lưu và thoát</span>
+                        </button>
+                    </div>
+                    <div class="photos__right-middle">
+                        <div
+                            class="drag_n_drop_zone"
+                            ondragover="dragoverHandler(event)"
+                            ondrop="dropHandler(event)"
+                        >
+                            <div>
+                                <img
+                                    th:src="@{'/amentity_images/photos.svg'}"
+                                    alt=""
+                                    width="64px"
+                                    height="64px"
+                                />
+                            </div>
+                            <div class="photos__drag-title">
+                                Kéo ảnh của bạn vào đây
+                            </div>
+                            <div>Thêm ít nhất 5 ảnh</div>
+                            <div style="text-align: center; margin-top: 20px">
+                                <button
+                                    class="photos__btn__load-images"
+                                    id="triggerUploadPhotosInput"
+                                >
+                                    Tải lên từ thiết bị của bạn
+                                </button>
+                                <input
+                                    type="file"
+                                    name="room_photos"
+                                    id="uploadPhotos"
+                                    accept="images/*"
+                                    hidden
+                                    multiple
+                                />
+                            </div>
+                        </div>
+                        <div id="editor" class="photosContainer">
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
+                                "
+                            >
+                                <div>
+                                    <div
+                                        style="
+                                            font-size: 22px;
+                                            color: #222;
+                                            font-weight: 500;
+                                            line-height: 16px;
+                                        "
+                                        id="addAtLeast5Images"
+                                    >
+                                        Thêm ít nhất 5 ảnh
+                                    </div>
+                                    <div
+                                        style="
+                                            color: rgb(113, 113, 113);
+                                            padding-top: 4px;
+                                            font-weight: 400;
+                                        "
+                                    >
+                                        Kéo để sắp xếp lại
+                                    </div>
+                                </div>
+                                <div>
+                                    <button
+                                        class="upload__btn"
+                                        onclick="uploadImagesToFolder();"
+                                    >
+                                        <img
+                                            th:src="@{'/amentity_images/upload.svg'}"
+                                            alt=""
+                                            width="22px"
+                                            height="22px"
+                                        />
+                                        <span>Tải lên</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="photosContainer__body">
+                                <div id="thumbnailPhotos">
+                                    <div class="thumbnail-title">Ảnh bìa</div>
+                                </div>
+                                <div id="subImages"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stepProcess room-group-step"></div>
+                    <div class="room-group__right-last">
+                        <div>
+                            <a
+                                th:href="@{/become-a-host/amenities}"
+                                class="room-group__prev-step"
+                                style="
+                                    text-decoration: none;
+                                    text-decoration: underline;
+                                    color: #000;
+                                "
+                                >Quay lại</a
+                            >
+                        </div>
+                        <button
+                            class="become-a-host__right-startBtn"
+                            onclick="nextPage();"
+                        >
+                            <span style="font-weight: 500">Tiếp theo</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script
+            type="text/javascript"
+            th:src="@{/webjars/jquery/jquery.min.js}"
+        ></script>
+
+        <script>
+            let photos = [];
+            let fileReaderResult = new Map();
+            $(document).ready(function () {
+                const uploadPhotos = $('#uploadPhotos');
+
+                $('#triggerUploadPhotosInput').click(function (e) {
+                    e.preventDefault();
+                    uploadPhotos.click();
+                });
+
+                uploadPhotos.on('change', function () {
+                    readURL(this.files, uploadPhotos);
+                });
+            });
+
+            function previewImage(file, parent, thumbnail = false, modifier) {
+                console.log(modifier);
+                //this takes some times to execute
+                const defer = $.Deferred();
+                const fileReader = new FileReader();
+                const photoAction = $(`
+                    <div class="photoAction">
+                        <button class="photo-action__btn" onclick="displayAction(this);" data-index="${modifier}">
+                            <span>
+                                <img src="http://localhost:8001/airtnt/amentity_images/threedot.svg" width="16px" height="16px"/>
+                            </span>
+                        </button>
+                        <div class="photo-action__div-hidden">
+                            <ul data-index="${modifier}">
+                                <li onclick="moveImageBack($(this).parent('ul').data('index') *
+                                    1);">Di chuyển về phía sau</li>
+                                <li onclick="moveImageForward($(this).parent('ul').data('index') *
+                                    1);">Di chuyển về phía trước</li>
+                                <li onclick="makeMainImage($(this).parent('ul').data('index') *
+                                    1);">Chọn làm ảnh chính</li>
+                                <li onclick="deleteImage($(this).parent('ul').data('index') *
+                                    1);">Xóa ảnh</li>
+                            </ul>
+                        </div>
+                    </div>
+                `);
+
+                fileReader.onload = function (e) {
+                    if (!thumbnail) {
+                        const div = $(`
+                            <div class="photo-cover">
+                                <img class="photo" src="${e.target.result}" data-index="${modifier}"/>
+                            </div>
+                        `);
+
+                        div.append(photoAction);
+                        parent.append(div);
+                    } else {
+                        const image = $(
+                            ` <img class="photo" src="${e.target.result}" data-index="${modifier}"/>`
+                        );
+                        parent.append(image);
+                        parent.append(photoAction);
+                    }
+
+                    fileReaderResult.set(modifier, e.target.result);
+                };
+
+                fileReader.onloadend = function () {
+                    defer.resolve();
+                };
+
+                fileReader.readAsDataURL(file);
+                return defer.promise();
+            }
+
+            function doPreviewImage(files, subImagesContainer) {
+                //first image for thumbnail
+                const defer = $.Deferred();
+
+                var promise = previewImage(
+                    files[0],
+                    $('#thumbnailPhotos'),
+                    true,
+                    0
+                );
+                promise.done(function () {
+                    photos.push(files[0]);
+
+                    if (photos.length === files.length) {
+                        defer.resolve();
+                    }
+
+                    for (let i = 1; i < files.length; i++) {
+                        const promise = previewImage(
+                            files[i],
+                            subImagesContainer,
+                            false,
+                            i
+                        );
+                        promise.done(function () {
+                            photos.push(files[i]);
+
+                            if (photos.length === files.length) {
+                                defer.resolve();
+                            }
+                        });
+                    }
+                });
+
+                //the rest of images
+
+                return defer.promise();
+            }
+
+            function doPreviewImageSecondTime(files, subImagesContainer) {
+                const defer = $.Deferred();
+                let count = 0;
+
+                var promise = previewImage(
+                    files[0],
+                    subImagesContainer,
+                    false,
+                    photos.length
+                );
+
+                promise.done(function () {
+                    photos.push(files[0]);
+                    count++;
+
+                    if (count === files.length) {
+                        defer.resolve();
+                    } else {
+                        let lastIndex = photos.length;
+
+                        for (let i = 1; i < files.length; i++) {
+                            const promise = previewImage(
+                                files[i],
+                                subImagesContainer,
+                                false,
+                                lastIndex++
+                            );
+
+                            promise.done(function () {
+                                photos.push(files[i]);
+                                count++;
+
+                                if (count === files.length) {
+                                    defer.resolve();
+                                }
+                            });
+                        }
+                    }
+                });
+
+                return defer.promise();
+            }
+
+            function readURL(files, uploadPhotos) {
+                const subImagesContainer = $('#subImages');
+                if (photos.length === 0) {
+                    if (files.length > 0) {
+                        $('.photosContainer').addClass('active');
+                        $('.drag_n_drop_zone').addClass('disabled');
+
+                        if (photos.length === 5)
+                            $('#addAtLeast5Images').text('Hoàn tất!');
+
+                        var promise = doPreviewImage(files, subImagesContainer);
+
+                        promise.done(function () {
+                            addEmptyImage(
+                                files,
+                                uploadPhotos,
+                                subImagesContainer
+                            );
+                        });
+                    }
+                } else {
+                    const singleImageContainer = $('.singleImageContainer');
+                    singleImageContainer.remove();
+
+                    if (photos.length === 5)
+                        $('#addAtLeast5Images').text('Hoàn tất!');
+
+                    var promise = doPreviewImageSecondTime(
+                        files,
+                        subImagesContainer
+                    );
+
+                    promise.done(function () {
+                        addEmptyImage(photos, uploadPhotos, subImagesContainer);
+                    });
+                }
+            }
+
+            function addEmptyImage(files, uploadPhotos, subImagesContainer) {
+                if (files.length - 1 < 4) {
+                    for (let i = 0; i <= 4 - files.length; i++) {
+                        const div = $(
+                            `<div class="singleImageContainer containerOfImageIcon">
+                                          <img class="imageIcon" src="http://localhost:8001/airtnt/amentity_images/single_image.svg"/>
+                                      </div>`
+                        );
+                        subImagesContainer.append(div);
+                    }
+                } else {
+                    const div = $(
+                        `<div class="singleImageContainer containerOfImageIcon">
+                                      <img class="imageIcon" src="http://localhost:8001/airtnt/amentity_images/single_image.svg"/>
+                                  </div>`
+                    );
+
+                    subImagesContainer.append(div);
+                }
+
+                const singleImageContainer = $('.singleImageContainer');
+                if (singleImageContainer.length > 0) {
+                    singleImageContainer.each(function (e) {
+                        if (
+                            !$(this).children(
+                                'img[src="http://localhost:8001/airtnt/amentity_images/single_image.svg"]'
+                            )
+                        ) {
+                            $(this).removeClass('singleImageContainer');
+                            $(this).unbind('click');
+                        } else {
+                            $(this).click(function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                uploadPhotos.click();
+                            });
+                        }
+                    });
+                }
+            }
+
+            function displayAction(self) {
+                const _self = $(self);
+
+                const sibling = _self.siblings('.photo-action__div-hidden');
+
+                if (sibling.hasClass('active')) sibling.removeClass('active');
+                else sibling.addClass('active');
+            }
+
+            function swapPosition(firstEl, secondEl) {
+                const temp = photos[firstEl];
+                photos[firstEl] = photos[secondEl];
+                photos[secondEl] = temp;
+            }
+
+            function changePreviewImage(firstEl, secondEl) {
+                const fr1 = fileReaderResult.get(firstEl);
+                const fr2 = fileReaderResult.get(secondEl);
+
+                if (firstEl === 0) {
+                    console.log('first ele = ', firstEl);
+                    $('#thumbnailPhotos').children('img').attr('src', fr2);
+                } else {
+                    console.log('first ele = ', firstEl);
+                    $('#subImages')
+                        .children('.photo-cover')
+                        .children(`img[data-index="${firstEl}"]`)
+                        .attr('src', fr2);
+                }
+
+                if (secondEl === 0) {
+                    console.log('second ele = ', secondEl);
+                    $('#thumbnailPhotos').children('img').attr('src', fr1);
+                } else {
+                    console.log('second ele = ', secondEl);
+                    $('#subImages')
+                        .children('.photo-cover')
+                        .children(`img[data-index="${secondEl}"]`)
+                        .attr('src', fr1);
+                }
+
+                fileReaderResult.set(firstEl, fr2);
+                fileReaderResult.set(secondEl, fr1);
+            }
+
+            function closeAction(index) {
+                const _self = $(`button[data-index="${index}"]`);
+
+                const sibling = _self.siblings('.photo-action__div-hidden');
+                if (sibling.hasClass('active')) sibling.removeClass('active');
+            }
+
+            function makeMainImage(index) {
+                swapPosition(0, index);
+                changePreviewImage(0, index);
+                closeAction(index);
+            }
+
+            function moveImageBack(index) {
+                if (index === 1) {
+                    makeMainImage(index);
+                } else {
+                    swapPosition(index, index - 1);
+                    changePreviewImage(index, index - 1);
+                    closeAction(index);
+                }
+            }
+
+            function moveImageForward(index) {
+                if (index === 0) {
+                    makeMainImage(index + 1);
+                } else {
+                    swapPosition(index, index + 1);
+                    changePreviewImage(index, index + 1);
+                    closeAction(index);
+                }
+            }
+
+            function deleteImage(index) {
+                if (photos.length === 1) {
+                    // if just one image left
+                    photos = [];
+                    $('#thumbnailPhotos').children('.photo').remove();
+                    $('.photosContainer').removeClass('active');
+                    $('.drag_n_drop_zone').removeClass('disabled');
+                    $('#subImages').empty();
+                }
+
+                for (let i = index + 1; i < photos.length; i++) {
+                    //shift left all remain image
+                    moveImageBack(i);
+                }
+
+                //delete image from photos
+                delete photos[photos.length - 1];
+                photos.length--;
+                // Remove preview image
+                const lastElement = $('#subImages')
+                    .children('.photo-cover')
+                    .last();
+                lastElement.remove();
+
+                const subImagesContainer = $('#subImages');
+                const uploadPhotos = $('#uploadPhotos');
+                if (photos.length < 4) {
+                    addEmptyImage(photos, uploadPhotos, subImagesContainer);
+                }
+            }
+
+            async function uploadImagesToFolder() {
+                if (photos.length < 5) {
+                    alert('Vui lòng chọn ít nhất 5 hình ảnh.');
+                    return;
+                }
+
+                const formData = new FormData();
+                if (localStorage.getItem('room')) {
+                    const room = localStorage.getItem('room');
+                    if (room.currentFolderIndex) {
+                        formData.set(
+                            'currentFolderIndex',
+                            room.currentFolderIndex
+                        );
+                    }
+                }
+                photos.forEach(photo => formData.append('photos', photo));
+
+                const {
+                    data: { status, currentFolderIndex },
+                } = await axios.post(
+                    'http://localhost:8001/airtnt/become-a-host/upload-room-photos',
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                );
+
+                console.log(photos);
+
+                if (status === 'successs') {
+                    const room = localStorage.getItem('room');
+                    room.photosFolderIndex = currentFolderIndex;
+                    room.photos = photos.map(photo => photo.name);
+
+                    localStorage.setItem('room', room);
+                }
+            }
+
+            function dropHandler(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+
+                // FileList object.
+                var files = evt.dataTransfer.files;
+                readURL(files);
+            }
+
+            function dragoverHandler(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+                // Explicitly show this is a copy.
+                evt.dataTransfer.dropEffect = 'copy';
+            }
+
+            function backtoHomePage() {
+                window.location.href = 'http://localhost:8001/airtnt/';
+            }
+
+            function nextPage() {
+                window.location.href =
+                    'http://localhost:8001/airtnt/become-a-host/title';
+            }
+        </script>
+    </body>
+</html>
