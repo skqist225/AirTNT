@@ -73,3 +73,7 @@
     box-shadow: 0 0 0 2px #222222;
     background-color: #f7f7f7;
 }
+
+.stepProcess.room-amentities-step {
+    width: calc(100% / 11 * 6);
+}

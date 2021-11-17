@@ -3,7 +3,11 @@
     <head>
         <title>Nhập vị trí nhà/ phòng cho thuê</title>
 
-        <link rel="stylesheet" th:href="@{/css/location.css}" type="text/css" />
+        <link
+            rel="stylesheet"
+            th:href="@{/css/become_host/location.css}"
+            type="text/css"
+        />
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
         <link
             href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css"
@@ -100,8 +104,58 @@
                     </div>
                     <div class="room-group__right-middle">
                         <div id="map"></div>
+                        <div>
+                            <div>
+                                <div></div>
+                                <div>Xác nhận địa chỉ của bạn</div>
+                            </div>
+                            <div>
+                                <label for="">
+                                    <div></div>
+                                    <div>
+                                        <input type="text" />
+                                    </div>
+                                </label>
+                                <label for="">
+                                    <div></div>
+                                    <div>
+                                        <input type="text" />
+                                    </div>
+                                </label>
+                                <label for="">
+                                    <div></div>
+                                    <div>
+                                        <input type="text" />
+                                    </div>
+                                </label>
+                                <label for="">
+                                    <div></div>
+                                    <div>
+                                        <input type="text" />
+                                    </div>
+                                </label>
+                                <label for="">
+                                    <div></div>
+                                    <div>
+                                        <input type="text" />
+                                    </div>
+                                </label>
+                                <label for="">
+                                    <div></div>
+                                    <div>
+                                        <input type="text" />
+                                    </div>
+                                </label>
+                            </div>
+                            <div>//red warning Đường/Phố Thành phố</div>
+                            <div>
+                                <button class="location__btn-complete-address">
+                                    Trông ổn rồi
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="stepProcess room-group-step"></div>
+                    <div class="stepProcess location-step"></div>
                     <div class="room-group__right-last">
                         <div>
                             <a
@@ -147,10 +201,11 @@
             }
 
             getLocation();
-
+            let userLat = 0,
+                userLng = 0;
             function showPosition(position) {
-                const userLat = position.coords.latitude;
-                const userLng = position.coords.longitude;
+                userLat = position.coords.latitude;
+                userLng = position.coords.longitude;
 
                 var map = new mapboxgl.Map({
                     container: 'map',
@@ -227,6 +282,22 @@
             }
 
             function nextPage() {
+                let room = {};
+                if (!localStorage.getItem('room')) {
+                    room = {
+                        longitude: userLat,
+                        latitude: userLng,
+                    };
+                } else {
+                    room = JSON.parse(localStorage.getItem('room'));
+                    room = {
+                        ...room,
+                        longitude: userLat,
+                        latitude: userLng,
+                    };
+                }
+                localStorage.setItem('room', JSON.stringify(room));
+
                 window.location.href =
                     'http://localhost:8001/airtnt/become-a-host/room-info';
             }

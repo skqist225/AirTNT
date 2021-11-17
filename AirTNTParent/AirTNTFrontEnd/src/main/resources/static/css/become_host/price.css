@@ -60,3 +60,7 @@ input::placeholder {
     line-height: 20px !important;
     padding-top: 12px;
 }
+
+.stepProcess.room-price-step {
+    width: calc(100% / 11 * 10);
+}

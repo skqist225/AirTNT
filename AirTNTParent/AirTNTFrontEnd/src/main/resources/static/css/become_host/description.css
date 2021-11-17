@@ -70,3 +70,7 @@ textarea::placeholder {
 .description-text.active {
     display: block;
 }
+
+.stepProcess.room-photos-step {
+    width: calc(100% / 11 * 9);
+}

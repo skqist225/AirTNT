@@ -1,0 +1,11 @@
+.room-preview__right-middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.stepProcess.room-preview-step {
+    width: calc(100% / 11 * 11);
+}

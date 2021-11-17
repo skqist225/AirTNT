@@ -56,7 +56,7 @@ public class HostRestController {
             }
         }
         JSONObject object = new JSONObject();
-        object.put("status", "successs");
+        object.put("status", "success");
         object.put("currentFolderIndex",
                 payload.getCurrentFolderIndex() != 0 ? payload.getCurrentFolderIndex() : count);
         return object.toString();

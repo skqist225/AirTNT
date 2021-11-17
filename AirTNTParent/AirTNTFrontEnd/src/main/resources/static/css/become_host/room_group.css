@@ -186,42 +186,36 @@
 }
 
 .stepProcess.room-group-step {
-    width: calc(100% / 10 * 2);
+    width: calc(100% / 11 * 1);
 }
 
-.room-type__box {
+.room-group__box {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     width: 464px;
-    height: 122px;
+    height: 90px;
     border: 2px solid #f7f7f7;
+
     border-radius: 16px;
     transition: all 0.2s ease;
     margin-bottom: 12px;
     padding: 12px 24px;
     cursor: pointer;
-    padding: 24px;
 }
 
-.room-type__box:hover {
+.room-group__box:hover {
     box-shadow: 0 0 0 2px #222222;
     background-color: #f7f7f7;
 }
 
-.room-type__box.active {
+.room-group__box.active {
     box-shadow: 0 0 0 2px #222222;
     background-color: #f7f7f7;
 }
 
-.room-type__name {
+.room-group__name {
     font-size: 18px;
     line-height: 24px;
-    font-weight: 500;
-}
-
-.room-type__description {
-    font-size: 14px !important;
-    line-height: 20px !important;
-    color: #717171 !important;
-    margin-top: 8px;
+    font-style: bold;
 }

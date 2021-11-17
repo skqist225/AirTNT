@@ -2,6 +2,7 @@
     <div class="amentities__card-container">
         <th:block th:each="a : ${amentitiesArg}">
             <div th:class="${'amentity__card ' + className}">
+                <input type="hidden" th:value="${a.id}">
                 <div>
                     <img
                         th:src="@{'/amentity_images/' + ${a.iconImage}}"

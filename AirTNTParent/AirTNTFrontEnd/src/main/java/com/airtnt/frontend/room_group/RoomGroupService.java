@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.RoomGroup;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class RoomGroupService {
 
     public List<RoomGroup> getRoomGroups() {
         List<RoomGroup> roomGroups = new ArrayList<>();
-        Iterator iterator = roomGroupRepository.findAll().iterator();
+        Iterator<RoomGroup> iterator = roomGroupRepository.findAll().iterator();
 
         while (iterator.hasNext()) {
             RoomGroup rt = (RoomGroup) iterator.next();

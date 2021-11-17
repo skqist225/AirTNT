@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Chọn loại chỗ ở thông thường</title>
+        <title>Chọn loại chỗ ở bạn cung cấp – Airtnt</title>
 
         <link
             rel="stylesheet"
@@ -24,7 +24,7 @@
             rel="stylesheet"
         />
 
-        <link rel="stylesheet" th:href="@{/css/privacy_type.css}" />
+        <link rel="stylesheet" th:href="@{/css/become_host/privacy_type.css}" />
     </head>
 
     <!--  -->
@@ -76,7 +76,7 @@
                             th:replace="become_host/_privacy_type_partial :: content(${privacyTypes})"
                         ></div>
                     </div>
-                    <div class="stepProcess room-group-step"></div>
+                    <div class="stepProcess privacy-step"></div>
                     <div class="room-group__right-last">
                         <div>
                             <a
@@ -106,12 +106,6 @@
             type="text/javascript"
             th:src="@{/webjars/jquery/jquery.min.js}"
         ></script>
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"
-            defer
-        ></script>
-        <script th:src="@{/js/user/personal_info.js}"></script>
         <script>
             $(document).ready(function () {
                 const roomTypeBox = $('.privacy-type__box');
@@ -133,6 +127,25 @@
             }
 
             function nextPage() {
+                const choosenPrivacyType = $('div.privacy-type__box')
+                    .filter('.active')
+                    .children('.privacy-type__name')
+                    .text();
+
+                let room = {};
+                if (!localStorage.getItem('room')) {
+                    room = {
+                        privacyType: choosenPrivacyType,
+                    };
+                } else {
+                    room = JSON.parse(localStorage.getItem('room'));
+                    room = {
+                        ...room,
+                        privacyType: choosenPrivacyType,
+                    };
+                }
+                localStorage.setItem('room', JSON.stringify(room));
+
                 window.location.href =
                     'http://localhost:8001/airtnt/become-a-host/location';
             }

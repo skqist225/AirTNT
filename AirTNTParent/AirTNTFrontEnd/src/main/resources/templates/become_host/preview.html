@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Tạo tiêu đề mục nhà/ phòng cho thuê – Airtnt</title>
+        <title>Tạo phần mô tả nhà/phòng cho thuê – Airtnt</title>
 
         <link
             rel="stylesheet"
@@ -20,10 +20,9 @@
         />
 
         <link rel="stylesheet" th:href="@{/css/become_host/room_type.css}" />
-        <link rel="stylesheet" th:href="@{/css/become_host/title.css}" />
+        <link rel="stylesheet" th:href="@{/css/become_host/preview.css}" />
     </head>
 
-    <!--  -->
     <body>
         <main class="room-group__main">
             <div class="room-group__container">
@@ -33,6 +32,7 @@
                             display: flex;
                             align-items: center;
                             justify-content: center;
+                            flex-direction: column;
                             height: 100%;
                             padding: 0 32px;
                         "
@@ -41,8 +41,12 @@
                             class="room-group__left-title"
                             style="text-align: center"
                         >
-                            Hãy đặt tên cho chỗ ở của bạn
+                            Hãy xem mục cho thuê của bạn!
                         </h1>
+                        <div>
+                            Sau khi lưu, chúng tôi sẽ yêu cầu bạn xác nhận một
+                            số chi tiết trước khi có thể đăng.
+                        </div>
                     </div>
                     <div class="logoWrapper">
                         <a
@@ -67,31 +71,12 @@
                             <span style="font-weight: 500">Lưu và thoát</span>
                         </button>
                     </div>
-                    <div class="title__right-middle">
-                        <div>
-                            <label for="room-name" class="room-name-label"
-                                >Tạo tiêu đề</label
-                            >
-                            <div>
-                                <textarea
-                                    name=""
-                                    id="room-name"
-                                    cols="30"
-                                    rows="10"
-                                    maxlength="50"
-                                    onkeydown="onKeyPress(event);"
-                                ></textarea>
-                            </div>
-                            <div id="numberOfTextPerMaxLength">
-                                <span id="currentLength">0</span>/50
-                            </div>
-                        </div>
-                    </div>
-                    <div class="stepProcess room-title-step"></div>
+                    <div class="room-preview__right-middle"></div>
+                    <div class="stepProcess room-preview-step"></div>
                     <div class="room-group__right-last">
                         <div>
                             <a
-                                th:href="@{/become-a-host/photos}"
+                                th:href="@{/become-a-host/title}"
                                 class="room-group__prev-step"
                                 style="
                                     text-decoration: none;
@@ -119,41 +104,19 @@
         ></script>
 
         <script>
-            function onKeyPress(event) {
-                const currentLength = $('#currentLength');
-                const currentValue = currentLength.text();
-                if (event.key === 'Backspace') {
-                    if (currentValue * 1 > 0)
-                        currentLength.text(currentValue * 1 - 1);
-                } else {
-                    if (currentValue * 1 < 50)
-                        currentLength.text(currentValue * 1 + 1);
+            jQuery(document).ready(function () {
+                if (localStorage.getItem('room')) {
+                    const room = JSON.parse(localStorage.getItem('room'));
                 }
-            }
+            });
 
             function backtoHomePage() {
                 window.location.href = 'http://localhost:8001/airtnt/';
             }
 
             function nextPage() {
-                const roomTitle = $('textarea').val();
-
-                let room = {};
-                if (!localStorage.getItem('room')) {
-                    room = {
-                        roomTitle,
-                    };
-                } else {
-                    room = JSON.parse(localStorage.getItem('room'));
-                    room = {
-                        ...room,
-                        roomTitle,
-                    };
-                }
-                localStorage.setItem('room', JSON.stringify(room));
-
                 window.location.href =
-                    'http://localhost:8001/airtnt/become-a-host/description';
+                    'http://localhost:8001/airtnt/become-a-host/';
             }
         </script>
     </body>

@@ -185,37 +185,43 @@
     background-color: #222222;
 }
 
-.stepProcess.room-group-step {
-    width: calc(100% / 10);
+.stepProcess.privacy-step {
+    width: calc(100% / 11 * 3);
 }
 
-.room-group__box {
+.privacy-type__box {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     width: 464px;
     height: 90px;
     border: 2px solid #f7f7f7;
-
     border-radius: 16px;
     transition: all 0.2s ease;
     margin-bottom: 12px;
     padding: 12px 24px;
     cursor: pointer;
+    padding: 24px;
 }
 
-.room-group__box:hover {
+.privacy-type__box:hover {
     box-shadow: 0 0 0 2px #222222;
     background-color: #f7f7f7;
 }
 
-.room-group__box.active {
+.privacy-type__box.active {
     box-shadow: 0 0 0 2px #222222;
     background-color: #f7f7f7;
 }
 
-.room-group__name {
+.privacy-type__name {
     font-size: 18px;
     line-height: 24px;
-    font-style: bold;
+    font-weight: 500;
+}
+
+.room-type__description {
+    font-size: 14px !important;
+    line-height: 20px !important;
+    color: #717171 !important;
+    margin-top: 8px;
 }

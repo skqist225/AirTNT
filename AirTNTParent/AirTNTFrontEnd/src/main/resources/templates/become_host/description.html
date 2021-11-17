@@ -19,9 +19,8 @@
             rel="stylesheet"
         />
 
-        <link rel="stylesheet" th:href="@{/css/room_type.css}" />
-        <link rel="stylesheet" th:href="@{/css/title.css}" />
-        <link rel="stylesheet" th:href="@{/css/description.css}" />
+        <link rel="stylesheet" th:href="@{/css/become_host/room_type.css}" />
+        <link rel="stylesheet" th:href="@{/css/become_host/description.css}" />
     </head>
 
     <!--  -->
@@ -251,8 +250,26 @@
             }
 
             function nextPage() {
-                window.location.href =
-                    'http://localhost:8001/airtnt/become-a-host/price';
+                if (descriptions.length == 2) {
+                    let room = {};
+                    if (!localStorage.getItem('room')) {
+                        room = {
+                            descriptions,
+                        };
+                    } else {
+                        room = JSON.parse(localStorage.getItem('room'));
+                        room = {
+                            ...room,
+                            descriptions,
+                        };
+                    }
+                    localStorage.setItem('room', JSON.stringify(room));
+
+                    window.location.href =
+                        'http://localhost:8001/airtnt/become-a-host/price';
+                } else {
+                    alert('Vui lòng chọn 2 mô tả cho căn nhà của bạn');
+                }
             }
         </script>
     </body>
