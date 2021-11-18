@@ -27,7 +27,7 @@
     <body>
         <main class="room-group__main">
             <div class="room-group__container">
-                <div class="room-group__left">
+                <div class="room-title__left">
                     <div
                         style="
                             display: flex;
@@ -117,44 +117,11 @@
             type="text/javascript"
             th:src="@{/webjars/jquery/jquery.min.js}"
         ></script>
-
-        <script>
-            function onKeyPress(event) {
-                const currentLength = $('#currentLength');
-                const currentValue = currentLength.text();
-                if (event.key === 'Backspace') {
-                    if (currentValue * 1 > 0)
-                        currentLength.text(currentValue * 1 - 1);
-                } else {
-                    if (currentValue * 1 < 50)
-                        currentLength.text(currentValue * 1 + 1);
-                }
-            }
-
-            function backtoHomePage() {
-                window.location.href = 'http://localhost:8001/airtnt/';
-            }
-
-            function nextPage() {
-                const roomTitle = $('textarea').val();
-
-                let room = {};
-                if (!localStorage.getItem('room')) {
-                    room = {
-                        roomTitle,
-                    };
-                } else {
-                    room = JSON.parse(localStorage.getItem('room'));
-                    room = {
-                        ...room,
-                        roomTitle,
-                    };
-                }
-                localStorage.setItem('room', JSON.stringify(room));
-
-                window.location.href =
-                    'http://localhost:8001/airtnt/become-a-host/description';
-            }
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const baseURL = /*[[@{/}]]*/ 'default';
+            /*]]>*/
         </script>
+        <script th:src="@{/js/become_host/title.js}"></script>
     </body>
 </html>

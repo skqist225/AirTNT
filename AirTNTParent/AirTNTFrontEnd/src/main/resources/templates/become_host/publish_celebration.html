@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Đặt giá theo đêm</title>
+        <title>Chào mừng bạn trở thành Chủ nhà – Airtnt</title>
 
         <link
             rel="stylesheet"
@@ -20,19 +20,22 @@
         />
 
         <link rel="stylesheet" th:href="@{/css/become_host/room_type.css}" />
-        <link rel="stylesheet" th:href="@{/css/become_host/price.css}" />
+        <link
+            rel="stylesheet"
+            th:href="@{/css/become_host/publish_celebration.css}"
+        />
     </head>
 
-    <!--  -->
     <body>
         <main class="room-group__main">
             <div class="room-group__container">
-                <div class="room-price__left">
+                <div class="room-publish-celebration__left">
                     <div
                         style="
                             display: flex;
                             align-items: center;
                             justify-content: center;
+                            flex-direction: column;
                             height: 100%;
                             padding: 0 32px;
                         "
@@ -41,7 +44,7 @@
                             class="room-group__left-title"
                             style="text-align: center; color: #fff"
                         >
-                            Bây giờ đến phần thú vị rồi – đặt giá cho thuê
+                            Hãy xem mục cho thuê của bạn!
                         </h1>
                     </div>
                     <div class="logoWrapper">
@@ -58,68 +61,51 @@
                         </a>
                     </div>
                 </div>
-                <div class="room-group__right">
-                    <div class="room-group__right-first">
+                <div class="room-publish-celebration__right">
+                    <div class="room-publish-celebration__right-first">
                         <button
                             class="become-a-host__right-cancelBtn"
                             onclick="backtoHomePage();"
                         >
-                            <span style="font-weight: 500">Lưu và thoát</span>
+                            <span style="font-weight: 500">Thoát</span>
                         </button>
                     </div>
-                    <div class="price-middle">
-                        <div style="display: flex; flex-direction: column">
-                            <div style="display: flex; align-items: center">
-                                <div>
-                                    <button
-                                        class="room-price__btn"
-                                        onclick="decreasePrice(this);"
-                                    >
-                                        <span>
-                                            <img
-                                                th:src="@{'/svg/minus.svg'}"
-                                                alt="minus.svg"
-                                                width="12px"
-                                                height="12px"
-                                            />
-                                        </span>
-                                    </button>
-                                </div>
-                                <div id="priceInputContainer">
-                                    <input
-                                        type="text"
-                                        id="room-price"
-                                        pattern="[0-9]*"
-                                        placeholder="₫00"
-                                        autocomplete="off"
-                                    />
-                                </div>
-                                <div>
-                                    <button
-                                        class="room-price__btn"
-                                        onclick="increasePrice(this);"
-                                    >
-                                        <span>
-                                            <img
-                                                th:src="@{'/svg/plus.svg'}"
-                                                alt="plus.svg"
-                                                width="12px"
-                                                height="12px"
-                                            />
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div style="text-align: center" class="per-night">
-                                mỗi đêm
-                            </div>
+                    <div
+                        class="room-publish-celebration__right-middle"
+                        style="width: 50%; margin: 0 auto"
+                    >
+                        <div
+                            style="
+                                color: white;
+                                margin-bottom: 32px;
+                                font-size: 48px;
+                                line-height: 56px;
+                                text-align: center;
+                            "
+                        >
+                            Hân hạnh chào đón [[${userName}]]
+                        </div>
+                        <div
+                            style="
+                                color: white;
+                                font-size: 16px;
+                                line-height: 20px;
+                                font-weight: 400;
+                                text-align: center;
+                            "
+                        >
+                            Chủ nhà là trung tâm trong mọi hoạt động của chúng
+                            tôi và chúng tôi rất mong bạn sẽ được trải nghiệm sự
+                            kỳ diệu của việc đón tiếp khách.
                         </div>
                     </div>
-                    <div class="stepProcess room-price-step"></div>
+                    <div
+                        style="width: 100%; height: 1px; border: 1px solid #222"
+                    ></div>
                     <div class="room-group__right-last">
                         <div>
                             <a
-                                th:href="@{/become-a-host/title}"
+                                th:href="@{/become-a-host/price}"
                                 class="room-group__prev-step"
                                 style="
                                     text-decoration: none;
@@ -130,12 +116,10 @@
                             >
                         </div>
                         <button
-                            class="become-a-host__preview-room"
+                            class="become-a-host__right-startBtn"
                             onclick="nextPage();"
                         >
-                            <span style="font-weight: 500"
-                                >Xem lại mục cho thuê của bạn</span
-                            >
+                            <span style="font-weight: 500">Tiếp theo</span>
                         </button>
                     </div>
                 </div>
@@ -147,14 +131,22 @@
             type="text/javascript"
             th:src="@{/webjars/jquery/jquery.min.js}"
         ></script>
+
         <script th:inline="javascript">
             /*<![CDATA[*/
             const baseURL = /*[[@{/}]]*/ 'default';
             /*]]>*/
         </script>
-        <script
-            type="text/javascript"
-            th:src="@{'/js/become_host/price.js'}"
-        ></script>
+        <script>
+            jQuery(document).ready(function () {});
+
+            function backtoHomePage() {
+                window.location.href = baseURL;
+            }
+
+            function nextPage() {
+                window.location.href = `${baseURL}verify-listing`;
+            }
+        </script>
     </body>
 </html>

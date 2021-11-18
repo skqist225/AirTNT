@@ -1,3 +1,13 @@
+.room-amentities__left {
+    position: relative;
+    flex: 1;
+    max-width: 50%;
+    height: 100%;
+    background: url('/airtnt/images/amentities.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
 .amentities__card-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -37,8 +47,7 @@
 }
 
 .iconImage {
-    background-image: url('http://localhost:8001/airtnt/images/lo_nuong_BBQ.svg'),
-        none;
+    background-image: url('/airtnt/images/lo_nuong_BBQ.svg'), none;
     width: 50px;
     height: 50px;
 }
@@ -56,8 +65,8 @@
     font-size: 22px;
     line-height: 26px;
     padding-left: 8px;
-    margin-bottom: 8px;
     margin: 15px 0;
+    font-weight: 600;
 }
 
 .prominentAmentities:hover,
@@ -76,4 +85,27 @@
 
 .stepProcess.room-amentities-step {
     width: calc(100% / 11 * 6);
+}
+
+.favoriteAmentitiesImg:nth-child(1),
+.favoriteAmentitiesImg:nth-child(2),
+.favoriteAmentitiesImg:nth-child(3),
+.favoriteAmentitiesImg:nth-child(4),
+.favoriteAmentitiesImg:nth-child(5) {
+    width: 34px;
+    height: 34px;
+}
+
+.favoriteAmentitiesImg:nth-child(6),
+.favoriteAmentitiesImg:nth-child(7),
+.favoriteAmentitiesImg:nth-child(8),
+.favoriteAmentitiesImg:nth-child(9) {
+    width: 52px;
+    height: 52px;
+}
+
+.safeAmentitiesImg:nth-child(1),
+.safeAmentitiesImg:nth-child(2) {
+    width: 34px;
+    height: 34px;
 }

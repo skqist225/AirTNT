@@ -6,17 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Chọn loại chỗ ở thông thường</title>
 
-        <link
-            rel="stylesheet"
-            type="text/css"
-            th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
-        />
-        <link
-            rel="stylesheet"
-            th:href="@{/css/personal_info.css}"
-            type="text/css"
-        />
-
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -40,7 +29,7 @@
                             height: 100%;
                         "
                     >
-                        <h1 class="room-group__left-title">
+                        <h1 class="room-group__left-title" style="color: #fff">
                             Bạn sẽ cho thuê loại chỗ ở nào?
                         </h1>
                     </div>
@@ -103,49 +92,14 @@
             th:src="@{/webjars/jquery/jquery.min.js}"
         ></script>
 
-        <script>
-            $(document).ready(function () {
-                const roomTypeBox = $('.room-group__box');
-                roomTypeBox.first().addClass('active');
-
-                roomTypeBox.each(function () {
-                    $(this).on('click', function () {
-                        roomTypeBox.each(function () {
-                            $(this).removeClass('active');
-                        });
-
-                        $(this).addClass('active');
-                    });
-                });
-            });
-
-            function backtoHomePage() {
-                window.location.href = 'http://localhost:8001/airtnt/';
-            }
-
-            function nextPage() {
-                const choosenRoomGroup = $('div.room-group__box')
-                    .filter('.active')
-                    .children('input')
-                    .val();
-
-                let room = {};
-                if (!localStorage.getItem('room')) {
-                    room = {
-                        roomGroup: choosenRoomGroup,
-                    };
-                } else {
-                    room = JSON.parse(localStorage.getItem('room'));
-                    room = {
-                        ...room,
-                        roomGroup: choosenRoomGroup,
-                    };
-                }
-                localStorage.setItem('room', JSON.stringify(room));
-
-                window.location.href =
-                    'http://localhost:8001/airtnt/become-a-host/property-type';
-            }
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const baseURL = /*[[@{/}]]*/ 'default';
+            /*]]>*/
         </script>
+        <script
+            type="text/javascript"
+            th:src="@{'/js/become_host/property_type_group.js'}"
+        ></script>
     </body>
 </html>

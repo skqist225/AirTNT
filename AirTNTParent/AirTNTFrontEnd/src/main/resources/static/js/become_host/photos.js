@@ -15,15 +15,13 @@ $(document).ready(function () {
 });
 
 function previewImage(file, parent, thumbnail = false, modifier) {
-    console.log(modifier);
-    //this takes some times to execute
     const defer = $.Deferred();
     const fileReader = new FileReader();
     const photoAction = $(`
         <div class="photoAction">
             <button class="photo-action__btn" onclick="displayAction(this);" data-index="${modifier}">
                 <span>
-                    <img src="http://localhost:8001/airtnt/amentity_images/threedot.svg" width="16px" height="16px"/>
+                    <img src="${baseURL}amentity_images/threedot.svg" width="16px" height="16px"/>
                 </span>
             </button>
             <div class="photo-action__div-hidden">
@@ -181,16 +179,16 @@ function addEmptyImage(files, uploadPhotos, subImagesContainer) {
         for (let i = 0; i <= 4 - files.length; i++) {
             const div = $(
                 `<div class="singleImageContainer containerOfImageIcon">
-                                <img class="imageIcon" src="http://localhost:8001/airtnt/amentity_images/single_image.svg"/>
-                            </div>`
+                    <img class="imageIcon" src="${baseURL}amentity_images/single_image.svg"/>
+                </div>`
             );
             subImagesContainer.append(div);
         }
     } else {
         const div = $(
             `<div class="singleImageContainer containerOfImageIcon">
-                            <img class="imageIcon" src="http://localhost:8001/airtnt/amentity_images/single_image.svg"/>
-                        </div>`
+                <img class="imageIcon" src="${baseURL}amentity_images/single_image.svg"/>
+            </div>`
         );
 
         subImagesContainer.append(div);
@@ -201,7 +199,7 @@ function addEmptyImage(files, uploadPhotos, subImagesContainer) {
         singleImageContainer.each(function (e) {
             if (
                 !$(this).children(
-                    'img[src="http://localhost:8001/airtnt/amentity_images/single_image.svg"]'
+                    `img[src="${baseURL}amentity_images/single_image.svg"]`
                 )
             ) {
                 $(this).removeClass('singleImageContainer');
@@ -347,7 +345,7 @@ async function uploadImagesToFolder() {
     const {
         data: { status, currentFolderIndex },
     } = await axios.post(
-        'http://localhost:8001/airtnt/become-a-host/upload-room-photos',
+        `${baseURL}become-a-host/upload-room-photos`,
         formData,
         {
             headers: {
@@ -391,4 +389,20 @@ function dragoverHandler(evt) {
     evt.preventDefault();
     // Explicitly show this is a copy.
     evt.dataTransfer.dropEffect = 'copy';
+}
+
+function backtoHomePage() {
+    window.location.href = baseURL;
+}
+
+function nextPage() {
+    if (photos.length >= 5 && isUploaded) {
+        photos = [];
+        fileReaderResult = new Map();
+        isUploaded = false;
+
+        window.location.href = `${baseURL}become-a-host/title`;
+    } else {
+        alert('Vui lòng chọn đủ  5 ảnh');
+    }
 }

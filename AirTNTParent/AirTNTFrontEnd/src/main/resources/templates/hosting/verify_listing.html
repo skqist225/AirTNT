@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xml:lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Xác nhận chi tiết nhà/phòng cho thuê</title>
+
+        <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+        />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+            rel="stylesheet"
+        />
+        <div th:replace="header :: css"></div>
+        <link rel="stylesheet" th:href="@{'/css/hosting/verify_listing.css'}" />
+    </head>
+
+    <body>
+        <div th:replace="header :: content"></div>
+
+        <main>
+            <div class="verify-listing__body">
+                <div class="verify-listing__body-right">
+                    <div class="verify-listing__body-right-first">
+                        <div class="verify-listing__body-right-first__title">
+                            Những chi tiết quan trọng cần chăm chút
+                        </div>
+                        <div class="verify-listing__body-right-first__subtitle">
+                            Trước khi bạn đăng nhà/phòng cho thuê, chúng tôi cần
+                            xác nhận một số chi tiết về bạn và chỗ của bạn.
+                            Chúng tôi sẽ hướng dẫn bạn thực hiện việc này.
+                        </div>
+                        <div
+                            class="
+                                verify-listing__body-right-first__is-mandatory-or-complete
+                            "
+                        >
+                            <div>Tạo mục nhà/phòng cho thuê</div>
+                            <div class="isCompleted"></div>
+                        </div>
+                    </div>
+                    <div class="verify-listing__body-right-middle">
+                        <div class="verify-listing__body-right-first__title">
+                            Thêm ảnh trên giấy tờ tùy thân của bạn
+                        </div>
+                        <div class="verify-listing__body-right-first__subtitle">
+                            Điều này giúp chúng tôi xác minh đó đúng là bạn.
+                            Chúng tôi tuyệt đối không chia sẻ thông tin giấy tờ
+                            tùy thân của bạn với khách.
+                        </div>
+                        <div
+                            class="
+                                verify-listing__body-right-first__is-mandatory-or-complete
+                            "
+                        >
+                            <div>Tạo mục nhà/phòng cho thuê</div>
+                            <div class="isCompleted"></div>
+                        </div>
+                    </div>
+                    <div class="verify-listing__body-right-last">
+                        <div class="verify-listing__body-right-first__title">
+                            Xác nhận số điện thoại của bạn
+                        </div>
+                        <div class="verify-listing__body-right-first__subtitle">
+                            Chúng tôi sẽ gọi điện hoặc nhắn tin cho bạn để xác
+                            nhận số điện thoại. Phí nhắn tin tiêu chuẩn có thể
+                            áp dụng.
+                        </div>
+                        <div
+                            class="
+                                verify-listing__body-right-first__is-mandatory-or-complete
+                            "
+                        >
+                            <div>Tạo mục nhà/phòng cho thuê</div>
+                            <div class="isCompleted"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="verify-listing__body-left"></div>
+            </div>
+            <div class="verify-listing__footer"></div>
+        </main>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script
+            type="text/javascript"
+            th:src="@{/webjars/jquery/jquery.min.js}"
+        ></script>
+    </body>
+</html>

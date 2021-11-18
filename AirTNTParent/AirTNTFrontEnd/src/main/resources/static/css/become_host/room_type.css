@@ -1,6 +1,10 @@
-* {
+*,
+*::before,
+*::after {
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 .room-group__main {
@@ -28,14 +32,12 @@
     margin-bottom: 12 px;
 }
 
-.room-group__left {
+.room-type__left {
     position: relative;
-    background: rgb(34, 193, 195);
-    background: linear-gradient(
-        0deg,
-        rgba(34, 193, 195, 1) 0%,
-        rgba(253, 187, 45, 1) 100%
-    );
+    background: url('/airtnt/images/property_type.jpg');
+    background-position: center bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 #airTntLogo {
@@ -44,7 +46,7 @@
     object-fit: contain;
 }
 
-.room-group__left,
+.room-type__left,
 .room-group__right {
     flex: 1;
     max-width: 50%;
@@ -115,7 +117,7 @@
 .become-a-host__right-startBtn {
     cursor: pointer;
     display: inline-block;
-    margin: 0 px;
+    margin: 0px;
     position: relative;
     text-align: center;
     text-decoration: none;
@@ -124,9 +126,9 @@
     font-size: 16px;
     line-height: 20px;
     font-weight: 600;
-    border-radius: 8 px;
+    border-radius: 8px;
     outline: none;
-    padding: 14 px 24 px;
+    padding: 14px 2px;
     transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
         -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
     -webkit-tap-highlight-color: transparent;
@@ -140,7 +142,6 @@
     color: rgb(255, 255, 255);
     width: 120px;
     height: 48px;
-    border-radius: 10px;
     font-size: 18px;
 }
 

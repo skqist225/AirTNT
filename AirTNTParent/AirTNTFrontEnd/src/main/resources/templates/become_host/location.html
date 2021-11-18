@@ -19,7 +19,7 @@
         <input type="hidden" th:value="${userName}" id="userName" />
         <main class="room-group__main">
             <div class="room-group__container">
-                <div class="room-group__left">
+                <div class="room-location__left">
                     <div
                         style="
                             display: flex;
@@ -31,7 +31,7 @@
                     >
                         <h1
                             class="room-group__left-title"
-                            style="text-align: center"
+                            style="text-align: center; color: #fff"
                         >
                             Chỗ ở của bạn nằm ở đâu?
                         </h1>
@@ -59,7 +59,10 @@
                             <span style="font-weight: 500">Lưu và thoát</span>
                         </button>
                     </div>
-                    <div class="location__search-location">
+                    <div
+                        class="location__search-location"
+                        style="display: none"
+                    >
                         <div
                             style="
                                 display: flex;
@@ -102,53 +105,140 @@
                             />
                         </div>
                     </div>
-                    <div class="room-group__right-middle">
+                    <div class="location__right-middle">
                         <div id="map"></div>
-                        <div>
-                            <div>
-                                <div></div>
-                                <div>Xác nhận địa chỉ của bạn</div>
+                        <div
+                            style="
+                                width: 600px;
+                                height: 600px;
+                                position: absolute;
+                                background-color: #fff;
+                                padding: 28px;
+                                display: flex;
+                                flex-direction: column;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    padding-bottom: 40px;
+                                "
+                            >
+                                <div onclick="BackToSearchLocation(this)">
+                                    <img
+                                        th:src="@{/svg/back.svg}"
+                                        alt=""
+                                        width="24px"
+                                        height="24px"
+                                    />
+                                </div>
+                                <div
+                                    style="
+                                        flex: 1;
+                                        text-align: center;
+                                        font-size: 18px;
+                                        font-weight: 400;
+                                    "
+                                >
+                                    Xác nhận địa chỉ của bạn
+                                </div>
                             </div>
-                            <div>
-                                <label for="">
-                                    <div></div>
+                            <div
+                                style="
+                                    flex: 1;
+                                    overflow: hidden;
+                                    border-radius: 8px;
+                                    border: 1px solid rgb(176, 176, 176);
+                                "
+                            >
+                                <div class="location__input-container">
+                                    <div class="location__label-input">
+                                        Đường/Phố
+                                    </div>
+                                    <div style="width: 100%; height: 40%"></div>
                                     <div>
                                         <input type="text" />
                                     </div>
-                                </label>
-                                <label for="">
-                                    <div></div>
+                                </div>
+                                <div class="location__input-container">
+                                    <div class="location__label-input">
+                                        Căn hộ, phòng, v.v.(Không bắt buộc)
+                                    </div>
+                                    <div style="width: 100%; height: 40%"></div>
                                     <div>
                                         <input type="text" />
                                     </div>
-                                </label>
-                                <label for="">
-                                    <div></div>
+                                </div>
+                                <div class="location__input-container">
+                                    <div class="location__label-input">
+                                        Thành phố
+                                    </div>
+                                    <div style="width: 100%; height: 40%"></div>
                                     <div>
                                         <input type="text" />
                                     </div>
-                                </label>
-                                <label for="">
-                                    <div></div>
+                                </div>
+                                <div class="location__input-container">
+                                    <div class="location__label-input">
+                                        Tỉnh(Không bắt buộc)
+                                    </div>
+                                    <div style="width: 100%; height: 40%"></div>
                                     <div>
                                         <input type="text" />
                                     </div>
-                                </label>
-                                <label for="">
-                                    <div></div>
+                                </div>
+                                <div class="location__input-container">
+                                    <div class="location__label-input">
+                                        Mã bưu chính(Không bắt buộc)
+                                    </div>
+                                    <div style="width: 100%; height: 40%"></div>
                                     <div>
                                         <input type="text" />
                                     </div>
-                                </label>
-                                <label for="">
-                                    <div></div>
-                                    <div>
-                                        <input type="text" />
+                                </div>
+                                <div class="location__input-container">
+                                    <div class="location__label-input">
+                                        Quốc gia/Khu vực
                                     </div>
-                                </label>
+                                    <div style="width: 100%; height: 40%"></div>
+                                    <div>
+                                        <button
+                                            onclick="expandSelectTag(this);"
+                                            style="
+                                                outline: none;
+                                                border: none;
+                                                background-color: transparent;
+                                                cursor: pointer;
+                                            "
+                                        >
+                                            <span>
+                                                <img
+                                                    th:src="@{/svg/dropdown.svg}"
+                                                    alt=""
+                                                    width="24px"
+                                                    height="24px"
+                                                />
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <div>//red warning Đường/Phố Thành phố</div>
-                            <div>
+                            <div style="display: none" id="selectTagContainer">
+                                <select
+                                    name=""
+                                    id="countrySelect"
+                                    class="form-select"
+                                >
+                                    <th:block th:each="c : ${countries}">
+                                        <option th:value="${c.id}">
+                                            [[${c.name}]] [[${c.code}]]
+                                        </option>
+                                    </th:block>
+                                </select>
+                            </div>
+                            <!-- <div>//red warning Đường/Phố Thành phố</div> -->
+                            <div style="padding-top: 40px">
                                 <button class="location__btn-complete-address">
                                     Trông ổn rồi
                                 </button>
@@ -159,7 +249,7 @@
                     <div class="room-group__right-last">
                         <div>
                             <a
-                                th:href="@{/become-a-host/property-type-group}"
+                                th:href="@{/become-a-host/privacy-type}"
                                 class="room-group__prev-step"
                                 style="
                                     text-decoration: none;
@@ -180,127 +270,23 @@
             </div>
         </main>
         <!--The div element for the map -->
-
-        <script>
-            mapboxgl.accessToken =
-                'pk.eyJ1IjoibG9yZGVkc3dpZnQyMjUiLCJhIjoiY2t3MDJvZ2E5MDB0dDJxbndxbjZxM20wOCJ9.hYxzgffyfc93Aiogipp5bA';
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script
+            type="text/javascript"
+            th:src="@{/webjars/jquery/jquery.min.js}"
+        ></script>
+        <script
+            type="text/javascript"
+            th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"
+        ></script>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const baseURL = /*[[@{/}]]*/ 'default';
+            /*]]>*/
         </script>
-        <script>
-            const x = document.getElementById('demo');
-            function getLocation() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        showPosition,
-                        showError,
-                        { timeout: 10000 }
-                    );
-                } else {
-                    x.innerHTML =
-                        'Geolocation is not supported by this browser.';
-                }
-            }
-
-            getLocation();
-            let userLat = 0,
-                userLng = 0;
-            function showPosition(position) {
-                userLat = position.coords.latitude;
-                userLng = position.coords.longitude;
-
-                var map = new mapboxgl.Map({
-                    container: 'map',
-                    style: 'mapbox://styles/mapbox/streets-v11',
-                    center: [userLng * 1, userLat * 1], // starting position [lng, lat]
-                    zoom: 13, // starting zoom
-                });
-
-                const markerHeight = 50;
-                const markerRadius = 10;
-                const linearOffset = 25;
-                const popupOffsets = {
-                    top: [0, 0],
-                    'top-left': [0, 0],
-                    'top-right': [0, 0],
-                    bottom: [0, -markerHeight],
-                    'bottom-left': [
-                        linearOffset,
-                        (markerHeight - markerRadius + linearOffset) * -1,
-                    ],
-                    'bottom-right': [
-                        -linearOffset,
-                        (markerHeight - markerRadius + linearOffset) * -1,
-                    ],
-                    left: [markerRadius, (markerHeight - markerRadius) * -1],
-                    right: [-markerRadius, (markerHeight - markerRadius) * -1],
-                };
-
-                const userName = document.getElementById('userName').value;
-                const image = document.createElement('img');
-                image.src = document.getElementById('userAvatar').value;
-                image.style =
-                    'width:40px; height:40px; border-radius:50%;object-fit:cover';
-
-                const marker = new mapboxgl.Marker(image)
-                    .setPopup(
-                        new mapboxgl.Popup({
-                            offset: popupOffsets,
-                            className: 'my-class',
-                        }) // add popups
-                            .setHTML(`<h1>${userName}</h1>`)
-                            .setMaxWidth('300px')
-                    )
-                    .setLngLat([userLng, userLat])
-                    .addTo(map);
-
-                const popup = new mapboxgl.Popup({
-                    offset: popupOffsets,
-                    className: 'my-class',
-                })
-                    .setLngLat([userLng, userLat])
-                    .setHTML(`<h1>${userName}</h1>`)
-                    .setMaxWidth('300px')
-                    .addTo(map);
-            }
-
-            function showError(error) {
-                switch (error.code) {
-                    case error.PERMISSION_DENIED:
-                        x.innerHTML =
-                            'User denied the request for Geolocation.';
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        x.innerHTML = 'Location information is unavailable.';
-                        break;
-                    case error.TIMEOUT:
-                        x.innerHTML =
-                            'The request to get user location timed out.';
-                        break;
-                    case error.UNKNOWN_ERROR:
-                        x.innerHTML = 'An unknown error occurred.';
-                        break;
-                }
-            }
-
-            function nextPage() {
-                let room = {};
-                if (!localStorage.getItem('room')) {
-                    room = {
-                        longitude: userLat,
-                        latitude: userLng,
-                    };
-                } else {
-                    room = JSON.parse(localStorage.getItem('room'));
-                    room = {
-                        ...room,
-                        longitude: userLat,
-                        latitude: userLng,
-                    };
-                }
-                localStorage.setItem('room', JSON.stringify(room));
-
-                window.location.href =
-                    'http://localhost:8001/airtnt/become-a-host/room-info';
-            }
-        </script>
+        <script
+            type="text/javascript"
+            th:src="@{'/js/become_host/location.js'}"
+        ></script>
     </body>
 </html>

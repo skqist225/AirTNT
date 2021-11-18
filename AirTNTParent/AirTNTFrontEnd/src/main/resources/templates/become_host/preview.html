@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Tạo phần mô tả nhà/phòng cho thuê – Airtnt</title>
+        <title>Kiểm tra lại và lưu mục cho thuê – Airtnt</title>
 
         <link
             rel="stylesheet"
@@ -26,7 +26,7 @@
     <body>
         <main class="room-group__main">
             <div class="room-group__container">
-                <div class="room-group__left">
+                <div class="room-preview__left">
                     <div
                         style="
                             display: flex;
@@ -39,14 +39,10 @@
                     >
                         <h1
                             class="room-group__left-title"
-                            style="text-align: center"
+                            style="text-align: center; color: #fff"
                         >
                             Hãy xem mục cho thuê của bạn!
                         </h1>
-                        <div>
-                            Sau khi lưu, chúng tôi sẽ yêu cầu bạn xác nhận một
-                            số chi tiết trước khi có thể đăng.
-                        </div>
                     </div>
                     <div class="logoWrapper">
                         <a
@@ -71,12 +67,131 @@
                             <span style="font-weight: 500">Lưu và thoát</span>
                         </button>
                     </div>
-                    <div class="room-preview__right-middle"></div>
+                    <div class="room-preview__right-middle">
+                        <div class="room-preview__container">
+                            <div class="room-preview__wrapper">
+                                <div id="room-preview__room-thumbnail">
+                                    <img
+                                        src=""
+                                        alt=""
+                                        id="roomThumbnail"
+                                        style="object-fit: cover"
+                                        width="100%"
+                                        height="229px"
+                                    />
+                                </div>
+                                <div
+                                    id="room-preview__room-title"
+                                    class="room-preview__line"
+                                ></div>
+                                <div class="room-preview__line flex">
+                                    <div
+                                        id="room-preview__room-type"
+                                        style="width: calc(100% - 40px)"
+                                    ></div>
+                                    <img
+                                        th:src="@{${userAvatar}}"
+                                        alt="${userAvatar}"
+                                        width="40px"
+                                        height="40px"
+                                        style="
+                                            object-fit: cover;
+                                            border-radius: 50%;
+                                            display: inline-block;
+                                            justify-self: flex-end;
+                                        "
+                                    />
+                                </div>
+                                <div
+                                    id="room-preview__room-info"
+                                    class="room-preview__line"
+                                ></div>
+                                <div
+                                    id="room-preview__room-description"
+                                    class="room-preview__line"
+                                ></div>
+                                <div
+                                    id="room-preview__room-amentities"
+                                    class="room-preview__line"
+                                >
+                                    <div class="room-preview__amentity-title">
+                                        Tiện nghi
+                                    </div>
+                                    <div>
+                                        <div
+                                            class="
+                                                flex
+                                                room-preview__amentity-container
+                                            "
+                                        >
+                                            <div
+                                                id="prominentAmentityName"
+                                            ></div>
+                                            <div>
+                                                <img
+                                                    src=""
+                                                    alt=""
+                                                    id="prominentAmentity"
+                                                    width="52px"
+                                                    height="52px"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="
+                                                flex
+                                                room-preview__amentity-container
+                                            "
+                                        >
+                                            <div
+                                                id="favoriteAmentityName"
+                                            ></div>
+                                            <div>
+                                                <img
+                                                    src=""
+                                                    alt=""
+                                                    id="favoriteAmentity"
+                                                    width="24px"
+                                                    height="24px"
+                                                    style="margin-right: 10px"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="
+                                                flex
+                                                room-preview__amentity-container
+                                            "
+                                        >
+                                            <div id="safeAmentityName"></div>
+                                            <div>
+                                                <img
+                                                    src=""
+                                                    alt=""
+                                                    id="safeAmentity"
+                                                    width="24px"
+                                                    height="24px"
+                                                    style="margin-right: 10px"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    id="room-preview__room-location"
+                                    class="room-preview__line"
+                                >
+                                    <h2>Vị trí</h2>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="stepProcess room-preview-step"></div>
                     <div class="room-group__right-last">
                         <div>
                             <a
-                                th:href="@{/become-a-host/title}"
+                                th:href="@{/become-a-host/price}"
                                 class="room-group__prev-step"
                                 style="
                                     text-decoration: none;
@@ -87,10 +202,12 @@
                             >
                         </div>
                         <button
-                            class="become-a-host__right-startBtn"
+                            class="become-a-host__save-room"
                             onclick="nextPage();"
                         >
-                            <span style="font-weight: 500">Tiếp theo</span>
+                            <span style="font-weight: 500"
+                                >Lưu mục cho thuê của bạn</span
+                            >
                         </button>
                     </div>
                 </div>
@@ -103,21 +220,14 @@
             th:src="@{/webjars/jquery/jquery.min.js}"
         ></script>
 
-        <script>
-            jQuery(document).ready(function () {
-                if (localStorage.getItem('room')) {
-                    const room = JSON.parse(localStorage.getItem('room'));
-                }
-            });
-
-            function backtoHomePage() {
-                window.location.href = 'http://localhost:8001/airtnt/';
-            }
-
-            function nextPage() {
-                window.location.href =
-                    'http://localhost:8001/airtnt/become-a-host/';
-            }
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const baseURL = /*[[@{/}]]*/ 'default';
+            /*]]>*/
         </script>
+        <script
+            type="text/javascript"
+            th:src="@{'/js/become_host/preview.js'}"
+        ></script>
     </body>
 </html>

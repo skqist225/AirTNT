@@ -8,6 +8,7 @@ import com.airtnt.common.entity.RoomGroup;
 import com.airtnt.common.entity.RoomType;
 import com.airtnt.common.entity.User;
 import com.airtnt.frontend.amentity.AmentityService;
+import com.airtnt.frontend.country.CountryService;
 import com.airtnt.frontend.room_group.RoomGroupService;
 import com.airtnt.frontend.room_type.RoomTypeService;
 import com.airtnt.frontend.user.UserService;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/become-a-host/")
@@ -36,6 +36,9 @@ public class HostController {
 
     @Autowired
     AmentityService amentityService;
+
+    @Autowired
+    CountryService countryService;
 
     @GetMapping("")
     public String index() {
@@ -73,6 +76,7 @@ public class HostController {
         User user = userService.getByEmail(userName);
         model.addAttribute("userAvatar", user.getAvatarPath());
         model.addAttribute("userName", user.getFullName());
+        model.addAttribute("countries", countryService.getCountries());
         return "become_host/location";
     }
 
@@ -118,8 +122,21 @@ public class HostController {
     }
 
     @GetMapping(value = "preview")
-    public String previewRoom() {
+    public String previewRoom(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        String userName = userDetails.getUsername();
+        User user = userService.getByEmail(userName);
+        model.addAttribute("userAvatar", user.getAvatarPath());
+
+        model.addAttribute("userName", user.getFullName());
         return "become_host/preview";
+    }
+
+    @GetMapping(value = "publish-celebration")
+    public String publishCelebration(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        String userName = userDetails.getUsername();
+        User user = userService.getByEmail(userName);
+        model.addAttribute("userName", user.getFullName());
+        return "become_host/publish_celebration";
     }
 
 }

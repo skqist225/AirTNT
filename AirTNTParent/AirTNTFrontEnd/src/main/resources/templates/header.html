@@ -18,7 +18,10 @@
                         class="image"
                 /></a>
             </div>
-            <div class="header__left">
+            <div
+                class="header__left"
+                th:if="${excludeBecomeHostAndNavigationHeader != true}"
+            >
                 <div style="display: flex; align-items: center">
                     <a
                         th:href="@{/become-a-host/}"

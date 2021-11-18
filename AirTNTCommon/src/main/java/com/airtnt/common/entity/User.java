@@ -108,7 +108,7 @@ public class User extends BaseEntity {
 	@Transient
 	public String getAvatarPath() {
 		if (this.getId() == null || this.avatar == null)
-			return "/images/avatar.png";
+			return "/images/default_user_avatar.png";
 		return "/user-photos/" + this.getId() + "/" + this.avatar;
 	}
 

@@ -80,7 +80,7 @@
                     <div class="room-group__right-last">
                         <div>
                             <a
-                                th:href="@{/become-a-host/property-type-group}"
+                                th:href="@{'/become-a-host/property-type'}"
                                 class="room-group__prev-step"
                                 style="
                                     text-decoration: none;
@@ -106,49 +106,14 @@
             type="text/javascript"
             th:src="@{/webjars/jquery/jquery.min.js}"
         ></script>
-        <script>
-            $(document).ready(function () {
-                const roomTypeBox = $('.privacy-type__box');
-                roomTypeBox.first().addClass('active');
-
-                roomTypeBox.each(function () {
-                    $(this).on('click', function () {
-                        roomTypeBox.each(function () {
-                            $(this).removeClass('active');
-                        });
-
-                        $(this).addClass('active');
-                    });
-                });
-            });
-
-            function backtoHomePage() {
-                window.location.href = 'http://localhost:8001/airtnt/';
-            }
-
-            function nextPage() {
-                const choosenPrivacyType = $('div.privacy-type__box')
-                    .filter('.active')
-                    .children('.privacy-type__name')
-                    .text();
-
-                let room = {};
-                if (!localStorage.getItem('room')) {
-                    room = {
-                        privacyType: choosenPrivacyType,
-                    };
-                } else {
-                    room = JSON.parse(localStorage.getItem('room'));
-                    room = {
-                        ...room,
-                        privacyType: choosenPrivacyType,
-                    };
-                }
-                localStorage.setItem('room', JSON.stringify(room));
-
-                window.location.href =
-                    'http://localhost:8001/airtnt/become-a-host/location';
-            }
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const baseURL = /*[[@{/}]]*/ 'default';
+            /*]]>*/
         </script>
+        <script
+            type="text/javascript"
+            th:src="@{'/js/become_host/privacy_type.js'}"
+        ></script>
     </body>
 </html>

@@ -1,6 +1,10 @@
-* {
+*,
+*::before,
+*::after {
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 .room-group__main {
@@ -30,12 +34,8 @@
 
 .room-group__left {
     position: relative;
-    background: rgb(34, 193, 195);
-    background: linear-gradient(
-        0deg,
-        rgba(34, 193, 195, 1) 0%,
-        rgba(253, 187, 45, 1) 100%
-    );
+    background-image: url('/airtnt/images/property_type_group.jpg');
+    background-position: center;
 }
 
 #airTntLogo {
