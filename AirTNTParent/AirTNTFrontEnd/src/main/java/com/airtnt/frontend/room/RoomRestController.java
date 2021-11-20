@@ -63,8 +63,8 @@ public class RoomRestController {
         int id = Integer.parseInt(payLoad.get("catId").toString());
         int page = Integer.parseInt(payLoad.get("page").toString());
 
-        System.out.println("id" + id);
-        System.out.println("page" + page);
+        System.out.println("id: " + id);
+        System.out.println("page: " + page);
 
         Category category = categoryService.getCategoryById(id);
         JSONArray array = new JSONArray();
@@ -73,20 +73,19 @@ public class RoomRestController {
         List<Room> roomT = roomService.getRoomsByCategoryId(category, page);
         if (roomT.size() > 0) {
             for (int i = 0; i <= 50; i++) {
-                roomT.add(roomT.get(i));
+                roomT.add(roomT.get(0));
             }
             // Replicate room to test
 
             try {
                 for (Room room : roomT) {
                     RoomDTO roomDTO = new RoomDTO(room.getId(), room.getImages(), room.getName(), room.getPrice(),
-                            room.getPriceType(), room.getCurrency().getSymbol());
+                            room.getPriceType(), room.getCurrency().getSymbol(), room.getHost().getEmail());
 
                     array.put(new JSONObject().put("id", roomDTO.getId()).put("images", roomDTO.getImages())
                             .put("name", roomDTO.getName()).put("price", roomDTO.getPrice())
-                            .put("priceType", roomDTO.getPriceType())
-                            .put("currencySymbol", roomDTO.getCurrencySymbol()));
-
+                            .put("priceType", roomDTO.getPriceType()).put("currencySymbol", roomDTO.getCurrencySymbol())
+                            .put("userName", roomDTO.getUserName()));
                 }
             } catch (JSONException e) {
 
@@ -103,7 +102,7 @@ public class RoomRestController {
         Room room = roomService.getRoomById(id);
         Set<Image> roomImages = room.getImages();
 
-        return new JSONObject().put("images", roomImages).toString();
+        return new JSONObject().put("images", roomImages).put("userName", room.getHost().getEmail()).toString();
     }
 
     @GetMapping("/calendar/{selectedMonth}/{selectedYear}")
@@ -163,7 +162,7 @@ public class RoomRestController {
                 .state(state).country(country).rules(rules).host(new User(payload.getHost()))
                 .roomGroup(new RoomGroup(payload.getRoomGroup())).roomType(new RoomType(payload.getRoomType()))
                 .host(new User(payload.getHost())).category(new Category(payload.getCategory()))
-                .currency(new Currency(payload.getCurrency())).build();
+                .currency(new Currency(payload.getCurrency())).privacyType(payload.getPrivacyType()).build();
 
         roomService.save(room);
 

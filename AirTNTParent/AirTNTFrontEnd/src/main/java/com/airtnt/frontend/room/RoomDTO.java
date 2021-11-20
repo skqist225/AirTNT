@@ -12,18 +12,21 @@ public class RoomDTO {
     private float price;
     private PriceType priceType;
     private String currencySymbol;
+    private String userName;
 
     public RoomDTO() {
 
     }
 
-    public RoomDTO(int id, Set<Image> images, String name, float price, PriceType priceType, String currencySymbol) {
+    public RoomDTO(int id, Set<Image> images, String name, float price, PriceType priceType, String currencySymbol,
+            String userName) {
         this.id = id;
         this.images = images;
         this.name = name;
         this.price = price;
         this.priceType = priceType;
         this.currencySymbol = currencySymbol;
+        this.userName = userName;
     }
 
     public int getId() {
@@ -72,6 +75,14 @@ public class RoomDTO {
 
     public void setCurrencySymbol(String currencySymbol) {
         this.currencySymbol = currencySymbol;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
 }

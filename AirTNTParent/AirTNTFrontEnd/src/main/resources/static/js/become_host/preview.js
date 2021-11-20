@@ -6,7 +6,7 @@ jQuery(document).ready(function () {
 
         $('#roomThumbnail').attr(
             'src',
-            `${baseURL}room_images/temp/${room.userName2}/${room.roomImages[0]}`
+            `${baseURL}room_images/${room.userName2}/${room.roomImages[0]}`
         );
         $('#room-preview__room-title').text(room.roomTitle);
 
@@ -99,6 +99,7 @@ async function nextPage() {
             minimumStay: 1,
             stayType: 'DAY',
             host: hostName,
+            privacyType: room.privacyType,
         };
 
         console.log(roomEntity);
@@ -112,39 +113,10 @@ async function nextPage() {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        console.log(data);
 
         if (data.status === 'OK') {
+            localStorage.removeItem('room');
             window.location.href = `${baseURL}become-a-host/publish-celebration`;
         }
     }
-    //     {roomGroup: 4, roomType: 3, privacyType: "Phòng chung", roomLongitude: 11.034049,…}
-    // bathRoomNumber: 4
-    // bedNumber: 2
-    // bedRoomNumber: 2
-    // descriptions: ["Vị trí trung tâm", "Phù hợp cho gia đình"]
-    // favoriteAmentity: 4
-    // favoriteAmentityImageName: "tv.svg"
-    // favoriteAmentityName: "TV"
-    // guestNumber: 3
-    // latitude: 11.034103712352547
-    // longitude: 106.68781171676963
-    // photosFolderIndex: 0
-    // place_name: "822000, Phú Tân, Thị xã Thủ Dầu Một, Binh Duong, Vietnam"
-    // privacyType: "Phòng chung"
-    // prominentAmentity: 19
-    // prominentAmentityImageName: "bep_dot_lua_trai.svg"
-    // prominentAmentityName: "Bếp đốt lửa trại"
-    // roomGroup: 4
-    // roomGroupText: "Không gian độc đáo"
-    // roomImages: ["BG.png", "Capture.PNG", "asdfsad.PNG", "247129345_909249943358568_6309293780230821703_n.jpg",…]
-    // roomLatitude: 106.68776
-    // roomLongitude: 11.034049
-    // roomPricePerNight: "645000"
-    // roomTitle: "xin chào newyork"
-    // roomType: 3
-    // safeAmentity: 11
-    // safeAmentityImageName: "may_phat_hien_khoi_CO.svg"
-    // safeAmentityName: "Máy phát hiện khói CO"
-    // userName2: "thuan.leminhthuan.10.2999999@gmail.com"
 }

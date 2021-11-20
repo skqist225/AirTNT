@@ -89,6 +89,8 @@ public class Room extends BaseEntity {
 	@Column(nullable = false)
 	private float price;
 
+	private String privacyType;
+
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20, nullable = false)
 	private PriceType priceType;
@@ -127,7 +129,7 @@ public class Room extends BaseEntity {
 	@Transient
 	public String getImageFirst() {
 		if (!this.images.isEmpty())
-			return "room_images/" + this.images.toArray()[0].toString();
+			return "room_images/" + this.host.getEmail() + "/" + this.images.toArray()[0].toString();
 		else
 			return "images/airtntlogo.png";
 	}

@@ -1,7 +1,7 @@
 async function fetchRooms(catId, page) {
     const {
         data: { root },
-    } = await axios.post('http://localhost:8001/airtnt/homes', {
+    } = await axios.post('/airtnt/homes', {
         catId,
         page,
     });
@@ -68,7 +68,7 @@ async function fetchRoomsByCategory(
     const catName = $('.cat__name', self);
     const catId = $('.cat__id', self).val();
 
-    if (catName.text() === 'Ryokan') {
+    if (catName.text() === 'Ryokan' || catName.text() === 'Nhà trên cây') {
         roomsContainer.empty();
         if (globalPage !== 1) {
             globalPage = 1;

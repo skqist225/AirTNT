@@ -158,9 +158,10 @@
         });
 
         async function getLoggedInUserAvatar() {
-            const prefixUrl = 'http://localhost:8001/airtnt';
+            const prefixUrl = '/airtnt';
 
             const { data } = await axios.get(`${prefixUrl}/user/avatar`);
+            console.log(data);
             const userAvatar = $('#userAvatar');
 
             if (data) userAvatar.attr('src', `${prefixUrl}${data}`);

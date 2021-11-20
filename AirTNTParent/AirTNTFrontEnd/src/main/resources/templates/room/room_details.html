@@ -5,7 +5,7 @@
         <title>Room Details</title>
         <link
             rel="stylesheet"
-            th:href="@{/css/product_details.css}"
+            th:href="@{/css/room_details.css}"
             type="text/css"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -45,8 +45,7 @@
                 <section class="rdt_images grid">
                     <div style="width: 100%; height: 100%">
                         <img
-                            th:src="@{${thumbnail.imagePath}}"
-                            th:alt="${thumbnail.imageName}"
+                            th:src="@{${thumbnail.getImagePath(room.host.email)}}"
                             width="100%"
                             height="98%"
                             class="image"
@@ -56,18 +55,18 @@
                         <th:block th:each="image,iter  : ${roomImages}">
                             <div style="width: 100%; height: 100%">
                                 <img
-                                    th:src="@{${image.imagePath}}"
-                                    th:alt="${image.imageName}"
+                                    th:src="@{${image.getImagePath(room.host.email)}}"
                                     width="100%"
                                     height="100%"
                                     class="image"
+                                    style="object-fit: cover"
                                     th:class="${iter.even}? 'roundedBorder'"
                                 />
                             </div>
                         </th:block>
                         <a
+                            style="text-decoration: none; cursor: pointer"
                             href="javascript:toggleHiddenImages();"
-                            style="text-decoration: none"
                         >
                             <div class="rdt_showMoreImage">
                                 <svg
@@ -116,7 +115,8 @@
                                             line-height: 40px;
                                         "
                                     >
-                                        Phòng riêng tại ryokan. Chủ nhà
+                                        Phòng riêng tại
+                                        [[${room.category.name}]]. Chủ nhà
                                         [[${room.host.firstName}]]
                                         [[${room.host.lastName}]]
                                     </h2>
@@ -549,207 +549,20 @@
 
         <div th:replace="_footer :: content"></div>
 
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script
             type="text/javascript"
             th:src="@{/webjars/jquery/jquery.min.js}"
         ></script>
-        <script>
-            const active = 'active';
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-            $(document).ready(async function () {
-                const date = new Date();
-                const month = date.getMonth();
-                const year = date.getFullYear();
-
-                const closeShowImgBtn = $('#closeShowImgBtn');
-                closeShowImgBtn.click(function () {
-                    toggleHiddenImages();
-                });
-
-                const firstMonthAndYear = $('.firstMonthAndYear').first();
-                const secondMonthAndYear = $('.secondMonthAndYear').first();
-                const getTheNextTwoMonth = $('.getTheNextTwoMonth').first();
-
-                fetchTheNextCoupleOfMonth(
-                    firstMonthAndYear,
-                    secondMonthAndYear,
-                    month,
-                    year
-                );
-
-                getTheNextTwoMonth.on('click', function () {
-                    const currentFirstMonthInCalendar = secondMonthAndYear
-                        .text()
-                        .split(' ')[1];
-                    const currentYearInCalendar = secondMonthAndYear
-                        .text()
-                        .split(' ')[3];
-
-                    fetchTheNextCoupleOfMonth(
-                        firstMonthAndYear,
-                        secondMonthAndYear,
-                        currentFirstMonthInCalendar * 1,
-                        currentYearInCalendar * 1
-                    );
-                });
-            });
-
-            async function fetchTheNextCoupleOfMonth(
-                firstMonthAndYear,
-                secondMonthAndYear,
-                month,
-                year
-            ) {
-                let secondMonth;
-                if (month === 11) {
-                    secondMonth = await fetchDaysInMonth(0, year + 1);
-                    secondMonthAndYear.html(`Tháng ${1} năm ${year + 1}`);
-                } else {
-                    secondMonth = await fetchDaysInMonth(month + 1, year);
-                    secondMonthAndYear.html(
-                        `Tháng ${month * 1 + 2} năm ${year}`
-                    );
-                }
-
-                firstMonthAndYear.html(`Tháng ${month * 1 + 1} năm ${year}`);
-
-                const firstMonth = await fetchDaysInMonth(month, year);
-
-                const rdt_calender__days = $('.rdt_calender__days').first();
-                const rdt_calender__days_plus__1 = $(
-                    '.rdt_calender__days_plus-1'
-                ).first();
-
-                const daysInMonthJs1 = getDaysInMonth(firstMonth.daysInMonth);
-                const daysInMonthJs2 = getDaysInMonth(secondMonth.daysInMonth);
-
-                rdt_calender__days.empty();
-                rdt_calender__days_plus__1.empty();
-
-                daysInMonthJs1.forEach(day => {
-                    rdt_calender__days.append(day);
-                });
-                daysInMonthJs2.forEach(day => {
-                    rdt_calender__days_plus__1.append(day);
-                });
-            }
-
-            const fetchDaysInMonth = async (month, year) => {
-                const {
-                    data: { daysInMonth, startInWeek },
-                } = await axios.get(
-                    `http://localhost:8001/airtnt/calendar/${month + 1}/${year}`
-                );
-                return Promise.resolve({ daysInMonth, startInWeek });
-            };
-
-            function getDaysInMonth(daysInMonth) {
-                let daysInMonthJs = [];
-                let weeks = daysInMonth.split('*');
-                weeks.forEach(week => {
-                    daysInMonthJs.push('<tbody><tr>');
-                    const weekArray = week.trim().split(' ');
-                    weekArray.forEach(dayInWeek => {
-                        if (dayInWeek.trim() !== '_') {
-                            const dayInHtml = `<td><div data-is-blocked="${false}" class="dayInWeek block__date">${dayInWeek.trim()}</div></td>`;
-                            daysInMonthJs.push(dayInHtml);
-                        } else if (dayInWeek.trim() === '_') {
-                            const dayInHtml = `<td></td>`;
-                            daysInMonthJs.push(dayInHtml);
-                        }
-                    });
-                    daysInMonthJs.push('</tr></tbody>');
-                });
-                return daysInMonthJs;
-            }
-
-            function toggleHiddenImages() {
-                const hiddenSlider = $('.rdt_hidden').first();
-                const fullScreen = $('.rdt__fullScreen').first();
-                if (hiddenSlider.hasClass('show')) {
-                    hiddenSlider.removeClass('show');
-                } else {
-                    hiddenSlider.addClass('show');
-                }
-            }
-
-            async function showFullscreenImage() {
-                const header = $('.header');
-                header.hide();
-                toggleHiddenImages();
-
-                const shareIcon = $('.shareSvg');
-                const loveIcon = $('.loveSvg');
-                const backIcon = $('.backSvg');
-                shareIcon.attr('class', 'shareSvg white');
-                loveIcon.attr('class', 'loveSvg white');
-                backIcon.attr('class', 'backIcon white');
-                backIcon.attr(
-                    'style',
-                    `  height: 16px;
-                                width: 16px;
-                                display: block;
-                                fill: #fff;`
-                );
-
-                const rdt_container = $('.rdt_container').first();
-                rdt_container.hide();
-                const fullScreen = $('.rdt__fullScreen').first();
-                fullScreen.addClass('block');
-                const roomId = $('#roomId').val();
-                let images = await fetchRoomImages(roomId);
-                const innerContainer = $('#innerContainer');
-
-                images.forEach((image, index) => {
-                    let imgHtml;
-                    if (index === 0) {
-                        imgHtml = `
-                        <img src="/airtnt${image.imagePath}" id="${
-                            image.id
-                        }" class="bigImage active" data-index="${index + 1}"/>
-                    `;
-                    } else {
-                        imgHtml = `<img src="/airtnt${image.imagePath}" id="${
-                            image.id
-                        }" class="bigImage" data-index="${index + 1}"/>`;
-                    }
-
-                    innerContainer.append(imgHtml);
-                });
-            }
-
-            async function fetchRoomImages(roomId) {
-                const {
-                    data: { images },
-                } = await axios.get(
-                    'http://localhost:8001/airtnt/homes/' + roomId
-                );
-
-                return images;
-            }
-        </script>
         <script
             type="text/javascript"
-            th:src="@{/js/room/roomSlider.js}"
+            th:src="@{/js/room/room_slider.js}"
         ></script>
-        <script>
-            const headerNavButton =
-                document.getElementsByClassName('account__button')[0];
-            const navMenu = document.getElementsByClassName(
-                'loginAndLogoutHidden'
-            )[0];
-            let isClicked = false;
-
-            headerNavButton.addEventListener('click', function () {
-                if (!isClicked) {
-                    navMenu.classList.add('active');
-                    isClicked = true;
-                } else {
-                    navMenu.classList.remove('active');
-                    isClicked = false;
-                }
-            });
-        </script>
+        <script
+            type="text/javascript"
+            th:src="@{/js/room/room_details.js}"
+        ></script>
+        <div th:replace="header :: javascript"></div>
     </body>
 </html>

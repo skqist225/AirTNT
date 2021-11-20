@@ -52,7 +52,7 @@ public class HostRestController {
     public String uploadRoomPhotos(@ModelAttribute PhotoDTO payload) throws IOException, URISyntaxException {
         String userName = payload.getUserName() != null ? payload.getUserName() : "no-name";
 
-        String uploadDir = "../room_images/temp/" + userName;
+        String uploadDir = "../room_images/" + userName;
         FileUploadUtil.cleanDir(uploadDir);
 
         for (MultipartFile multipartFile : payload.getPhotos()) {
@@ -74,7 +74,7 @@ public class HostRestController {
         System.out.println(payload);
         String userName = payload.getUserName();
         String[] roomImages = payload.getRoomImages();
-        String uploadDir = "../room_images/temp/" + userName;
+        String uploadDir = "../room_images/" + userName;
         List<MultipartFile> multipartFiles = new ArrayList<>();
 
         System.out.println(userName);

@@ -25,6 +25,7 @@ public class RoomPostDTO {
     private int minimumStay;
     private String stayType;
     private int host;
+    private String privacyType;
 
     public String getName() {
         return name;
@@ -200,6 +201,14 @@ public class RoomPostDTO {
 
     public void setAmentities(int[] amentities) {
         this.amentities = amentities;
+    }
+
+    public String getPrivacyType() {
+        return privacyType;
+    }
+
+    public void setPrivacyType(String privacyType) {
+        this.privacyType = privacyType;
     }
 
     @Override
