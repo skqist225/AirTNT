@@ -13,6 +13,7 @@ import com.airtnt.common.entity.Amentity;
 import com.airtnt.common.entity.Category;
 import com.airtnt.common.entity.City;
 import com.airtnt.common.entity.Country;
+import com.airtnt.common.entity.Currency;
 import com.airtnt.common.entity.Image;
 import com.airtnt.common.entity.PriceType;
 import com.airtnt.common.entity.Room;
@@ -161,7 +162,8 @@ public class RoomRestController {
                 .price(payload.getPrice()).priceType(pt).minimumStay(payload.getMinimumStay()).stayType(st).city(city)
                 .state(state).country(country).rules(rules).host(new User(payload.getHost()))
                 .roomGroup(new RoomGroup(payload.getRoomGroup())).roomType(new RoomType(payload.getRoomType()))
-                .host(new User(payload.getHost())).category(new Category(payload.getCategory())).build();
+                .host(new User(payload.getHost())).category(new Category(payload.getCategory()))
+                .currency(new Currency(payload.getCurrency())).build();
 
         roomService.save(room);
 

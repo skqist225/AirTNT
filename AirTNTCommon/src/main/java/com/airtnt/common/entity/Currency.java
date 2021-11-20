@@ -28,4 +28,12 @@ public class Currency {
 
     @Column(nullable = false, length = 10, unique = true)
     private String symbol;
+
+    public Currency(int id) {
+        this.id = id;
+    }
+
+    public Currency(String symbol) {
+        this.symbol = symbol;
+    }
 }
