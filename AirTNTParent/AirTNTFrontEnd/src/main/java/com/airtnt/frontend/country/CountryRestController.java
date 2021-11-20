@@ -6,8 +6,6 @@ import java.util.Map;
 
 import com.airtnt.common.entity.Country;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -43,8 +41,6 @@ public class CountryRestController {
 
         for (CountryDTO c : countries) {
             Country country = new Country(c.getName(), c.getCode());
-            System.out.println(c.getCode());
-            System.out.println(country);
             lst_country.add(country);
         }
 

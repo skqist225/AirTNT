@@ -50,4 +50,5 @@ public class RoomController {
 
 		return "room/room_details";
 	}
+
 }

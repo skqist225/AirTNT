@@ -102,7 +102,8 @@ public class HostController {
     }
 
     @GetMapping("photos")
-    public String roomImagesSelect(Model model) {
+    public String roomImagesSelect(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        model.addAttribute("userName", userDetails.getUsername());
         return "become_host/photos";
     }
 
@@ -126,8 +127,8 @@ public class HostController {
         String userName = userDetails.getUsername();
         User user = userService.getByEmail(userName);
         model.addAttribute("userAvatar", user.getAvatarPath());
-
         model.addAttribute("userName", user.getFullName());
+        model.addAttribute("host", user.getId());
         return "become_host/preview";
     }
 

@@ -179,10 +179,12 @@
                                 </div>
                                 <div
                                     id="room-preview__room-location"
-                                    class="room-preview__line"
+                                    style="margin: 0 24px; padding-bottom: 24px"
                                 >
                                     <h2>Vị trí</h2>
-                                    <div></div>
+                                    <div
+                                        id="room-preview__room-location-txt"
+                                    ></div>
                                 </div>
                             </div>
                         </div>
@@ -223,6 +225,7 @@
         <script th:inline="javascript">
             /*<![CDATA[*/
             const baseURL = /*[[@{/}]]*/ 'default';
+            const hostName = /*[[${host}]]*/ 'no-name';
             /*]]>*/
         </script>
         <script

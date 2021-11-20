@@ -14,6 +14,52 @@ $(document).ready(function () {
     });
 });
 
+test(uploadPhotos);
+
+async function test(uploadPhotos) {
+    if (localStorage.getItem('room')) {
+        const { roomImages, userName2 } = JSON.parse(
+            localStorage.getItem('room')
+        );
+        if (roomImages.length >= 5) {
+            isUploaded = true;
+            const formData = new FormData();
+            formData.set('userName', userName2);
+            roomImages.forEach(image => formData.append('roomImages', image));
+
+            const { data } = await axios.post(
+                `${baseURL}become-a-host/get-upload-photos`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+
+            const filesArr = data.roomImages.map(e => {
+                var array = new Uint8Array(e.bytes);
+                const blob = new Blob([array], { type: 'image/jpeg' });
+                return new File([blob], e.name, {
+                    type: `image/jpeg`,
+                });
+            });
+
+            readURL(filesArr, uploadPhotos);
+        }
+    }
+}
+
+function _base64ToArrayBuffer(base64) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
 function previewImage(file, parent, thumbnail = false, modifier) {
     const defer = $.Deferred();
     const fileReader = new FileReader();
@@ -147,6 +193,7 @@ function doPreviewImageSecondTime(files, subImagesContainer) {
 
 function readURL(files, uploadPhotos) {
     const subImagesContainer = $('#subImages');
+    console.log(files);
     if (photos.length === 0) {
         if (files.length > 0) {
             $('.photosContainer').addClass('active');
@@ -334,16 +381,11 @@ async function uploadImagesToFolder() {
     }
 
     const formData = new FormData();
-    if (localStorage.getItem('room')) {
-        const room = JSON.parse(localStorage.getItem('room'));
-        if (room.photosFolderIndex) {
-            formData.set('currentFolderIndex', room.photosFolderIndex);
-        }
-    }
+    formData.set('userName', userName);
     photos.forEach(photo => formData.append('photos', photo));
 
     const {
-        data: { status, currentFolderIndex },
+        data: { status, userName: userName2 },
     } = await axios.post(
         `${baseURL}become-a-host/upload-room-photos`,
         formData,
@@ -361,14 +403,14 @@ async function uploadImagesToFolder() {
         if (!localStorage.getItem('room')) {
             room = {
                 roomImages: photos.map(({ name }) => name),
-                photosFolderIndex: currentFolderIndex,
+                userName2,
             };
         } else {
             room = JSON.parse(localStorage.getItem('room'));
             room = {
                 ...room,
                 roomImages: photos.map(({ name }) => name),
-                photosFolderIndex: currentFolderIndex,
+                userName2,
             };
         }
         localStorage.setItem('room', JSON.stringify(room));

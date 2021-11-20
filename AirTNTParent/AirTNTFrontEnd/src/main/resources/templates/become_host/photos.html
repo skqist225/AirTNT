@@ -188,6 +188,7 @@
         <script th:inline="javascript">
             /*<![CDATA[*/
             const baseURL = /*[[@{/}]]*/ 'default';
+            const userName = /*[[${userName}]]*/ 'no-name';
             /*]]>*/
         </script>
         <script th:src="@{/js/become_host/photos.js}"></script>

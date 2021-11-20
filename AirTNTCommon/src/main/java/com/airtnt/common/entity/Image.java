@@ -30,6 +30,10 @@ public class Image {
 		this.id = id;
 	}
 
+	public Image(String imgString) {
+		this.image = imgString;
+	}
+
 	@Transient
 	public String imageName() {
 		return this.image;

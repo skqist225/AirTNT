@@ -21,12 +21,17 @@ public class City {
 	@Column(nullable = false, unique = true)
 	private String name;
 
+	@ManyToOne
+	@JsonBackReference
+	@JoinColumn(name = "state_id")
+	private State state;
+
 	public City(int id) {
 		this.id = id;
 	}
 
-	@ManyToOne
-	@JsonBackReference
-	@JoinColumn(name="state_id")
-	private State state;
+	public City(String name, State state) {
+		this.name = name;
+		this.state = state;
+	}
 }

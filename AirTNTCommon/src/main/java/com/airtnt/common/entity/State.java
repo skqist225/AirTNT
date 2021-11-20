@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -51,6 +50,11 @@ public class State {
 	public State(String name, String code, Country country) {
 		this.name = name;
 		this.code = code;
+		this.country = country;
+	}
+
+	public State(String name, Country country) {
+		this.name = name;
 		this.country = country;
 	}
 }

@@ -19,3 +19,6 @@ ALTER TABLE airtnt.countries CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_un
 
 ///Drop foreign key check
 SET FOREIGN_KEY_CHECKS = 0;
+
+///List of MIMETYPE
+https://www.iana.org/assignments/media-types/media-types.xhtml#image

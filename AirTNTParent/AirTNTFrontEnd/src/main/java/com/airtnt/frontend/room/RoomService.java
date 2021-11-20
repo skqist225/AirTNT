@@ -21,6 +21,10 @@ public class RoomService {
 	@Autowired
 	private RoomRepository roomRepository;
 
+	public Room save(Room room) {
+		return roomRepository.save(room);
+	}
+
 	public Room getRoomById(int id) {
 		Optional<Room> optionalRoom = roomRepository.findById(id);
 		Room room = new Room();

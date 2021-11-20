@@ -1,10 +1,28 @@
-mapboxgl.accessToken =
+const accessToken =
     'pk.eyJ1IjoibG9yZGVkc3dpZnQyMjUiLCJhIjoiY2t3MDJvZ2E5MDB0dDJxbndxbjZxM20wOCJ9.hYxzgffyfc93Aiogipp5bA';
+
+mapboxgl.accessToken = accessToken;
 let userLat = 0,
-    userLng = 0;
+    userLng = 0,
+    isAprtNoAndStreetFilledUp = false,
+    isCityFilledUp = false,
+    place_name = '';
 
 jQuery(document).ready(function () {
     const locationInputContainer = $('.location__input-container');
+
+    if (localStorage.getItem('room')) {
+        const { longitude, latitude } = JSON.parse(
+            localStorage.getItem('room')
+        );
+        showPosition({
+            coords: {
+                latitude,
+                longitude,
+            },
+        });
+    }
+
     locationInputContainer.each(function () {
         $(this).click(function () {
             locationInputContainer.each(function () {
@@ -24,9 +42,114 @@ jQuery(document).ready(function () {
             $(this).addClass('focus');
         });
     });
+
+    const addressSearchInput = $('#addressLocation');
+    addressSearchInput.on('focus', function () {
+        $('.location__search-location').first().addClass('input-focus');
+        $('.location__location-option-box').first().addClass('input-focus');
+    });
+
+    $('#location__search-btn').click(function () {
+        getPositionFromInput(addressSearchInput.val(), accessToken);
+    });
+
+    $('#location__btn-complete-address-id').click(function (event) {
+        event.preventDefault();
+
+        const aprtNoAndStreet = $('#aprtNoAndStreet').val();
+        const city = $('#city').val();
+        const state = $('#state').val();
+        const country = $('#country').val();
+
+        const placeToSearch =
+            aprtNoAndStreet + ' ' + city + ' ' + state + ' ' + country;
+
+        getPositionFromInput(placeToSearch, accessToken);
+    });
+
+    const aprtNoAndStreet = $('#aprtNoAndStreet');
+    const city = $('#city');
+    const completeButton = $('.location__btn-complete-address');
+    let aprtNoAndStreetLength = 0;
+    let cityLength = 0;
+
+    aprtNoAndStreet.on('keydown', function (event) {
+        if (event.key !== 'Backspace') {
+            aprtNoAndStreetLength = $(this).val().length + 1;
+        } else {
+            aprtNoAndStreetLength--;
+        }
+
+        if (aprtNoAndStreetLength > 0) {
+            isAprtNoAndStreetFilledUp = true;
+
+            if (isAprtNoAndStreetFilledUp && isCityFilledUp) {
+                completeButton.attr('disabled', false);
+            }
+        } else {
+            isAprtNoAndStreetFilledUp = false;
+
+            if (!isAprtNoAndStreetFilledUp || !isCityFilledUp) {
+                completeButton.attr('disabled', true);
+            }
+        }
+    });
+
+    city.on('keydown', function (event) {
+        if (event.key !== 'Backspace') {
+            cityLength = $(this).val().length + 1;
+        } else {
+            cityLength--;
+        }
+
+        if (cityLength > 0) {
+            isCityFilledUp = true;
+
+            if (isAprtNoAndStreetFilledUp && isCityFilledUp) {
+                completeButton.attr('disabled', false);
+            }
+        } else {
+            isCityFilledUp = false;
+
+            if (!isAprtNoAndStreetFilledUp || !isCityFilledUp) {
+                completeButton.attr('disabled', true);
+            }
+        }
+    });
 });
 
-function expandSelectTag(self) {
+async function getPositionFromInput(placeToSearch, accessToken) {
+    console.log(placeToSearch);
+    const { data } = await axios.get(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${placeToSearch}.json?access_token=${accessToken}`
+    );
+
+    place_name = data.features[0].place_name;
+
+    const position = {
+        coords: {
+            latitude: data.features[0].center[1],
+            longitude: data.features[0].center[0],
+        },
+    };
+
+    showPosition(position, false);
+    $('.location__search-location').first().removeClass('input-focus');
+    $('.location__location-option-box').first().removeClass('input-focus');
+}
+
+function processSearchText(searchText) {
+    let input = searchText.toString().replace(/ /g, '%20').replace(/,/g, '');
+    return input;
+}
+
+function useCurrentPosition() {
+    getLocation();
+    $('.location__search-location').first().removeClass('input-focus');
+    $('.location__location-option-box').first().removeClass('input-focus');
+}
+
+function expandSelectTag() {
     const selectTagContainer = $('#selectTagContainer');
     selectTagContainer.css('display', 'block');
 }
@@ -59,18 +182,32 @@ function onKeyDown(event) {
     }
 }
 
-function BackToSearchLocation(self) {
-    const _self = $(self);
-
-    _self.parent().parent().css('display', 'none');
-    $('.location__search-location').first().css('display', 'block');
+function backToSearchLocation() {
+    $('#location__enter-address-option').removeClass('active');
+    $('.location__search-location').first().addClass('active');
 }
 
-getLocation();
+function displayEnterLocation() {
+    $('#location__enter-address-option').addClass('active');
 
-function showPosition(position) {
+    $('.location__search-location')
+        .first()
+        .addClass('non-active')
+        .removeClass('active input-focus');
+
+    $('.location__location-option-box').first().removeClass('input-focus');
+}
+
+async function showPosition(position, doReverseSearch = true) {
     userLat = position.coords.latitude;
     userLng = position.coords.longitude;
+    if (doReverseSearch) {
+        const { data } = await axios.get(
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${userLng},${userLat}.json?access_token=${accessToken}`
+        );
+        console.log(data);
+        place_name = data.features[0].place_name;
+    }
 
     var map = new mapboxgl.Map({
         container: 'map',
@@ -110,7 +247,7 @@ function showPosition(position) {
                 offset: popupOffsets,
                 className: 'my-class',
             }) // add popups
-                .setHTML(`<h1>${userName}</h1>`)
+                .setHTML(`<h2>${userName}</h2>`)
                 .setMaxWidth('300px')
         )
         .setLngLat([userLng, userLat])
@@ -124,6 +261,46 @@ function showPosition(position) {
         .setHTML(`<h1>${userName}</h1>`)
         .setMaxWidth('300px')
         .addTo(map);
+
+    let currentPopup = null;
+
+    map.on('click', e => {
+        $('.location__search-location').first().removeClass('input-focus');
+        $('.location__location-option-box').first().removeClass('input-focus');
+
+        userLat = e.lngLat.lat;
+        userLng = e.lngLat.lng;
+
+        if (marker) marker.remove();
+        if (popup) popup.remove();
+
+        currentPopup = new mapboxgl.Popup({
+            offset: popupOffsets,
+            className: 'mapboxgl-popup',
+        }) // add popups
+            .setHTML(`<h2>${userName}</h2>`)
+            .setMaxWidth('300px');
+
+        newMarker = new mapboxgl.Marker(image)
+            // .setPopup(currentPopup)
+            .setLngLat([e.lngLat.lng, e.lngLat.lat])
+            .addTo(map);
+
+        showPosition({
+            coords: {
+                longitude: e.lngLat.lng,
+                latitude: e.lngLat.lat,
+            },
+        });
+    });
+
+    map.on('drag', () => {
+        console.log('A drag event occurred.');
+    });
+
+    map.on('data', () => {
+        $('#map_loading').css('display', 'none');
+    });
 }
 
 function showError(error) {
@@ -147,15 +324,17 @@ function nextPage() {
     let room = {};
     if (!localStorage.getItem('room')) {
         room = {
-            longitude: userLat,
-            latitude: userLng,
+            longitude: userLng,
+            latitude: userLat,
+            place_name,
         };
     } else {
         room = JSON.parse(localStorage.getItem('room'));
         room = {
             ...room,
-            longitude: userLat,
-            latitude: userLng,
+            longitude: userLng,
+            latitude: userLat,
+            place_name,
         };
     }
     localStorage.setItem('room', JSON.stringify(room));

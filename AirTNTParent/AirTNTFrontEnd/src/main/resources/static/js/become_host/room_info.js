@@ -1,4 +1,13 @@
 $(document).ready(function () {
+    if (localStorage.getItem('room')) {
+        const { guestNumber, bedNumber, bedRoomNumber, bathRoomNumber } =
+            JSON.parse(localStorage.getItem('room'));
+
+        $('#guestNumber').text(guestNumber);
+        $('#bedNumber').text(bedNumber);
+        $('#bedRoomNumber').text(bedRoomNumber);
+        $('#bathRoomNumber').text(bathRoomNumber);
+    }
     $('.incAndDecBtn').each(function () {
         $(this).click(function () {
             if ($(this).data('function') === 'dec') {

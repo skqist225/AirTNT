@@ -7,16 +7,13 @@ body {
 *::after,
 *::before {
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
 
 #map {
     height: 100%;
     width: 100%;
     background-color: #a4ddf5;
-}
-
-* {
-    font-family: 'Roboto', sans-serif;
 }
 
 .room-location__left {
@@ -50,7 +47,7 @@ body {
 .room-group__left-title {
     font-size: 48px;
     line-height: 56px;
-    margin-bottom: 12 px;
+    margin-bottom: 12px;
 }
 
 .room-group__left {
@@ -124,12 +121,12 @@ body {
     border: none rgb(176, 176, 176);
     background-color: rgb(34, 34, 34);
     outline: none;
-    padding: 0 px 16 px;
-    margin: 0 px;
-    border-radius: 32 px;
+    padding: 0px 16px;
+    margin: 0px;
+    border-radius: 32px;
     color: rgb(255, 255, 255);
     position: relative;
-    height: 32 px;
+    height: 32px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -137,8 +134,6 @@ body {
     font-size: 12px;
     line-height: 16px;
     font-weight: 600;
-    border-radius: 32px;
-    height: 32px;
     width: calc(64px * 2);
 }
 
@@ -267,6 +262,21 @@ body {
     border-radius: 78px;
     background-color: #fff;
     box-shadow: 0px 6px 16px rgb(0 0 0 / 12%);
+}
+
+.location__search-location.input-focus {
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.location__search-location.non-active {
+    display: none;
+}
+
+.location__search-location.active {
+    display: block;
 }
 
 .location__search-location input {
@@ -412,4 +422,72 @@ body {
     position: absolute;
     top: 483px;
     left: 29px;
+}
+
+.location__location-option-box {
+    background-color: #fff;
+    width: 100%;
+    height: 140px;
+    display: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.location__location-option-box.input-focus {
+    display: block;
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+}
+
+.location__enter-address-btn {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    text-align: center;
+    color: #222;
+    text-decoration: underline;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#location__enter-address-option {
+    width: 600px;
+    height: 600px;
+    position: absolute;
+    display: none;
+    transition: all 0.2 ease-in-out;
+}
+
+#location__enter-address-option.active {
+    display: block;
+}
+
+#location__enter-address-option__body {
+    flex: 1;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid rgb(176, 176, 176);
+}
+
+.location__location-option-box-first {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.location__location-option-box-first:hover {
+    background-color: rgb(204, 204, 204);
+}
+
+.location__confirm-address {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+button:disabled {
+    cursor: no-drop;
+    background-color: #717171;
 }

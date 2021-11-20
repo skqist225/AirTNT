@@ -17,7 +17,7 @@ import java.util.*;
 @Table(name = "rooms")
 public class Room extends BaseEntity {
 
-	@Column(nullable = false, length = 512, unique = true)
+	@Column(nullable = false, length = 512)
 	private String name;
 
 	@Builder.Default
@@ -36,11 +36,11 @@ public class Room extends BaseEntity {
 	@JoinColumn(name = "country_id")
 	private Country country;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "state_id")
 	private State state;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "city_id")
 	private City city;
 
@@ -55,6 +55,14 @@ public class Room extends BaseEntity {
 
 	@Column(length = 10, nullable = false)
 	private String bedCount;
+
+	@ManyToOne
+	@JoinColumn(name = "room_group_id")
+	private RoomGroup roomGroup;
+
+	@ManyToOne
+	@JoinColumn(name = "room_type_id")
+	private RoomType roomType;
 
 	@OneToOne
 	@JoinColumn(name = "currency_id")
@@ -72,7 +80,10 @@ public class Room extends BaseEntity {
 	@JoinTable(name = "rooms_amentities", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "amentity_id"))
 	private Set<Amentity> amentities = new HashSet<>();
 
+	@Column(columnDefinition = "DEFAULT 0")
 	private float latitude;
+
+	@Column(columnDefinition = "DEFAULT 0")
 	private float longitude;
 
 	@Column(nullable = false)
@@ -82,7 +93,7 @@ public class Room extends BaseEntity {
 	@Column(length = 20, nullable = false)
 	private PriceType priceType;
 
-	@Column(length = 5, nullable = false, columnDefinition = "TINYINT")
+	@Column(length = 5, nullable = false, columnDefinition = "INT DEFAULT 1")
 	private int minimumStay;
 
 	@Enumerated(EnumType.STRING)
@@ -114,9 +125,10 @@ public class Room extends BaseEntity {
 	}
 
 	@Transient
-	public String getImageFirst(){
-		if(!this.images.isEmpty())
-			return "room_images/"+this.images.toArray()[0].toString();
-		else return "images/airtntlogo.png";
+	public String getImageFirst() {
+		if (!this.images.isEmpty())
+			return "room_images/" + this.images.toArray()[0].toString();
+		else
+			return "images/airtntlogo.png";
 	}
 }
