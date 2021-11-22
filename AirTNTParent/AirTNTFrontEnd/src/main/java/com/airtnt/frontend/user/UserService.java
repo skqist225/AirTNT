@@ -1,5 +1,7 @@
 package com.airtnt.frontend.user;
 
+import javax.transaction.Transactional;
+
 import com.airtnt.common.entity.Role;
 import com.airtnt.common.entity.User;
 
@@ -61,4 +63,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
+    public int verifyPhoneNumber(Integer userId) {
+        return userRepository.verifyPhoneNumber(userId);
+    }
 }

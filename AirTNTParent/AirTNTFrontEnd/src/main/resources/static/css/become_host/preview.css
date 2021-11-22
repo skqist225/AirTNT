@@ -134,3 +134,7 @@
     font-weight: 600;
     margin-bottom: 24px;
 }
+
+#room-preview__room-price {
+    font-weight: 600;
+}

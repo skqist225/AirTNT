@@ -27,4 +27,19 @@ public class AmentityService {
 
         return amentities;
     }
+
+    public List<Amentity> getFirst18Amentities() {
+        List<Amentity> amentities = amentityRepository.getFirst18Amentities();
+
+        return amentities;
+    }
+
+    public List<Amentity> getAllAmentities() {
+        Iterator<Amentity> itr = amentityRepository.findAll().iterator();
+        List<Amentity> amentities = new ArrayList<>();
+
+        itr.forEachRemaining(amentities::add);
+
+        return amentities;
+    }
 }

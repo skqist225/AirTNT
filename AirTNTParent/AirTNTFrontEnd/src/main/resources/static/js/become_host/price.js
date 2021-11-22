@@ -3,7 +3,7 @@ jQuery(document).ready(function () {
         const { roomPricePerNight } =
             JSON.parse(localStorage.getItem('room')) || 0;
 
-        if (roomPricePerNight > 0) {
+        if (roomPricePerNight && roomPricePerNight > 0) {
             $('#room-price').val('₫' + roomPricePerNight);
         }
     }
@@ -55,6 +55,14 @@ function nextPage() {
         };
     }
     localStorage.setItem('room', JSON.stringify(room));
+
+    if (
+        $('#room-price').val().toString().replace('₫', '') * 1 >
+        1_000_000_000
+    ) {
+        alert('Vui lòng nhập dưới 1.000.000.000đ');
+        return;
+    }
 
     window.location.href = `${baseURL}become-a-host/preview`;
 }

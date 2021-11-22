@@ -69,6 +69,7 @@ main {
     max-width: 90%;
     margin: 0 auto;
 }
+
 .verify-listing__button-rent:disabled {
     cursor: not-allowed;
     opacity: 1;

@@ -2,10 +2,11 @@ jQuery(document).ready(function () {
     const roomName = $('#room-name');
     const currentLength = $('#currentLength');
     if (localStorage.getItem('room')) {
-        const { roomTitle } = JSON.parse(localStorage.getItem('room')) || '';
-
-        roomName.val(roomTitle);
-        currentLength.text(roomTitle.length);
+        const { roomTitle } = JSON.parse(localStorage.getItem('room'));
+        if (roomTitle) {
+            roomName.val(roomTitle);
+            currentLength.text(roomTitle.length);
+        }
     }
 });
 

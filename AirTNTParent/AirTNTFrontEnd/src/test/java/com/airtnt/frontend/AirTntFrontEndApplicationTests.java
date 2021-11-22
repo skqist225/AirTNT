@@ -1,4 +1,4 @@
-package com.airtnt;
+package com.airtnt.frontend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +8,7 @@ class AirTntFrontEndApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("OK");
 	}
 
 }

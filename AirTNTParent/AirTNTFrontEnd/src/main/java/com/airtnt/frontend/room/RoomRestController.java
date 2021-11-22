@@ -28,6 +28,7 @@ import com.airtnt.frontend.category.CategoryService;
 import com.airtnt.frontend.city.CityService;
 import com.airtnt.frontend.rule.RuleService;
 import com.airtnt.frontend.state.StateService;
+import com.airtnt.frontend.user.UserService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +49,9 @@ public class RoomRestController {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RuleService ruleService;
@@ -162,10 +166,23 @@ public class RoomRestController {
                 .state(state).country(country).rules(rules).host(new User(payload.getHost()))
                 .roomGroup(new RoomGroup(payload.getRoomGroup())).roomType(new RoomType(payload.getRoomType()))
                 .host(new User(payload.getHost())).category(new Category(payload.getCategory()))
-                .currency(new Currency(payload.getCurrency())).privacyType(payload.getPrivacyType()).build();
+                .currency(new Currency(payload.getCurrency())).privacyType(payload.getPrivacyType())
+                .thumbnail(images.iterator().next().getImage()).status(false).build();
 
-        roomService.save(room);
+        Room savedRoom = roomService.save(room);
 
-        return new JSONObject().put("status", "OK").toString();
+        return new JSONObject().put("status", "OK").put("roomId", savedRoom.getId()).toString();
     }
+
+    @PostMapping("/room/verify-phone")
+    public String verifyPhoneForRoom(@RequestBody Map<String, Integer> payload) {
+        Integer roomId = payload.get("roomId");
+        Room room = roomService.getRoomById(roomId);
+        int isUpdated = userService.verifyPhoneNumber(room.getHost().getId());
+        if (isUpdated == 1)
+            return new String("Verify phone successfully");
+        else
+            return new String("Verify phone fail");
+    }
+
 }

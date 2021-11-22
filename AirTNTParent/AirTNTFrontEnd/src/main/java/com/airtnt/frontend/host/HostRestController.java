@@ -53,7 +53,9 @@ public class HostRestController {
         String userName = payload.getUserName() != null ? payload.getUserName() : "no-name";
 
         String uploadDir = "../room_images/" + userName;
-        FileUploadUtil.cleanDir(uploadDir);
+
+        // check here
+        // FileUploadUtil.cleanDir(uploadDir);
 
         for (MultipartFile multipartFile : payload.getPhotos()) {
             if (!multipartFile.isEmpty()) {

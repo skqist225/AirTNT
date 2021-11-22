@@ -26,6 +26,10 @@ jQuery(document).ready(function () {
                 .toLowerCase()} này.`
         );
 
+        $('#room-preview__room-price').text(
+            seperateNumber(room.roomPricePerNight) + 'đ / đêm'
+        );
+
         /*-------------------------------AMENTITIES-----------------------------------------*/
         $('#prominentAmentity').attr(
             'src',
@@ -47,8 +51,39 @@ jQuery(document).ready(function () {
         /*-------------------------------LOCATION-----------------------------------------*/
         $('#room-preview__room-location-txt').text(room.place_name);
         /*-------------------------------LOCATION-----------------------------------------*/
+    } else {
+        window.location.href = baseURL;
     }
 });
+
+const seperateNumber = number => {
+    let dotNum = 0;
+
+    const countDotNum = number => {
+        const resultOfDivisionOperator = number / 1000;
+
+        if (resultOfDivisionOperator >= 1) {
+            dotNum++;
+            const _number = resultOfDivisionOperator;
+            countDotNum(_number);
+        } else {
+            return;
+        }
+    };
+
+    countDotNum(number);
+
+    let finalString = [];
+    let numString = String(number);
+
+    for (let i = 0; i < dotNum; i++) {
+        const subString = '.' + numString.substr(-3);
+        numString = numString.substring(0, numString.length - 3);
+        finalString.unshift(subString);
+    }
+
+    return numString + finalString.join('');
+};
 
 function backtoHomePage() {
     window.location.href = baseURL;
@@ -116,7 +151,7 @@ async function nextPage() {
 
         if (data.status === 'OK') {
             localStorage.removeItem('room');
-            window.location.href = `${baseURL}become-a-host/publish-celebration`;
+            window.location.href = `${baseURL}become-a-host/publish-celebration/${data.roomId}`;
         }
     }
 }

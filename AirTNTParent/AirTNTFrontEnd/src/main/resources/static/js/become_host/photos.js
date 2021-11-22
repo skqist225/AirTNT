@@ -21,7 +21,7 @@ async function test(uploadPhotos) {
         const { roomImages, userName2 } = JSON.parse(
             localStorage.getItem('room')
         );
-        if (roomImages.length >= 5) {
+        if (roomImages && roomImages.length >= 5) {
             isUploaded = true;
             const formData = new FormData();
             formData.set('userName', userName2);

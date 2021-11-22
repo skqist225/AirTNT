@@ -80,8 +80,8 @@ public class User extends BaseEntity {
 	private boolean SupremeHost = false;
 
 	@Builder.Default
-	@Column(columnDefinition = "boolean default false")
-	private boolean Verified = false;
+	@Column(name = "phone_verified", columnDefinition = "boolean default false")
+	private boolean phoneVerified = false;
 
 	@Column(length = 1024)
 	private String about;

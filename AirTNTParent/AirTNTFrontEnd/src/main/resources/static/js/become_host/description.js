@@ -1,16 +1,21 @@
 let descriptions = [];
 jQuery(document).ready(function () {
     if (localStorage.getItem('room')) {
-        const { descriptions: lsDescriptions } =
-            JSON.parse(localStorage.getItem('room')) || [];
-        descriptions = lsDescriptions;
+        const { descriptions: lsDescriptions } = JSON.parse(
+            localStorage.getItem('room')
+        );
+        if (lsDescriptions) {
+            descriptions = lsDescriptions;
 
-        if (descriptions.length === 2) {
-            jQuery('.description__title-container').each(function () {
-                if (descriptions.includes($(this).children().last().text())) {
-                    $(this).addClass('choosen');
-                }
-            });
+            if (descriptions.length === 2) {
+                jQuery('.description__title-container').each(function () {
+                    if (
+                        descriptions.includes($(this).children().last().text())
+                    ) {
+                        $(this).addClass('choosen');
+                    }
+                });
+            }
         }
     }
 

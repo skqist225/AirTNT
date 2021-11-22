@@ -37,4 +37,8 @@ public class BaseEntity {
 		this.id = id;
 	}
 
+	public BaseEntity(boolean status) {
+		this.status = status;
+	}
+
 }

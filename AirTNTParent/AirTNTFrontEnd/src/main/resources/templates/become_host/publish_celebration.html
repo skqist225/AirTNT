@@ -135,6 +135,7 @@
         <script th:inline="javascript">
             /*<![CDATA[*/
             const baseURL = /*[[@{/}]]*/ 'default';
+            const roomId = /*[[${roomId}]]*/ 'default';
             /*]]>*/
         </script>
         <script>
@@ -145,7 +146,7 @@
             }
 
             function nextPage() {
-                window.location.href = `${baseURL}verify-listing`;
+                window.location.href = `${baseURL}verify-listing/${roomId}`;
             }
         </script>
     </body>

@@ -43,6 +43,8 @@ public class RoomController {
 			bedCount.add(1);
 		}
 
+		// checking thumbnail here
+
 		model.addAttribute("thumbnail", firstImage);
 		model.addAttribute("numberOfBed", bedCount);
 		model.addAttribute("roomImages", secondToFive);

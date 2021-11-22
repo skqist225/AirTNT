@@ -1,34 +1,77 @@
 package com.airtnt.common.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "rooms")
 public class Room extends BaseEntity {
 
+	@Builder
+	public Room(int id, String name, Set<Image> images, String thumbnail, byte rating, List<Review> reviews,
+			Country country, State state, City city, String bedroomCount, String bathroomCount, String accomodatesCount,
+			String bedCount, RoomGroup roomGroup, RoomType roomType, Currency currency, Category category,
+			String description, Set<Amentity> amentities, float latitude, float longitude, float price,
+			String privacyType, PriceType priceType, int minimumStay, StayType stayType, User host, Set<Rule> rules,
+			boolean status) {
+		super(status);
+		this.name = name;
+		this.images = images;
+		this.thumbnail = thumbnail;
+		this.rating = rating;
+		this.reviews = reviews;
+		this.country = country;
+		this.state = state;
+		this.city = city;
+		this.bedroomCount = bedroomCount;
+		this.bathroomCount = bathroomCount;
+		this.accomodatesCount = accomodatesCount;
+		this.bedCount = bedCount;
+		this.roomGroup = roomGroup;
+		this.roomType = roomType;
+		this.currency = currency;
+		this.category = category;
+		this.description = description;
+		this.amentities = amentities;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.price = price;
+		this.privacyType = privacyType;
+		this.priceType = priceType;
+		this.minimumStay = minimumStay;
+		this.stayType = stayType;
+		this.host = host;
+		this.rules = rules;
+	}
+
+	public Room(int id) {
+		super(id);
+	}
+
+	public Room() {
+	}
+
 	@Column(nullable = false, length = 512)
 	private String name;
 
-	@Builder.Default
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "room_id")
 	private Set<Image> images = new HashSet<>();
 
+	private String thumbnail;
+
 	@Column(columnDefinition = "smallint")
 	private byte rating;
 
-	@Builder.Default
 	@OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
 	private List<Review> reviews = new ArrayList<>();
 
@@ -75,7 +118,6 @@ public class Room extends BaseEntity {
 	@Column(columnDefinition = "TEXT NOT NULL")
 	private String description;
 
-	@Builder.Default
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "rooms_amentities", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "amentity_id"))
 	private Set<Amentity> amentities = new HashSet<>();
@@ -106,7 +148,6 @@ public class Room extends BaseEntity {
 	@JoinColumn(name = "host_id")
 	private User host;
 
-	@Builder.Default
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "rooms_rules", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "rule_id"))
 	private Set<Rule> rules = new HashSet<>();
@@ -122,10 +163,6 @@ public class Room extends BaseEntity {
 				+ rules + "]";
 	}
 
-	public Room(int id) {
-		super(id);
-	}
-
 	@Transient
 	public String getImageFirst() {
 		if (!this.images.isEmpty())
@@ -133,4 +170,23 @@ public class Room extends BaseEntity {
 		else
 			return "images/airtntlogo.png";
 	}
+
+	@Transient
+	public long calculateHowManyDaysFromPastToCurrent() {
+		SimpleDateFormat df1 = new SimpleDateFormat("yyyy");
+		SimpleDateFormat df2 = new SimpleDateFormat("MM");
+		SimpleDateFormat df3 = new SimpleDateFormat("dd");
+
+		String year = df1.format(this.getUpdatedDate());
+		String month = df2.format(this.getUpdatedDate());
+		String day = df3.format(this.getUpdatedDate());
+
+		LocalDate dateBefore = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+		LocalDate currentdate = LocalDate.now();
+		LocalDate dateAfter = LocalDate.of(currentdate.getYear(), currentdate.getMonth(), currentdate.getDayOfMonth());
+		long noOfDaysBetween = ChronoUnit.DAYS.between(dateBefore, dateAfter);
+
+		return noOfDaysBetween;
+	}
+
 }

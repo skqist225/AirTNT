@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.airtnt.common.entity.Amentity;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,8 @@ public interface AmentityRepository extends CrudRepository<Amentity, Integer> {
     public List<Amentity> findByFavorite(boolean isFavorite);
 
     public List<Amentity> findBySafe(boolean isSafe);
+
+    @Query(value = "SELECT * FROM `airtnt`.`amentities` LIMIT 18;", nativeQuery = true)
+    public List<Amentity> getFirst18Amentities();
+
 }
