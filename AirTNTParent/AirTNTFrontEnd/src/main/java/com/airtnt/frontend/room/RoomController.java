@@ -39,7 +39,7 @@ public class RoomController {
 		}
 		secondToFive.remove(firstImage);
 		List<Integer> bedCount = new ArrayList<>();
-		for (int i = 0; i < Integer.parseInt(room.getBedCount()); i++) {
+		for (int i = 0; i < room.getBedCount(); i++) {
 			bedCount.add(1);
 		}
 

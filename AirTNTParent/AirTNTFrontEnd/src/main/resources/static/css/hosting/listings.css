@@ -20,6 +20,9 @@ main {
 
 .listings__container {
     padding: 32px 24px 16px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .flex {
@@ -54,8 +57,8 @@ main {
     font-weight: 600;
     border-radius: 10px;
     outline: none;
-    transition: box-shadow 0.2s ease, -ms-transform 0.1s ease,
-        -webkit-transform 0.1s ease, transform 0.1s ease;
+    transition: box-shadow 0.2s ease, -ms-transform 0.1s ease, -webkit-transform 0.1s ease,
+        transform 0.1s ease;
     border-color: #222222;
     background: #ffffff;
     border: 1px solid #222222;
@@ -125,6 +128,7 @@ main {
     align-items: center;
     justify-content: center;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .listings__filter-img-container {
@@ -180,7 +184,15 @@ tbody tr:hover {
     box-shadow: -12px 0 0 0 #f7f7f7, 12px 0 0 0 #f7f7f7;
 }
 
-th:nth-child(2) {
+th.remove {
+    display: none;
+}
+
+td.remove {
+    display: none;
+}
+
+/* th:nth-child(2) {
     width: 371px;
 }
 
@@ -201,7 +213,7 @@ th:nth-child(8) {
 
 th:nth-child(9) {
     width: 300px;
-}
+} */
 
 .listings__table-header {
     cursor: pointer;
@@ -253,8 +265,8 @@ th:nth-child(9) {
     padding-bottom: 7px;
     padding-left: 15px;
     padding-right: 15px;
-    transition: box-shadow 0.2s ease, -ms-transform 0.1s ease,
-        -webkit-transform 0.1s ease, transform 0.1s ease;
+    transition: box-shadow 0.2s ease, -ms-transform 0.1s ease, -webkit-transform 0.1s ease,
+        transform 0.1s ease;
     border-color: #222222;
     background: #ffffff;
     color: #222222;
@@ -284,7 +296,7 @@ th:nth-child(9) {
     margin-bottom: 1px;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid #222222;
+    border-bottom: 5px solid #22222247;
 }
 
 .downer {
@@ -295,8 +307,9 @@ th:nth-child(9) {
     margin-bottom: 1px;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-top: 5px solid #222222;
-    color: #222222;
+    border-top: 5px solid #22222247;
+    color: #222;
+    /*border-top: 5px solid #222222;*/
 }
 
 .listings__fiter-icon-container {
@@ -317,8 +330,6 @@ th:nth-child(9) {
     -webkit-box-direction: normal;
     -webkit-box-orient: vertical;
     position: absolute;
-    display: flex;
-    flex-direction: column;
     margin-top: 12px;
     background: rgb(255, 255, 255);
     border-radius: 12px;
@@ -332,7 +343,7 @@ th:nth-child(9) {
     top: 100%;
     left: 0px;
     right: auto;
-    /* background-color: red; */
+    display: none;
 }
 
 .flex-2 {
@@ -343,6 +354,7 @@ th:nth-child(9) {
 
 .filter-box {
     padding: 24px;
+    flex: 1;
     overflow-y: scroll;
 }
 
@@ -404,8 +416,8 @@ th:nth-child(9) {
     border-radius: 8px;
     outline: none;
     padding: 14px 24px;
-    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
-        -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s,
+        transform 0.1s ease 0s;
     border: none;
     background: rgb(34, 34, 34);
     color: rgb(255, 255, 255);
@@ -416,8 +428,6 @@ th:nth-child(9) {
     -webkit-box-direction: normal;
     -webkit-box-orient: vertical;
     position: absolute;
-    display: flex;
-    flex-direction: column;
     margin-top: 12px;
     background: rgb(255, 255, 255);
     border-radius: 12px;
@@ -427,9 +437,10 @@ th:nth-child(9) {
     overflow: hidden auto;
     width: 500px;
     top: 100%;
-    height: 500px;
+    height: 455px;
     left: 0px;
     right: auto;
+    display: none;
 }
 
 .grid-2 {
@@ -441,7 +452,7 @@ input[type='checkbox'] {
     -moz-appearance: none;
     -webkit-appearance: none;
     -o-appearance: none;
-    outline: none !important;
+    outline: none;
     content: none;
 }
 
@@ -450,7 +461,7 @@ input[type='checkbox']:before {
     content: '\f00c';
     font-size: 13px;
     border-radius: 4px;
-    color: transparent !important;
+    color: transparent;
     background: #fff;
     display: block;
     width: 18px;
@@ -464,7 +475,144 @@ input[type='checkbox']:before {
 
 input[type='checkbox']:checked:before {
     background: #3ea8df;
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(255, 255, 255, 0.85);
     border: 2px solid #3ea8df;
     border-radius: 4px;
 }
+
+#listings__filter-status {
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    position: absolute;
+    margin-top: 12px;
+    background: rgb(255, 255, 255);
+    border-radius: 12px;
+    border: 0.5px solid rgba(118, 118, 118, 0.28);
+    box-shadow: rgb(0 0 0 / 28%) 0px 8px 28px;
+    z-index: 2001;
+    overflow: hidden auto;
+    width: 300px;
+    top: 100%;
+    height: 229px;
+    left: 0px;
+    right: auto;
+    display: none;
+}
+
+.normal-flex {
+    display: flex;
+    align-items: center;
+}
+
+.listings__filter-status-row {
+    height: calc(100% / 2);
+}
+
+#listings__filter-others {
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    position: absolute;
+    margin-top: 12px;
+    background: rgb(255, 255, 255);
+    border-radius: 12px;
+    border: 0.5px solid rgba(118, 118, 118, 0.28);
+    box-shadow: rgb(0 0 0 / 28%) 0px 8px 28px;
+    z-index: 2001;
+    overflow: hidden auto;
+    width: 300px;
+    top: 100%;
+    height: 229px;
+    left: 0px;
+    right: auto;
+    display: none;
+}
+
+.listings__filter-others-row {
+    height: calc(100% / 2);
+}
+
+#listings__setting-column-display {
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    background: rgb(255, 255, 255);
+    border-radius: 12px;
+    border: 0.5px solid rgba(118, 118, 118, 0.28);
+    box-shadow: rgb(0 0 0 / 28%) 0px 8px 28px;
+    z-index: 2001;
+    overflow: hidden auto;
+    width: 300px;
+    top: 100%;
+    height: 229px;
+    right: 0px;
+    left: auto;
+    display: none;
+}
+
+.listings__setting-column-display-header {
+    margin-bottom: 12px;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.listings__setting-column-display-row {
+    height: calc(100% / 5);
+}
+
+#listings__filter-roomAndBedRoom.active,
+#listings__filter-amentities.active,
+#listings__filter-status.active,
+#listings__filter-others.active,
+#listings__setting-column-display.active {
+    display: block;
+}
+
+.listings__filter-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.listings__transparent-btn:disabled {
+    color: #dddddd;
+    cursor: not-allowed;
+}
+
+.listings__minus-btn:disabled {
+    cursor: not-allowed;
+    color: rgb(235, 235, 235);
+    border-color: rgb(235, 235, 235);
+    background: rgb(255, 255, 255);
+}
+
+/*PAGING*/
+.pagination {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+    height: 80px;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+    border-radius: 5px;
+}
+/*END OF PAGING*/

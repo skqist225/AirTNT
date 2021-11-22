@@ -158,10 +158,10 @@ public class RoomRestController {
             city = new City(payload.getCity(), state);
         }
 
-        Room room = Room.builder().name(payload.getName()).accomodatesCount(payload.getAccomodatesCount() + "")
-                .bathroomCount(payload.getBathroomCount() + "").bedCount(payload.getBedCount() + "")
-                .bedroomCount(payload.getBedroomCount() + "").description(payload.getDescription())
-                .amentities(amentities).images(images).latitude(payload.getLatitude()).longitude(payload.getLongitude())
+        Room room = Room.builder().name(payload.getName()).accomodatesCount(payload.getAccomodatesCount())
+                .bathroomCount(payload.getBathroomCount()).bedCount(payload.getBedCount())
+                .bedroomCount(payload.getBedroomCount()).description(payload.getDescription()).amentities(amentities)
+                .images(images).latitude(payload.getLatitude()).longitude(payload.getLongitude())
                 .price(payload.getPrice()).priceType(pt).minimumStay(payload.getMinimumStay()).stayType(st).city(city)
                 .state(state).country(country).rules(rules).host(new User(payload.getHost()))
                 .roomGroup(new RoomGroup(payload.getRoomGroup())).roomType(new RoomType(payload.getRoomType()))

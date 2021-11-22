@@ -18,8 +18,8 @@ public class Room extends BaseEntity {
 
 	@Builder
 	public Room(int id, String name, Set<Image> images, String thumbnail, byte rating, List<Review> reviews,
-			Country country, State state, City city, String bedroomCount, String bathroomCount, String accomodatesCount,
-			String bedCount, RoomGroup roomGroup, RoomType roomType, Currency currency, Category category,
+			Country country, State state, City city, int bedroomCount, int bathroomCount, int accomodatesCount,
+			int bedCount, RoomGroup roomGroup, RoomType roomType, Currency currency, Category category,
 			String description, Set<Amentity> amentities, float latitude, float longitude, float price,
 			String privacyType, PriceType priceType, int minimumStay, StayType stayType, User host, Set<Rule> rules,
 			boolean status) {
@@ -87,17 +87,17 @@ public class Room extends BaseEntity {
 	@JoinColumn(name = "city_id")
 	private City city;
 
-	@Column(columnDefinition = "VARCHAR(10) NOT NULL", name = "bedroom_count")
-	private String bedroomCount;
+	@Column(nullable = false, columnDefinition = "SMALLINT DEFAULT 0")
+	private int bedroomCount;
 
-	@Column(length = 10, nullable = false)
-	private String bathroomCount;
+	@Column(nullable = false, columnDefinition = "SMALLINT DEFAULT 0")
+	private int bathroomCount;
 
-	@Column(length = 10, nullable = false)
-	private String accomodatesCount;
+	@Column(nullable = false, columnDefinition = "SMALLINT DEFAULT 0")
+	private int accomodatesCount;
 
-	@Column(length = 10, nullable = false)
-	private String bedCount;
+	@Column(nullable = false, columnDefinition = "SMALLINT DEFAULT 0")
+	private int bedCount;
 
 	@ManyToOne
 	@JoinColumn(name = "room_group_id")

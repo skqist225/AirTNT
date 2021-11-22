@@ -12,7 +12,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testVerifyPhoneNumber() {
-        boolean isUpdated = userRepository.verifyPhoneNumber(17);
+        int isUpdated = userRepository.verifyPhoneNumber(17);
         System.out.println(isUpdated);
     }
 }

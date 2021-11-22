@@ -56,7 +56,7 @@ class RoomRepositoryTest {
 
 		Room room = Room.builder().name(
 				"A Relaxing Stay at a Historical Hot Spring Ryokan Hotel in Arima(a twin room, up to two people)歴史的木造建築の旅館,景観は庭のツイン【2名定員】")
-				.accomodatesCount("2").bathroomCount("1").bedCount("2").bedroomCount("1").description(description)
+				.accomodatesCount(2).bathroomCount(1).bedCount(2).bedroomCount(1).description(description)
 				.amentities(amentities).images(images).price(364).priceType(PriceType.PER_NIGHT).minimumStay(1)
 				.stayType(StayType.DAY).city(city).state(state).country(country).rules(rules).host(host).build();
 

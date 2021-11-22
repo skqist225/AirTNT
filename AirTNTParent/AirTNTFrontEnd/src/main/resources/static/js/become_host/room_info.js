@@ -1,7 +1,8 @@
 $(document).ready(function () {
     if (localStorage.getItem('room')) {
-        const { guestNumber, bedNumber, bedRoomNumber, bathRoomNumber } =
-            JSON.parse(localStorage.getItem('room'));
+        const { guestNumber, bedNumber, bedRoomNumber, bathRoomNumber } = JSON.parse(
+            localStorage.getItem('room')
+        );
 
         $('#guestNumber').text(guestNumber);
         $('#bedNumber').text(bedNumber);
@@ -10,31 +11,24 @@ $(document).ready(function () {
     }
     $('.incAndDecBtn').each(function () {
         $(this).click(function () {
-            if ($(this).data('function') === 'dec') {
-                const spanInfoTag = $(this).siblings(
-                    `#${$(this).data('edit')}`
-                );
-                if (spanInfoTag.html() * 1 > 0) {
-                    if (spanInfoTag.html() * 1 === 1) {
-                        $(this).attr('disabled', 'true');
-                    }
+            const spanInfoTag = $(this).siblings(`#${$(this).data('edit')}`);
+            let spanValue = spanInfoTag.text() * 1;
+            const dataFunction = $(this).data('function');
 
-                    spanInfoTag.html(spanInfoTag.html() * 1 - 1);
+            if (dataFunction === 'dec') {
+                if (spanValue > 0) {
+                    if (spanValue === 1) $(this).attr('disabled', true);
+
+                    spanInfoTag.html(--spanValue);
                 }
             }
 
-            if ($(this).data('function') === 'inc') {
-                const spanInfoTag = $(this).siblings(
-                    `#${$(this).data('edit')}`
-                );
-
-                if (spanInfoTag.html() * 1 === 0) {
+            if (dataFunction === 'inc') {
+                if (spanValue === 0)
                     $(this)
                         .siblings(`#${$(this).data('edit')}DecBtn`)
                         .removeAttr('disabled');
-                }
-
-                spanInfoTag.html(spanInfoTag.html() * 1 + 1);
+                spanInfoTag.html(++spanValue);
             }
         });
     });

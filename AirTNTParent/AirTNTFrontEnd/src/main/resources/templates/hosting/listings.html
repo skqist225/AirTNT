@@ -36,10 +36,7 @@
                         [[${roomsLength}]] nhà/phòng cho thuê
                     </div>
                     <div>
-                        <button
-                            class="listings__create-new-room"
-                            onclick="createNewRoom();"
-                        >
+                        <button class="listings__create-new-room" onclick="createNewRoom();">
                             <span>
                                 <img
                                     th:src="@{/svg/plus.svg}"
@@ -49,21 +46,14 @@
                                     style="object-fit: cover"
                                 />
                             </span>
-                            <div style="margin-left: 10px">
-                                Tạo mục cho thuê
-                            </div>
+                            <div style="margin-left: 10px">Tạo mục cho thuê</div>
                         </button>
                     </div>
                 </div>
                 <div class="listings__filter-container">
                     <div class="listings__search-room">
-                        <div class="listings__search-icon-container">
-                            <img
-                                th:src="@{/svg/search.svg}"
-                                alt=""
-                                width="12px"
-                                height="12px"
-                            />
+                        <div class="listings__search-icon-container" onclick="filterRoomByName();">
+                            <img th:src="@{/svg/search.svg}" alt="" width="12px" height="12px" />
                         </div>
                         <div style="flex: 1">
                             <input
@@ -74,7 +64,10 @@
                         </div>
                     </div>
                     <div class="listings__filter">
-                        <button class="listings__filter-option">
+                        <button
+                            class="listings__filter-option"
+                            data-dropdown="listings__filter-roomAndBedRoom"
+                        >
                             <span> Phòng và phòng ngủ</span>
                             <div class="listings__filter-img-container">
                                 <img
@@ -86,117 +79,38 @@
                             </div>
                         </button>
                         <div id="listings__filter-roomAndBedRoom">
-                            <div class="filter-box" style="flex: 1">
-                                <div
-                                    class="
-                                        flex
-                                        listings__filter-roomAndBedRoom-row
-                                    "
-                                >
-                                    <div>Phòng ngủ</div>
-                                    <div>
-                                        <button class="listings__minus-btn">
-                                            <span>
-                                                <img
-                                                    th:src="@{/svg/minus.svg}"
-                                                    alt=""
-                                                    width="12px"
-                                                    height="12px"
-                                                />
-                                            </span>
-                                        </button>
-                                        <span
-                                            id="listings__bed-room-count"
-                                            class="filter-count"
-                                            >0</span
-                                        >
-                                        <button class="listings__plus-btn">
-                                            <span>
-                                                <img
-                                                    th:src="@{/svg/plus.svg}"
-                                                    alt=""
-                                                    width="12px"
-                                                    height="12px"
-                                            /></span>
-                                        </button>
+                            <div class="listings__filter-wrapper">
+                                <div class="filter-box">
+                                    <div class="flex listings__filter-roomAndBedRoom-row">
+                                        <div>Phòng ngủ</div>
+                                        <div
+                                            th:replace="hosting/_listings_partial :: incAndDecBtn('listings__bed-room-count', 'roomAndBedRoom')"
+                                        ></div>
+                                    </div>
+                                    <div class="flex listings__filter-roomAndBedRoom-row">
+                                        <div>Giường</div>
+                                        <div
+                                            th:replace="hosting/_listings_partial :: incAndDecBtn('listings__bed-count', 'roomAndBedRoom')"
+                                        ></div>
+                                    </div>
+                                    <div class="flex listings__filter-roomAndBedRoom-row">
+                                        <div>Phòng tắm</div>
+                                        <div
+                                            th:replace="hosting/_listings_partial :: incAndDecBtn('listings__bath-room-count', 'roomAndBedRoom')"
+                                        ></div>
                                     </div>
                                 </div>
                                 <div
-                                    class="
-                                        flex
-                                        listings__filter-roomAndBedRoom-row
-                                    "
-                                >
-                                    <div>Giường</div>
-                                    <div>
-                                        <button class="listings__minus-btn">
-                                            <span>
-                                                <img
-                                                    th:src="@{/svg/minus.svg}"
-                                                    alt=""
-                                                    width="12px"
-                                                    height="12px"
-                                                />
-                                            </span>
-                                        </button>
-                                        <span
-                                            id="listings__bed-count"
-                                            class="filter-count"
-                                            >0</span
-                                        >
-                                        <button class="listings__plus-btn">
-                                            <span>
-                                                <img
-                                                    th:src="@{/svg/plus.svg}"
-                                                    alt=""
-                                                    width="14px"
-                                                    height="14px"
-                                            /></span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div
-                                    class="
-                                        flex
-                                        listings__filter-roomAndBedRoom-row
-                                    "
-                                >
-                                    <div>Phòng tắm</div>
-                                    <div>
-                                        <button class="listings__minus-btn">
-                                            <span>
-                                                <img
-                                                    th:src="@{/svg/minus.svg}"
-                                                    alt=""
-                                                    width="14px"
-                                                    height="14px"
-                                                />
-                                            </span>
-                                        </button>
-                                        <span
-                                            id="listings__bath-room-count"
-                                            class="filter-count"
-                                            >0</span
-                                        >
-                                        <button class="listings__plus-btn">
-                                            <span>
-                                                <img
-                                                    th:src="@{/svg/plus.svg}"
-                                                    alt=""
-                                                    width="14px"
-                                                    height="14px"
-                                            /></span>
-                                        </button>
-                                    </div>
-                                </div>
+                                    th:replace="hosting/_listings_partial :: filterFooter('roomAndBedRoom')"
+                                ></div>
                             </div>
-                            <div
-                                th:replace="hosting/_listings_partial :: filterFooter"
-                            ></div>
                         </div>
                     </div>
                     <div class="listings__filter">
-                        <button class="listings__filter-option">
+                        <button
+                            class="listings__filter-option"
+                            data-dropdown="listings__filter-amentities"
+                        >
                             <span>Tiện nghi</span>
                             <div class="listings__filter-img-container">
                                 <img
@@ -208,28 +122,23 @@
                             </div>
                         </button>
                         <div id="listings__filter-amentities">
-                            <div class="filter-box grid-2" style="flex: 1">
+                            <div class="grid-2 filter-box" style="height: 80%">
                                 <th:block th:each="amentity : ${amentities}">
                                     <div
                                         class="listings__filter-amentities-row"
-                                        style="
-                                            display: flex;
-                                            align-items: center;
-                                        "
+                                        style="display: flex; align-items: center"
                                     >
                                         <div class="flex-2">
                                             <input
                                                 type="checkbox"
                                                 width="20px"
                                                 height="20px"
+                                                th:value="${amentity.id}"
+                                                class="amentitySelected"
                                             />
                                         </div>
                                         <div
-                                            style="
-                                                font-size: 14px;
-                                                margin-left: 8px;
-                                                height: 35px;
-                                            "
+                                            style="font-size: 14px; margin-left: 8px; height: 35px"
                                             class="flex-2"
                                         >
                                             [[${amentity.name}]]
@@ -238,12 +147,15 @@
                                 </th:block>
                             </div>
                             <div
-                                th:replace="hosting/_listings_partial :: filterFooter"
+                                th:replace="hosting/_listings_partial :: filterFooter('amentities')"
                             ></div>
                         </div>
                     </div>
                     <div class="listings__filter">
-                        <button class="listings__filter-option">
+                        <button
+                            class="listings__filter-option"
+                            data-dropdown="listings__filter-status"
+                        >
                             <span>Tình trạng nhà/phòng cho thuê</span>
                             <div class="listings__filter-img-container">
                                 <img
@@ -254,9 +166,41 @@
                                 />
                             </div>
                         </button>
+                        <div id="listings__filter-status">
+                            <div class="listings__filter-wrapper">
+                                <div style="padding: 24px; flex: 1">
+                                    <div class="normal-flex listings__filter-status-row">
+                                        <input
+                                            type="checkbox"
+                                            class="statusSelected"
+                                            value="ACTIVE"
+                                        />
+                                        <div>Đã đăng</div>
+                                    </div>
+                                    <div class="normal-flex listings__filter-status-row">
+                                        <input
+                                            type="checkbox"
+                                            class="statusSelected"
+                                            value="UNLISTED"
+                                        />
+                                        <div>Đã hủy đăng</div>
+                                    </div>
+                                    <!-- <div class="normal-flex listings__filter-status-row">
+                                        <input type="checkbox" class="statusSelected" />
+                                        <div>Đang tiến hành</div>
+                                    </div> -->
+                                </div>
+                                <div
+                                    th:replace="hosting/_listings_partial :: filterFooter('status')"
+                                ></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="listings__filter">
-                        <button class="listings__filter-option">
+                        <button
+                            class="listings__filter-option"
+                            data-dropdown="listings__filter-others"
+                        >
                             <span>Các bộ lọc khác</span>
                             <div class="listings__filter-img-container">
                                 <img
@@ -267,276 +211,57 @@
                                 />
                             </div>
                         </button>
+                        <div id="listings__filter-others">
+                            <div class="listings__filter-wrapper">
+                                <div class="filter-box" style="overflow: hidden">
+                                    <div class="normal-flex listings__filter-others-row">
+                                        <input
+                                            type="checkbox"
+                                            id="listings__filter-others__first-option"
+                                        />
+                                        <div>Chế độ Đặt ngay đang tắt</div>
+                                    </div>
+                                    <div class="normal-flex listings__filter-others-row">
+                                        <input
+                                            type="checkbox"
+                                            id="listings__filter-others__second-option"
+                                        />
+                                        <div>Yêu cầu cập nhật mục cho thuê</div>
+                                    </div>
+                                </div>
+                                <div
+                                    th:replace="hosting/_listings_partial :: filterFooter('others')"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listings__filter">
+                        <button
+                            class="listings__filter-option deleteAllFilterOption"
+                            data-dropdown="listings__filter-others"
+                        >
+                            <span>Xóa toàn bộ bộ lọc</span>
+                        </button>
                     </div>
                 </div>
-                <div>
-                    <table id="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <div style="padding: 8px">
-                                        <input type="checkbox" />
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <button class="listings__table-header">
-                                            <div>NHÀ/PHÒNG CHO THUÊ</div>
-                                            <div
-                                                class="
-                                                    listings__fiter-icon-container
-                                                "
-                                            >
-                                                <span class="upper"> </span>
-                                                <span class="downer"></span>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <button class="listings__table-header">
-                                            <div>TRẠNG THÁI</div>
-                                            <div
-                                                class="
-                                                    listings__fiter-icon-container
-                                                "
-                                            >
-                                                <span class="upper"> </span>
-                                                <span class="downer"></span>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <button class="listings__table-header">
-                                            <div>VIỆC CẦN LÀM</div>
-                                        </button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <button class="listings__table-header">
-                                            <div>ĐẶT NGAY</div>
-                                            <div
-                                                class="
-                                                    listings__fiter-icon-container
-                                                "
-                                            >
-                                                <span class="upper"> </span>
-                                                <span class="downer"></span>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <button class="listings__table-header">
-                                            <div>PHÒNG NGỦ</div>
-                                            <div
-                                                class="
-                                                    listings__fiter-icon-container
-                                                "
-                                            >
-                                                <span class="upper"> </span>
-                                                <span class="downer"></span>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <button class="listings__table-header">
-                                            <div>GIƯỜNG</div>
-                                            <div
-                                                class="
-                                                    listings__fiter-icon-container
-                                                "
-                                            >
-                                                <span class="upper"> </span>
-                                                <span class="downer"></span>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <button class="listings__table-header">
-                                            <div>PHÒNG TẮM</div>
-                                            <div
-                                                class="
-                                                    listings__fiter-icon-container
-                                                "
-                                            >
-                                                <span class="upper"> </span>
-                                                <span class="downer"></span>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <button class="listings__table-header">
-                                            <div>VỊ TRÍ</div>
-                                            <div
-                                                class="
-                                                    listings__fiter-icon-container
-                                                "
-                                            >
-                                                <span class="upper"> </span>
-                                                <span class="downer"></span>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <button class="listings__table-header">
-                                            <div>SỬA ĐỔI LẦN CUỐI</div>
-                                            <div
-                                                class="
-                                                    listings__fiter-icon-container
-                                                "
-                                            >
-                                                <span class="upper"> </span>
-                                                <span class="downer"></span>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div>
-                                        <img
-                                            th:src="@{/svg/setting.svg}"
-                                            alt=""
-                                            width="20px"
-                                            height="20px"
-                                        />
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <th:block th:each="room : ${rooms}">
-                                <tr>
-                                    <td>
-                                        <div style="text-align: center">
-                                            <input type="checkbox" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div
-                                            style="
-                                                display: flex;
-                                                align-items: center;
-                                            "
-                                        >
-                                            <div
-                                                style="
-                                                    width: 56px;
-                                                    height: 40px;
-                                                "
-                                            >
-                                                <img
-                                                    th:src="@{'/room_images/' + ${userEmail + '/' + room.thumbnail}}"
-                                                    alt="Room's thumbnail'"
-                                                    class="
-                                                        listings__room-thumbnail
-                                                    "
-                                                    th:if="${room.thumbnail != null}"
-                                                />
-                                                <img
-                                                    th:src="@{'/room_images/' + ${userEmail + '/' + room.images[0].image}}"
-                                                    alt="Room's thumbnail'"
-                                                    class="
-                                                        listings__room-thumbnail
-                                                    "
-                                                    th:if="${room.thumbnail == null}"
-                                                />
-                                            </div>
-                                            <div class="listings__room-name">
-                                                [[${room.name}]]
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div
-                                            style="
-                                                display: flex;
-                                                align-items: center;
-                                                height: 100%;
-                                            "
-                                        >
-                                            <div>
-                                                <img src="" alt="" />
-                                            </div>
-                                            <div
-                                                th:text="${room.status == true} ? 'Hoàn thành' : 'Đang tiến hành'"
-                                            ></div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <button
-                                            class="
-                                                listings__complete-room-making
-                                                listings__td-text
-                                            "
-                                        >
-                                            Hoàn thành
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <div
-                                            style="
-                                                display: flex;
-                                                align-items: center;
-                                            "
-                                        >
-                                            <div>
-                                                <img
-                                                    th:src="@{/svg/complete.svg}"
-                                                    alt=""
-                                                    width="16px"
-                                                    height="16px"
-                                                />
-                                            </div>
-                                            <div style="margin-left: 8px">
-                                                Bật
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="listings__td-text">
-                                        [[${room.bedroomCount}]]
-                                    </td>
-                                    <td class="listings__td-text">
-                                        [[${room.bedCount}]]
-                                    </td>
-                                    <td class="listings__td-text">
-                                        [[${room.bathroomCount}]]
-                                    </td>
-                                    <td class="listings__td-text">
-                                        [[${room.city.name}]],
-                                        [[${room.state.name}]],
-                                        [[${room.country.name}]]
-                                    </td>
-                                    <td class="listings__td-text">
-                                        [[${room.calculateHowManyDaysFromPastToCurrent()}]]
-                                        ngày trước
-                                    </td>
-                                </tr>
-                            </th:block>
-                        </tbody>
-                    </table>
+                <div style="flex: 1">
+                    <div th:replace="hosting/_listings_partial :: listingsTable"></div>
+                </div>
+                <div class="pagination">
+                    <a data-page="prev">&laquo;</a>
+                    <a th:href="@{/hosting/listings/1}" data-page="1" class="active">1</a>
+                    <a th:href="@{/hosting/listings/2}" data-page="2">2</a>
+                    <a th:href="@{/hosting/listings/3}" data-page="3">3</a>
+                    <a th:href="@{/hosting/listings/4}" data-page="4">4</a>
+                    <a th:href="@{/hosting/listings/5}" data-page="5">5</a>
+                    <a th:href="@{/hosting/listings/6}" data-page="6">6</a>
+                    <a data-page="next">&raquo;</a>
                 </div>
             </div>
         </main>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <div th:replace="header :: javascript"></div>
         <script th:inline="javascript">
             /*<![CDATA[*/
@@ -544,7 +269,255 @@
             /*]]>*/
         </script>
         <script>
-            jQuery(document).ready(function () {});
+            jQuery(document).ready(function () {
+                $('.listings__minus-btn').attr('disabled', true);
+
+                const currentUrl = window.location.href;
+                let pageNumber = 1;
+                if (currentUrl.toString().includes('?')) {
+                    pageNumber = currentUrl.split('?')[0].split('/').pop();
+                } else pageNumber = window.location.href.split('/').pop();
+
+                highlightCurrentPageNumber(pageNumber);
+
+                const allInputColumn = $('.columnDisplay');
+                const selectedColumns = $('input[class="columnDisplay"]:checked');
+                const allColumns = $('th');
+                const allCells = $('td');
+                let columnDisplays = [];
+                selectedColumns.each(function () {
+                    columnDisplays.push($(this).val());
+                });
+
+                allColumns.each(function () {
+                    if ($(this).data('column'))
+                        if (!columnDisplays.includes($(this).data('column')))
+                            $(this).addClass('remove');
+                        else $(this).removeClass('remove');
+                });
+                allCells.each(function () {
+                    if ($(this).data('column'))
+                        if (!columnDisplays.includes($(this).data('column')))
+                            $(this).addClass('remove');
+                        else $(this).removeClass('remove');
+                });
+
+                allInputColumn.each(function () {
+                    $(this).on('change', function () {
+                        if (!$(this).prop('checked'))
+                            //unchecked
+                            columnDisplays = columnDisplays.filter(
+                                v => v.toString() !== $(this).val().toString()
+                            );
+                        else {
+                            //checked
+                            const isHavingElement = columnDisplays.indexOf(
+                                v => v.toString() === $(this).val().toString()
+                            );
+
+                            if (isHavingElement === -1) columnDisplays.push($(this).val());
+                        }
+                        allColumns.each(function () {
+                            if ($(this).data('column'))
+                                if (!columnDisplays.includes($(this).data('column')))
+                                    $(this).addClass('remove');
+                                else $(this).removeClass('remove');
+                        });
+                        allCells.each(function () {
+                            if ($(this).data('column'))
+                                if (!columnDisplays.includes($(this).data('column')))
+                                    $(this).addClass('remove');
+                                else $(this).removeClass('remove');
+                        });
+                    });
+                });
+
+                // $('#listings__filter-roomAndBedRoom').click(function () {});
+
+                // $('#listings__filter-amentities').click(function () {});
+
+                // $('#listings__filter-status').click(function () {});
+
+                // $('#listings__filter-others').click(function () {});
+
+                $('.listings__filter-option').each(function () {
+                    $(this).click(function () {
+                        const self = $(this);
+                        $('.listings__filter-option').each(function () {
+                            if (!$(this).is(self))
+                                $(this).siblings().filter('.active').removeClass('active');
+                        });
+
+                        const id = $(this).data('dropdown');
+                        const filterBox = $('#' + id);
+                        if (filterBox.hasClass('active')) filterBox.removeClass('active');
+                        else filterBox.addClass('active');
+                    });
+                });
+
+                $('.incAndDecBtn').each(function () {
+                    $(this).click(function () {
+                        const spanInfoTag = $(this).siblings(`#${$(this).data('edit')}`);
+                        let spanValue = spanInfoTag.text() * 1;
+                        const dataFunction = $(this).data('function');
+                        const deleteButton = $('.deleteBtn.' + $(this).data('trigger'));
+                        const applyButton = $('.applyBtn.' + $(this).data('trigger'));
+                        const self = $(this);
+
+                        if (dataFunction === 'dec') {
+                            if (spanValue > 0) {
+                                if (spanValue === 1) $(this).attr('disabled', true);
+                                spanInfoTag.text(--spanValue);
+                            }
+                            let countZero = 0;
+                            if (spanValue === 0)
+                                $('.listings__minus-btn').each(function () {
+                                    if (!$(this).is(self)) {
+                                        const spanValue =
+                                            $(this)
+                                                .siblings(`#${$(this).data('edit')}`)
+                                                .text() * 1;
+                                        if (spanValue === 0) countZero++;
+                                    }
+                                });
+
+                            if (countZero === $('.listings__minus-btn').length - 1)
+                                deleteButton.attr('disabled', true);
+                        }
+
+                        if (dataFunction === 'inc') {
+                            if (spanValue === 0)
+                                $(this)
+                                    .siblings(`.listings__minus-btn.incAndDecBtn`)
+                                    .removeAttr('disabled');
+                            spanInfoTag.text(++spanValue);
+
+                            if (spanValue > 0) deleteButton.removeAttr('disabled');
+                        }
+
+                        // if()
+                    });
+                });
+
+                $('.deleteBtn').each(function () {
+                    $(this).click(function () {
+                        const dataModify = $(this).data('modify');
+
+                        switch (dataModify) {
+                            case 'roomAndBedRoom': {
+                                $('.listings__minus-btn').each(function () {
+                                    $(this).attr('disabled', true);
+                                    const spanInfoTag = $(this).siblings(
+                                        `#${$(this).data('edit')}`
+                                    );
+                                    spanInfoTag.text(0);
+                                });
+                                $(this).attr('disabled', true);
+                                break;
+                            }
+                        }
+                    });
+                });
+
+                let url = `${baseURL}hosting/listings/${pageNumber}`;
+
+                $('.applyBtn').each(function () {
+                    $(this).click(function () {
+                        const dataModify = $(this).data('modify');
+
+                        switch (dataModify) {
+                            case 'roomAndBedRoom': {
+                                let bathRooms = 0;
+                                let bedRooms = 0;
+                                let beds = 0;
+                                const query = $('#listings__search-input').val().toString().trim();
+
+                                $('.listings__minus-btn').each(function () {
+                                    const dataEdit = $(this).data('edit');
+                                    const spanValue = $(this).siblings(`#${dataEdit}`).text();
+
+                                    if (dataEdit === 'listings__bath-room-count')
+                                        bathRooms = spanValue;
+                                    else if (dataEdit === 'listings__bed-room-count')
+                                        bedRooms = spanValue;
+                                    else beds = spanValue;
+                                });
+
+                                url += `?BATHROOMS=${bathRooms}&BEDROOMS=${bedRooms}&BEDS=${beds}&query=${query}`;
+                                break;
+                            }
+                            case 'amentities': {
+                                const selectedAmentities = $(
+                                    'input[class="amentitySelected"]:checked'
+                                );
+                                let amentitiesID = [];
+                                selectedAmentities.each(function () {
+                                    amentitiesID.push($(this).val());
+                                });
+                                url += `?AMENITY_IDS=${amentitiesID.join(' ')}`;
+                                break;
+                            }
+                            case 'status': {
+                                const selectedStatus = $('input[class="statusSelected"]:checked');
+                                let statuses = [];
+                                selectedStatus.each(function () {
+                                    statuses.push($(this).val());
+                                });
+                                url += `?STATUSES=${statuses.join(' ')}`;
+
+                                break;
+                            }
+                        }
+
+                        window.location.href = url;
+                    });
+                });
+
+                $('.listings__table-header').each(function () {
+                    $(this).click(function () {
+                        const searchInfo = window.location.search;
+                        const map = new Map();
+                        if (searchInfo) {
+                            let removeQuestionMark = searchInfo
+                                .toString()
+                                .slice(1, searchInfo.length);
+                            const params = removeQuestionMark.split('&');
+                            params.forEach(param => {
+                                const key = param.split('=')[0];
+                                const value = param.split('=')[1];
+                                map.set(key, value);
+                            });
+                        }
+
+                        let sortDir = map.get('sort_dir') === 'asc' ? 'desc' : 'asc';
+                        url += `?sort_field=${$(this).data('sort-field')}&sort_dir=${sortDir}`;
+                        window.location.href = url;
+                    });
+                });
+
+                $('.deleteAllFilterOption').click(function () {
+                    window.location.href = `${baseURL}hosting/listings/1`;
+                });
+            });
+
+            function highlightCurrentPageNumber(pageNumber) {
+                $('.pagination').children().filter('.active').removeClass('active');
+                $('.pagination')
+                    .children()
+                    .each(function () {
+                        const pageNum = $(this).data('page');
+                        if (pageNum.toString() === pageNumber.toString()) {
+                            $(this).addClass('active');
+                            return false;
+                        }
+                    });
+            }
+
+            function filterRoomByName() {
+                const query = $('#listings__search-input').val().toString().trim();
+                let url = `${baseURL}hosting/listings/${1}?query=${query}`;
+                window.location.href = url;
+            }
 
             function createNewRoom() {
                 window.location.href = `${baseURL}become-a-host/`;
