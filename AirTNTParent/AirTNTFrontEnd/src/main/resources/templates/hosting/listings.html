@@ -495,6 +495,14 @@
                     });
                 });
 
+                const allRows = $('tbody tr');
+                allRows.each(function () {
+                    $(this).click(function () {
+                        const roomId = $(this).data('room-id');
+                        window.location.href = `${baseURL}manage-your-space/${roomId}/details`;
+                    });
+                });
+
                 $('.deleteAllFilterOption').click(function () {
                     window.location.href = `${baseURL}hosting/listings/1`;
                 });

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html xml:lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chỉnh sửa nhà/phòng cho thuê</title>
+
+        <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+        />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+            rel="stylesheet"
+        />
+        <div th:replace="header :: css"></div>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+        <link rel="stylesheet" th:href="@{/css/manage_space/manage_your_space.css}" />
+    </head>
+
+    <body>
+        <div th:replace="header :: content"></div>
+
+        <main>
+            <div id="manage-ys__container">
+                <div class="manage-ys__left">
+                    <div
+                        style="
+                            font-size: 26px;
+                            font-weight: 600;
+                            line-height: 30px;
+                            margin-bottom: 48px;
+                        "
+                    >
+                        [[${room.name}]]
+                    </div>
+                    <div class="manage-ys__left-scrolling-menu">
+                        <div class="manage-ys__left-room-details">Chi tiết nhà/phòng cho thuê</div>
+                        <div style="height: 300px" class="menuContainer">
+                            <ul style="height: 100%">
+                                <li class="active" data-index="1">
+                                    <div class="li-before"></div>
+                                    <a class="manage-ys__changeView" data-scroll="#roomImages"
+                                        >Ảnh</a
+                                    >
+                                </li>
+                                <li data-index="2">
+                                    <div class="li-before"></div>
+                                    <a class="manage-ys__changeView" data-scroll="#basicRoomInfos"
+                                        >Thông tin cơ bản về nhà/phòng cho thuê</a
+                                    >
+                                </li>
+                                <li data-index="3">
+                                    <div class="li-before"></div>
+                                    <a class="manage-ys__changeView" data-scroll="#roomAmentities"
+                                        >Tiện nghi</a
+                                    >
+                                </li>
+                                <li data-index="4">
+                                    <div class="li-before"></div>
+                                    <a class="manage-ys__changeView" data-scroll="#roomLocation"
+                                        >Vị trí</a
+                                    >
+                                </li>
+                                <li data-index="5">
+                                    <div class="li-before"></div>
+                                    <a class="manage-ys__changeView" data-scroll="#roomInfo"
+                                        >Chỗ ở và phòng</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="manage-ys__right">
+                    <div class="flex-space" style="margin-bottom: 48px">
+                        <div class="normal-flex">
+                            <div>
+                                <button class="manage-ys__transparent-btn">
+                                    <span
+                                        ><img
+                                            th:src="@{/svg/reddot.svg}"
+                                            alt="reddot.svg"
+                                            width="10px"
+                                            height="10px"
+                                            th:if="${room.status == false}"
+                                        />
+                                        <img
+                                            th:src="@{/svg/greendot.svg}"
+                                            alt="greendot.svg"
+                                            width="10px"
+                                            height="10px"
+                                            th:if="${room.status == true}"
+                                        />
+                                    </span>
+                                    <span
+                                        >[[${room.status == 0 ? 'Đã hủy đăng' : 'Đang đăng'}]]</span
+                                    >
+                                </button>
+                            </div>
+                            <div>
+                                <button class="manage-ys__transparent-btn">
+                                    <span>
+                                        <img
+                                            th:src="@{/svg/thunder.svg}"
+                                            alt="thunder.svg"
+                                            width="10px"
+                                            height="10px"
+                                        />
+                                    </span>
+                                    <span>Chế độ đặt ngay đang bật</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="manage-ys__preview-room-btn" onclick="previewRoom();">
+                                Xem trước nhà phòng cho thuê
+                            </button>
+                        </div>
+                    </div>
+                    <div class="manage-ys__right-content">
+                        <article
+                            class="manage-ys__section-container"
+                            style="height: 239px"
+                            id="roomImages"
+                        >
+                            <div
+                                class="normal-flex"
+                                style="justify-content: space-between; margin-bottom: 20px"
+                            >
+                                <div class="manage-ys__section-title">Ảnh</div>
+                                <div>
+                                    <button class="manage-ys__transparent-btn">
+                                        <span>Chỉnh sửa</span>
+                                        <span>
+                                            <img
+                                                th:src="@{/svg/next.svg}"
+                                                alt=""
+                                                width="12px"
+                                                height="12px"
+                                            />
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="normal-flex" style="overflow: hidden">
+                                <th:block th:each="image : ${room.images}">
+                                    <div style="margin-right: 10px">
+                                        <img
+                                            th:src="@{${image.getImagePath(userName)}}"
+                                            alt=""
+                                            width="240px"
+                                            height="140px"
+                                            style="
+                                                object-fit: cover;
+                                                border-radius: 8px;
+                                                vertical-align: bottom;
+                                            "
+                                        />
+                                    </div>
+                                </th:block>
+                            </div>
+                        </article>
+                        <article
+                            class="manage-ys__section-container"
+                            id="basicRoomInfos"
+                            data-aos="fade-down"
+                            data-aos-duration="2000"
+                        >
+                            <div class="manage-ys__section-title">
+                                Thông tin cơ bản về nhà/phòng cho thuê
+                            </div>
+                            <div>
+                                <div class="flex-space manage-ys__section-content">
+                                    <div>
+                                        <div class="manage-ys__section-content-title">
+                                            Tiêu đề nhà phòng cho thuê
+                                        </div>
+                                        <div class="manage-ys__section-content-info">
+                                            [[${room.name}]]
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="manage-ys__transparent-btn">
+                                            Chỉnh sửa
+                                        </button>
+                                    </div>
+                                </div>
+                                <div style="height: 277px" class="manage-ys__section-edit">
+                                    <div style="padding: 24px 24px 0">
+                                        <div>
+                                            <div>
+                                                <div>Tiêu đề nhà/phòng cho thuê</div>
+                                                <div>
+                                                    Tiêu đề nhà/phòng cho thuê của bạn cần nêu bật
+                                                    được những điểm đặc biệt của chỗ ở. xin chào
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <img
+                                                    th:src="@{/svg/close.svg}"
+                                                    alt=""
+                                                    width="14px"
+                                                    height="14px"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div style="margin-bottom: 10px">
+                                                <input type="text" class="_dsnwjc" />
+                                            </div>
+                                            <div>8/50</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-space" style="padding: 0px 24px 24px">
+                                        <div>
+                                            <button class="manage-ys__transparent-btn">Hủy</button>
+                                        </div>
+                                        <div>
+                                            <button class="manage-ys__save-edit-btn">Lưu</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex-space manage-ys__section-content">
+                                    <div>
+                                        <div class="manage-ys__section-content-title">
+                                            Mô tả nhà/phòng cho thuê
+                                        </div>
+                                        <div class="manage-ys__section-content-info">
+                                            Thư giãn tại địa điểm [[${firstDescription}]] và
+                                            [[${secondDescription}]]
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="manage-ys__transparent-btn">
+                                            Chỉnh sửa
+                                        </button>
+                                    </div>
+                                </div>
+                                <div style="height: fit-content" class="manage-ys__section-edit">
+                                    <div style="padding: 24px 24px 0">
+                                        <div>
+                                            <div>
+                                                <div>Mô tả nhà/phòng cho thuê</div>
+                                            </div>
+                                            <div>
+                                                <img
+                                                    th:src="@{/svg/close.svg}"
+                                                    alt=""
+                                                    width="14px"
+                                                    height="14px"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div style="margin-bottom: 10px">
+                                                <textarea
+                                                    type="text"
+                                                    class="_dsnwjc"
+                                                    style="width: 800px"
+                                                    draggable="true"
+                                                ></textarea>
+                                            </div>
+                                            <div>8/500</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-space" style="padding: 0px 24px 24px">
+                                        <div>
+                                            <button class="manage-ys__transparent-btn">Hủy</button>
+                                        </div>
+                                        <div>
+                                            <button class="manage-ys__save-edit-btn">Lưu</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-space manage-ys__section-content">
+                                <div class="manage-ys__section-content-title">Số lượng khách</div>
+                                <div>
+                                    <button
+                                        class="manage-ys__minus-btn incAndDecBtn"
+                                        data-edit="manage-ys__guestNumber"
+                                        data-function="dec"
+                                    >
+                                        <span>
+                                            <img
+                                                th:src="@{/svg/minus.svg}"
+                                                alt=""
+                                                width="12px"
+                                                height="12px"
+                                            />
+                                        </span>
+                                    </button>
+                                    <span id="manage-ys__guestNumber">
+                                        [[${room.accomodatesCount}]]
+                                    </span>
+                                    <button
+                                        class="manage-ys__plus-btn incAndDecBtn"
+                                        data-edit="manage-ys__guestNumber"
+                                        data-function="inc"
+                                    >
+                                        <span>
+                                            <img
+                                                th:src="@{/svg/plus.svg}"
+                                                alt=""
+                                                width="12px"
+                                                height="12px"
+                                            />
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex-space manage-ys__section-content">
+                                    <div>
+                                        <div class="manage-ys__section-content-title">
+                                            Trạng thái nhà/phòng cho thuê
+                                        </div>
+                                        <div class="manage-ys__section-content-info">
+                                            <span style="display: inline-block; margin-right: 6px">
+                                                <img
+                                                    th:src="@{/svg/reddot.svg}"
+                                                    alt="reddot.svg"
+                                                    width="10px"
+                                                    height="10px"
+                                                    th:if="${room.status == false}"
+                                                />
+                                                <img
+                                                    th:src="@{/svg/greendot.svg}"
+                                                    alt="greendot.svg"
+                                                    width="10px"
+                                                    height="10px"
+                                                    th:if="${room.status == true}"
+                                                />
+                                            </span>
+                                            [[${room.status == 0 ? 'Đã hủy đăng' : 'Đang đăng'}]] -
+                                            Khách không thể đặt phòng hoặc tìm thấy nhà/phòng cho
+                                            thuê của bạn trong kết quả tìm kiếm.
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="manage-ys__transparent-btn">
+                                            Chỉnh sửa
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div>
+                                        <div>
+                                            <div>Trạng thái nhà/phòng cho thuê</div>
+                                            <div>
+                                                <img
+                                                    th:src="@{/svg/close.svg}"
+                                                    alt=""
+                                                    width="14px"
+                                                    height="14px"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="normal-flex">
+                                                <div>
+                                                    <input type="radio" />
+                                                </div>
+                                                <div>
+                                                    <div class="normal-flex">
+                                                        <img
+                                                            th:src="@{/svg/greendot.svg}"
+                                                            alt=""
+                                                            width="10px"
+                                                            height="10px"
+                                                        />
+                                                        <div>Đã đăng</div>
+                                                    </div>
+                                                    <div>
+                                                        Khách có thể tìm thấy nhà/phòng cho thuê của
+                                                        bạn trong kết quả tìm kiếm và yêu cầu thông
+                                                        tin về tình trạng còn phòng hoặc đặt phòng
+                                                        vào những ngày còn trống.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="normal-flex">
+                                                <div>
+                                                    <input type="radio" />
+                                                </div>
+                                                <div>
+                                                    <div class="normal-flex">
+                                                        <img
+                                                            th:src="@{/svg/reddot.svg}"
+                                                            alt=""
+                                                            width="10px"
+                                                            height="10px"
+                                                        />
+                                                        <div>Đã hủy đăng</div>
+                                                    </div>
+                                                    <div>
+                                                        Khách không thể đặt phòng hoặc tìm thấy
+                                                        nhà/phòng cho thuê của bạn trong kết quả tìm
+                                                        kiếm.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="normal-flex">
+                                                <div>
+                                                    <input type="radio" />
+                                                </div>
+                                                <div>
+                                                    <div class="normal-flex">
+                                                        <img
+                                                            th:src="@{/svg/stop.svg}"
+                                                            alt=""
+                                                            width="10px"
+                                                            height="10px"
+                                                        />
+
+                                                        <div>Hủy kích hoạt</div>
+                                                    </div>
+                                                    <div>
+                                                        Xóa vĩnh viễn nhà/phòng cho thuê của bạn
+                                                        khỏi Airtnt.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-space" style="padding: 0px 24px 24px">
+                                        <div>
+                                            <button class="manage-ys__transparent-btn">Hủy</button>
+                                        </div>
+                                        <div>
+                                            <button class="manage-ys__save-edit-btn">Lưu</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <article
+                            class="flex-space manage-ys__section-container"
+                            id="roomAmentities"
+                            data-aos="fade-left"
+                            data-aos-duration="2000"
+                        >
+                            <div>
+                                <div class="manage-ys__section-title">Tiện nghi</div>
+                                <div>
+                                    <th:block th:each="amentity : ${room.amentities}">
+                                        <div>
+                                            <input type="hidden" th:value="${amentity.id}" />
+                                            <div
+                                                th:text="${amentity.name}"
+                                                class="manage-ys__section-content-info"
+                                            ></div>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="manage-ys__transparent-btn">Chỉnh sửa</button>
+                            </div>
+                        </article>
+                        <article
+                            class="manage-ys__section-container"
+                            id="roomLocation"
+                            data-aos="fade-right"
+                            data-aos-duration="2000"
+                        >
+                            <h3 class="manage-ys__section-title">Vị trí</h3>
+                            <div>
+                                <div class="flex-space">
+                                    <div>
+                                        <div class="manage-ys__section-content-title">Địa chỉ</div>
+                                        <div class="manage-ys__section-content-info">
+                                            [[${room.city.name}]], [[${room.state.name}]],
+                                            [[${room.country.name}]]
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="manage-ys__transparent-btn">
+                                            Chỉnh sửa
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                        <article
+                            class="manage-ys__section-container"
+                            id="roomInfo"
+                            data-aos="fade-up"
+                            data-aos-duration="2000"
+                        >
+                            <h3 class="manage-ys__section-title">Chỗ ở và phòng</h3>
+                            <div>
+                                <div
+                                    class="flex-space"
+                                    style="height: 85px; border-bottom: 1px solid #d3d6db"
+                                >
+                                    <div>
+                                        <div class="manage-ys__section-content-title">
+                                            Loại chỗ ở
+                                        </div>
+                                        <div class="manage-ys__section-content-info">
+                                            [[${room.roomGroup != null ? room.roomGroup.name :
+                                            'ko'}]] cho thuê
+                                        </div>
+                                        <div class="manage-ys__section-content-info">
+                                            Loại hình cho thuê: [[${room.privacyType != null ?
+                                            room.privacyType : 'Toàn bộ nhà'}]]
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="manage-ys__transparent-btn">
+                                            Chỉnh sửa
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex-space" style="height: 139px">
+                                    <div>
+                                        <div class="manage-ys__section-content-title">
+                                            Phòng và không gian khác
+                                        </div>
+                                        <div class="manage-ys__section-content-info">
+                                            Phòng ngủ: [[${room.bedroomCount}]]
+                                        </div>
+                                        <div class="manage-ys__section-content-info">
+                                            Giường: [[${room.bedCount}]]
+                                        </div>
+                                        <div class="manage-ys__section-content-info">
+                                            Phòng tắm: [[${room.bathroomCount}]]
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="manage-ys__transparent-btn">
+                                            Chỉnh sửa
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+        /*---------------------------- KEY FRAME JQUERY--------------------------*/
+        <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        /*---------------------------- KEY FRAME JQUERY--------------------------*/
+        <script type="text/javascript" th:src="@{/js/jquery.keyframes.js}"></script>
+
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+        <div th:replace="header :: javascript"></div>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const baseURL = /*[[@{/}]]*/ 'default';
+            const roomId = /*[[${roomId}]]*/ 'default';
+            var supportedFlag = $.keyframe.isSupported();
+            AOS.init();
+            /*]]>*/
+        </script>
+        <script>
+            jQuery(document).ready(function () {
+                $('.manage-ys__changeView').each(function () {
+                    $(this).click(function () {
+                        const currentActive = $(this).parent().siblings().filter('.active');
+                        const currentDataIndex = currentActive.data('index') * 1;
+                        currentActive.removeClass('active');
+                        const selfIndex = $(this).parent().data('index') * 1;
+
+                        let distance = 0;
+                        if (selfIndex < currentDataIndex) {
+                            distance = currentDataIndex - selfIndex;
+
+                            $(this)
+                                .siblings('div')
+                                .css('transform', `translateY(${distance * 50}%)`);
+
+                            $.keyframe.define([
+                                {
+                                    name: 'reverseTranslateY',
+                                    '0%': { top: `50%` },
+                                    '100%': {
+                                        top: `-${distance * 50}%`,
+                                    },
+                                },
+                            ]);
+
+                            $(this).parent().addClass('active');
+
+                            $(this).siblings('div').playKeyframe({
+                                name: 'reverseTranslateY',
+                                duration: '1s',
+                                timingFunction: 'linear',
+                                delay: '0s',
+                            });
+                        } else {
+                            distance = selfIndex - currentDataIndex;
+                            $(this).siblings('div').css('transform', 'translateY(-50%)');
+                            $.keyframe.define([
+                                {
+                                    name: 'translateY',
+                                    '0%': { top: `-${distance * 50}%` },
+                                    '100%': { top: `50%` },
+                                },
+                            ]);
+
+                            $(this).parent().addClass('active');
+
+                            $(this).siblings('div').playKeyframe({
+                                name: 'translateY',
+                                duration: '1s',
+                                timingFunction: 'linear',
+                                delay: '0s',
+                            });
+                        }
+
+                        $('.manage-ys__left-scrolling-menu').first().addClass('active');
+
+                        const dataScroll = $(this).data('scroll');
+                        const offsetTop = $(dataScroll).offset().top - 80;
+
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth',
+                        });
+                    });
+                });
+
+                $('.incAndDecBtn').each(function () {
+                    $(this).click(function () {
+                        const spanInfoTag = $(this).siblings(`#${$(this).data('edit')}`);
+                        let spanValue = spanInfoTag.text() * 1;
+                        const dataFunction = $(this).data('function');
+
+                        if (dataFunction === 'dec') {
+                            if (spanValue > 0) {
+                                if (spanValue === 1) $(this).attr('disabled', true);
+
+                                spanInfoTag.html(--spanValue);
+                            }
+                        }
+
+                        if (dataFunction === 'inc') {
+                            if (spanValue === 0)
+                                $(this)
+                                    .siblings(`.manage-ys__minus-btn.incAndDecBtn`)
+                                    .removeAttr('disabled');
+                            spanInfoTag.html(++spanValue);
+                        }
+                    });
+                });
+
+                $(document).on('scroll', function (e) {
+                    const topValue = $(document).scrollTop();
+
+                    if (topValue <= 222) {
+                        if ($('.manage-ys__left-scrolling-menu').first().hasClass('active'))
+                            $('.manage-ys__left-scrolling-menu').first().removeClass('active');
+                    } else $('.manage-ys__left-scrolling-menu').first().addClass('active');
+                });
+            });
+
+            function previewRoom() {
+                window.location.href = `${baseURL}rooms/${roomId}`;
+            }
+        </script>
+    </body>
+</html>

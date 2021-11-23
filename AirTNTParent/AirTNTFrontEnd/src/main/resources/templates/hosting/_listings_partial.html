@@ -225,7 +225,7 @@
         </thead>
         <tbody>
             <th:block th:each="room : ${rooms}">
-                <tr>
+                <tr th:data-room-id="${room.id}">
                     <td>
                         <div style="text-align: center">
                             <input type="checkbox" />
@@ -297,6 +297,7 @@
                     <td class="listings__td-text" data-column="LASTMODIFIED">
                         [[${room.calculateHowManyDaysFromPastToCurrent()}]] ngày trước
                     </td>
+                    <td></td>
                 </tr>
             </th:block>
         </tbody>

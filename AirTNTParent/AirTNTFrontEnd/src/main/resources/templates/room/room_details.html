@@ -3,11 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>Room Details</title>
-        <link
-            rel="stylesheet"
-            th:href="@{/css/room_details.css}"
-            type="text/css"
-        />
+        <link rel="stylesheet" th:href="@{/css/room_details.css}" type="text/css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -25,45 +21,37 @@
                 <input type="hidden" id="roomId" th:value="${room.id}" />
                 <div class="rdt_below__header flex">
                     <div class="rdt_location__info text">
-                        <span th:if="${room.city.name != null}"
-                            >[[${room.city.name}]]</span
-                        >
-                        <span th:if="${room.state.name != null}"
-                            >[[${room.state.name}]]</span
-                        >
-                        <span th:if="${room.country.name != null}"
-                            >[[${room.country.name}]]</span
-                        >
+                        <span th:if="${room.city.name != null}">[[${room.city.name}]]</span>
+                        <span th:if="${room.state.name != null}">[[${room.state.name}]]</span>
+                        <span th:if="${room.country.name != null}">[[${room.country.name}]]</span>
                     </div>
                     <div class="rdt_header__action">
-                        <div
-                            th:replace="room/room_fragment :: saveAndShare"
-                        ></div>
+                        <div th:replace="room/room_fragment :: saveAndShare"></div>
                     </div>
                 </div>
 
                 <section class="rdt_images grid">
-                    <div style="width: 100%; height: 100%">
+                    <div style="height: 480px">
                         <img
                             th:src="@{${thumbnail.getImagePath(room.host.email)}}"
                             width="100%"
-                            height="98%"
+                            height="100%"
                             class="image"
                         />
                     </div>
-                    <div class="rdt_images__left">
-                        <th:block th:each="image,iter  : ${roomImages}">
-                            <div style="width: 100%; height: 100%">
-                                <img
-                                    th:src="@{${image.getImagePath(room.host.email)}}"
-                                    width="100%"
-                                    height="100%"
-                                    class="image"
-                                    style="object-fit: cover"
-                                    th:class="${iter.even}? 'roundedBorder'"
-                                />
-                            </div>
-                        </th:block>
+                    <div>
+                        <div class="rdt_images__left" style="height: 470px">
+                            <th:block th:each="image,iter : ${roomImages}">
+                                <div style="width: 100%; height: calc(470px / 2)">
+                                    <img
+                                        th:src="@{${image.getImagePath(room.host.email)}}"
+                                        class="image"
+                                        style="width: 100%; height: 100%"
+                                        th:class="${iter.even}? 'roundedBorder'"
+                                    />
+                                </div>
+                            </th:block>
+                        </div>
                         <a
                             style="text-decoration: none; cursor: pointer"
                             href="javascript:toggleHiddenImages();"
@@ -90,15 +78,9 @@
                                     <circle cx="15.5" cy="8.5" r="1.5"></circle>
                                     <circle cx="1.5" cy="15.5" r="1.5"></circle>
                                     <circle cx="8.5" cy="15.5" r="1.5"></circle>
-                                    <circle
-                                        cx="15.5"
-                                        cy="15.5"
-                                        r="1.5"
-                                    ></circle>
+                                    <circle cx="15.5" cy="15.5" r="1.5"></circle>
                                 </svg>
-                                <div style="padding-left: 12px">
-                                    Hiển thị tất cả ảnh
-                                </div>
+                                <div style="padding-left: 12px">Hiển thị tất cả ảnh</div>
                             </div>
                         </a>
                     </div>
@@ -109,27 +91,14 @@
                         <article>
                             <div class="rdt_room__count flex">
                                 <div>
-                                    <h2
-                                        style="
-                                            font-size: 22px;
-                                            line-height: 40px;
-                                        "
-                                    >
-                                        Phòng riêng tại
-                                        [[${room.category.name}]]. Chủ nhà
-                                        [[${room.host.firstName}]]
-                                        [[${room.host.lastName}]]
+                                    <h2 style="font-size: 22px; line-height: 40px">
+                                        Phòng riêng tại [[${room.category.name}]]. Chủ nhà
+                                        [[${room.host.firstName}]] [[${room.host.lastName}]]
                                     </h2>
-                                    <p
-                                        style="
-                                            font-size: 16px;
-                                            font-weight: 500;
-                                        "
-                                    >
+                                    <p style="font-size: 16px; font-weight: 500">
                                         [[${room.accomodatesCount}]] khách.
-                                        [[${room.bathroomCount}]] phòng ngủ .
-                                        [[${room.bedCount}]] giường.
-                                        [[${room.bedroomCount}]] phòng tắm riêng
+                                        [[${room.bathroomCount}]] phòng ngủ . [[${room.bedCount}]]
+                                        giường. [[${room.bedroomCount}]] phòng tắm riêng
                                     </p>
                                 </div>
                                 <div>
@@ -147,9 +116,7 @@
                                 <p>[[${room.description}]]</p>
                             </div>
                             <div class="rdt_bedroom_info rdt_body__common">
-                                <h4 class="rdt_amentity__header">
-                                    Nơi bạn sẽ ngủ nghỉ
-                                </h4>
+                                <h4 class="rdt_amentity__header">Nơi bạn sẽ ngủ nghỉ</h4>
                                 <div class="rdt_room__decor">
                                     <div
                                         style="
@@ -158,9 +125,7 @@
                                             margin-bottom: 16px;
                                         "
                                     >
-                                        <th:block
-                                            th:each="bed : ${numberOfBed}"
-                                        >
+                                        <th:block th:each="bed : ${numberOfBed}">
                                             <span>
                                                 <svg
                                                     viewBox="0 0 32 32"
@@ -181,30 +146,17 @@
                                                 </svg> </span
                                         ></th:block>
                                     </div>
-                                    <div
-                                        style="
-                                            margin-bottom: 8px;
-                                            font-size: 16px;
-                                        "
-                                    >
-                                        Phòng ngủ
-                                    </div>
+                                    <div style="margin-bottom: 8px; font-size: 16px">Phòng ngủ</div>
                                     <div style="font-size: 14px">
-                                        <span
-                                            th:text="${#arrays.length(numberOfBed)}"
-                                        ></span>
+                                        <span th:text="${#arrays.length(numberOfBed)}"></span>
                                         giường đơn
                                     </div>
                                 </div>
                             </div>
                             <div class="rdt_amentity rdt_body__common">
-                                <h4 class="rdt_amentity__header">
-                                    Nơi này có những gì cho bạn
-                                </h4>
+                                <h4 class="rdt_amentity__header">Nơi này có những gì cho bạn</h4>
                                 <div>
-                                    <th:block
-                                        th:each="amt : ${room.amentities}"
-                                    >
+                                    <th:block th:each="amt : ${room.amentities}">
                                         <div
                                             style="
                                                 display: flex;
@@ -217,18 +169,14 @@
                                                 th:remove="tag"
                                                 th:utext="${amt.iconImage}"
                                             ></span>
-                                            <span style="padding-left: 16px"
-                                                >[[${amt.name}]]</span
-                                            >
+                                            <span style="padding-left: 16px">[[${amt.name}]]</span>
                                         </div>
                                     </th:block>
                                 </div>
                                 <div class="rdt_anchor__container">
                                     <a href="" class="rdt_anchor"
                                         >Hiển thị tất cả
-                                        <span
-                                            th:text="${#arrays.length(room.amentities)}"
-                                        ></span>
+                                        <span th:text="${#arrays.length(room.amentities)}"></span>
                                         tiện nghi</a
                                     >
                                 </div>
@@ -239,12 +187,7 @@
                                 <div class="rdt_calender__header">
                                     <div class="flex3">
                                         <div class="firstMonth">
-                                            <div
-                                                class="
-                                                    MonthTitle
-                                                    firstMonthAndYear
-                                                "
-                                            >
+                                            <div class="MonthTitle firstMonthAndYear">
                                                 Tháng MM năm YYY
                                             </div>
                                             <div class="rdt_calender__body">
@@ -257,19 +200,13 @@
                                                     <div class="date">T6</div>
                                                     <div class="date">T7</div>
                                                 </div>
-                                                <table
-                                                    class="rdt_calender__days"
-                                                ></table>
+                                                <table class="rdt_calender__days"></table>
                                             </div>
                                         </div>
                                         <div class="secondMonth">
                                             <div class="secondMonthTitle">
                                                 <div class="pseudoContainer">
-                                                    <div
-                                                        class="
-                                                            secondMonthAndYear
-                                                        "
-                                                    >
+                                                    <div class="secondMonthAndYear">
                                                         Tháng MM + 1 năm YYYY
                                                     </div>
                                                 </div>
@@ -287,11 +224,7 @@
                                                     <div class="date">T6</div>
                                                     <div class="date">T7</div>
                                                 </div>
-                                                <table
-                                                    class="
-                                                        rdt_calender__days_plus-1
-                                                    "
-                                                ></table>
+                                                <table class="rdt_calender__days_plus-1"></table>
                                             </div>
                                         </div>
                                     </div>
@@ -311,12 +244,7 @@
                                         />
                                     </div>
                                     <div style="margin-left: 20px">
-                                        <h2
-                                            style="
-                                                font-size: 22px;
-                                                line-height: 26px;
-                                            "
-                                        >
+                                        <h2 style="font-size: 22px; line-height: 26px">
                                             Chủ nhà [[${room.host.firstName}]]
                                             [[${room.host.lastName}]]
                                         </h2>
@@ -334,9 +262,7 @@
                                 </div>
                             </div>
                             <div class="rdt_rules rdt_body__common">
-                                <h4 class="rdt_amentity__header">
-                                    Những điều cần biết
-                                </h4>
+                                <h4 class="rdt_amentity__header">Những điều cần biết</h4>
                                 <th:block th:each="rule : ${room.rules}">
                                     <div
                                         style="
@@ -345,13 +271,8 @@
                                             margin-bottom: 8px;
                                         "
                                     >
-                                        <span
-                                            th:remove="tag"
-                                            th:utext="${rule.icon}"
-                                        ></span>
-                                        <span style="padding-left: 16px"
-                                            >[[${rule.title}]]</span
-                                        >
+                                        <span th:remove="tag" th:utext="${rule.icon}"></span>
+                                        <span style="padding-left: 16px">[[${rule.title}]]</span>
                                     </div>
                                 </th:block>
                             </div>
@@ -370,8 +291,7 @@
                             >
                                 <div style="margin-bottom: 24px">
                                     <span class="rdt__price"
-                                        >[[${room.currency.symbol}]]
-                                        [[${room.price}]]</span
+                                        >[[${room.currency.symbol}]] [[${room.price}]]</span
                                     >
                                     <span
                                         style="font-size: 16px"
@@ -395,9 +315,7 @@
                                                 border: 0.5px solid red;
                                             "
                                         >
-                                            <div style="font-weight: 600">
-                                                Nhận phòng
-                                            </div>
+                                            <div style="font-weight: 600">Nhận phòng</div>
                                             <div>7/2/2022</div>
                                         </div>
                                         <div
@@ -407,23 +325,16 @@
                                                 border: 0.5px solid red;
                                             "
                                         >
-                                            <div style="font-weight: 600">
-                                                Trả phòng
-                                            </div>
+                                            <div style="font-weight: 600">Trả phòng</div>
                                             <div>7/2/2022</div>
                                         </div>
                                     </div>
                                     <div
                                         class="flex"
-                                        style="
-                                            height: 56px;
-                                            padding: 16px 16px 10px 12px;
-                                        "
+                                        style="height: 56px; padding: 16px 16px 10px 12px"
                                     >
                                         <div>
-                                            <div style="font-weight: 600">
-                                                Khách
-                                            </div>
+                                            <div style="font-weight: 600">Khách</div>
                                             <div>1 khách</div>
                                         </div>
                                         <div
@@ -465,23 +376,9 @@
                                                 class="_19di23v"
                                                 style="
                                                     background-position: calc(
-                                                            (
-                                                                    100 -
-                                                                        var(
-                                                                            --mouse-x,
-                                                                            0
-                                                                        )
-                                                                ) * 1%
+                                                            (100 - var(--mouse-x, 0)) * 1%
                                                         )
-                                                        calc(
-                                                            (
-                                                                    100 -
-                                                                        var(
-                                                                            --mouse-y,
-                                                                            0
-                                                                        )
-                                                                ) * 1%
-                                                        );
+                                                        calc((100 - var(--mouse-y, 0)) * 1%);
                                                     --mouse-x: 96.4371;
                                                     --mouse-y: 50;
                                                 "
@@ -489,20 +386,13 @@
                                         ><span class="_tcp689">Đặt phòng </span>
                                     </button>
                                 </div>
-                                <div
-                                    style="
-                                        font-size: 14px;
-                                        text-align: center;
-                                        margin-top: 8px;
-                                    "
-                                >
+                                <div style="font-size: 14px; text-align: center; margin-top: 8px">
                                     Bạn vẫn chưa bị trừ tiền
                                 </div>
                                 <div class="flex" style="padding-bottom: 12px">
                                     <button class="rdt_transparent__btn">
                                         <div class="_m6lwl6">
-                                            [[${room.currency.symbol}]]460 x
-                                            7&nbsp;đêm&nbsp;
+                                            [[${room.currency.symbol}]]460 x 7&nbsp;đêm&nbsp;
                                         </div>
                                     </button>
                                     <div>[[${room.currency.symbol}]]3.222</div>
@@ -510,18 +400,14 @@
                                 <div class="flex" style="padding-bottom: 20px">
                                     <button class="rdt_transparent__btn">
                                         <div class="_m6lwl6">
-                                            [[${room.currency.symbol}]]460 x
-                                            7&nbsp;đêm&nbsp;
+                                            [[${room.currency.symbol}]]460 x 7&nbsp;đêm&nbsp;
                                         </div>
                                     </button>
                                     <div>[[${room.currency.symbol}]]3.222</div>
                                 </div>
                                 <div
                                     class="flex"
-                                    style="
-                                        padding-top: 16px;
-                                        border-top: 1px solid #b0b0b0;
-                                    "
+                                    style="padding-top: 16px; border-top: 1px solid #b0b0b0"
                                 >
                                     <div>Tổng</div>
                                     <div>[[${room.currency.symbol}]]3.222</div>
@@ -549,20 +435,11 @@
 
         <div th:replace="_footer :: content"></div>
 
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-        <script
-            type="text/javascript"
-            th:src="@{/js/room/room_slider.js}"
-        ></script>
-        <script
-            type="text/javascript"
-            th:src="@{/js/room/room_details.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/js/room/room_slider.js}"></script>
+        <script type="text/javascript" th:src="@{/js/room/room_details.js}"></script>
         <div th:replace="header :: javascript"></div>
     </body>
 </html>

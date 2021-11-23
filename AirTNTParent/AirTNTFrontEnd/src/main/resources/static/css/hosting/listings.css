@@ -192,6 +192,10 @@ td.remove {
     display: none;
 }
 
+tbody tr {
+    cursor: pointer;
+}
+
 /* th:nth-child(2) {
     width: 371px;
 }

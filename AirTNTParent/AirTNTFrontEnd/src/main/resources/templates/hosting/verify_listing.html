@@ -38,9 +38,7 @@
                 <div class="verify-listing__body-right">
                     <div class="verify-listing__body-right-first">
                         <div>
-                            <div
-                                class="verify-listing__body-right-first__title"
-                            >
+                            <div class="verify-listing__body-right-first__title">
                                 Những chi tiết quan trọng cần chăm chút
                             </div>
                             <div>
@@ -48,15 +46,11 @@
                             </div>
                         </div>
                         <div class="verify-listing__body-right-first__subtitle">
-                            Trước khi bạn đăng nhà/phòng cho thuê, chúng tôi cần
-                            xác nhận một số chi tiết về bạn và chỗ của bạn.
-                            Chúng tôi sẽ hướng dẫn bạn thực hiện việc này.
+                            Trước khi bạn đăng nhà/phòng cho thuê, chúng tôi cần xác nhận một số chi
+                            tiết về bạn và chỗ của bạn. Chúng tôi sẽ hướng dẫn bạn thực hiện việc
+                            này.
                         </div>
-                        <div
-                            class="
-                                verify-listing__body-right-first__is-mandatory-or-complete
-                            "
-                        >
+                        <div class="verify-listing__body-right-first__is-mandatory-or-complete">
                             <div
                                 style="
                                     font-size: 12px;
@@ -73,13 +67,11 @@
                                     width="16px"
                                     height="16px"
                                 />
-                                <span style="font-weight: 500; font-size: 10"
-                                    >Hoàn tất</span
-                                >
+                                <span style="font-weight: 500; font-size: 10">Hoàn tất</span>
                             </div>
                         </div>
                     </div>
-                    <div class="verify-listing__body-right-middle">
+                    <!-- <div class="verify-listing__body-right-middle">
                         <div
                             class="verify-listing__body-right-first__title"
                             style="
@@ -127,7 +119,7 @@
                             </div>
                             <div class="isCompleted"></div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="verify-listing__body-right-last">
                         <div
                             class="verify-listing__body-right-first__title"
@@ -158,38 +150,24 @@
                             </div>
                         </div>
                         <div class="verify-listing__body-right-first__subtitle">
-                            Chúng tôi sẽ gọi điện hoặc nhắn tin cho bạn để xác
-                            nhận số điện thoại. Phí nhắn tin tiêu chuẩn có thể
-                            áp dụng.
+                            Chúng tôi sẽ gọi điện hoặc nhắn tin cho bạn để xác nhận số điện thoại.
+                            Phí nhắn tin tiêu chuẩn có thể áp dụng.
                         </div>
-                        <div
-                            class="
-                                verify-listing__body-right-first__is-mandatory-or-complete
-                            "
-                        >
+                        <div class="verify-listing__body-right-first__is-mandatory-or-complete">
                             <div
-                                style="
-                                    font-size: 12px;
-                                    line-height: 16px;
-                                    font-weight: 500;
-                                "
+                                style="font-size: 12px; line-height: 16px; font-weight: 500"
                                 th:if="${phoneNumberVerified == false}"
                             >
                                 Bắt buộc
                             </div>
-                            <div
-                                class="isCompleted"
-                                th:if="${phoneNumberVerified == true}"
-                            >
+                            <div class="isCompleted" th:if="${phoneNumberVerified == true}">
                                 <img
                                     th:src="@{'/svg/complete.svg'}"
                                     alt=""
                                     width="16px"
                                     height="16px"
                                 />
-                                <span style="font-weight: 500; font-size: 10"
-                                    >Hoàn tất</span
-                                >
+                                <span style="font-weight: 500; font-size: 10">Hoàn tất</span>
                             </div>
                         </div>
                     </div>
@@ -201,16 +179,8 @@
                             <img alt="" src="" id="roomThumbnail" />
                         </div>
                         <div style="padding: 24px">
-                            <div style="font-size: 14px; font-weight: 500">
-                                [[${room.name}]]
-                            </div>
-                            <div
-                                style="
-                                    font-size: 12px;
-                                    text-overflow: ellipsis;
-                                    margin-top: 10px;
-                                "
-                            >
+                            <div style="font-size: 14px; font-weight: 500">[[${room.name}]]</div>
+                            <div style="font-size: 12px; text-overflow: ellipsis; margin-top: 10px">
                                 [[${room.city.name}]], [[${room.state.name}]],
                                 [[${room.country.name}]]
                             </div>
@@ -220,11 +190,7 @@
             </div>
             <div class="verify-listing__footer">
                 <div class="verify-listing__footer-button-container">
-                    <button
-                        type="button"
-                        class="verify-listing__button-rent"
-                        disabled
-                    >
+                    <button type="button" class="verify-listing__button-rent" disabled>
                         Đăng nhà/phòng cho thuê
                     </button>
                 </div>
@@ -232,10 +198,7 @@
         </main>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
         <script th:inline="javascript">
             /*<![CDATA[*/
@@ -243,22 +206,16 @@
             const userName = /*[[${userName}]]*/ 'userName';
             const thumbnail = /*[[${thumbnail}]]*/ 'thumbnail';
             const roomId = /*[[${roomId}]]*/ 'roomId';
-            const allVerified =
-                /*[[${phoneNumberVerified}]]*/ 'phoneNumberVerified';
+            const allVerified = /*[[${phoneNumberVerified}]]*/ 'phoneNumberVerified';
             const userId = /*[[${room.host.id}]]*/ 'userId';
             /*]]>*/
         </script>
         <script>
             jQuery(document).ready(function () {
-                $('#roomThumbnail').attr(
-                    'src',
-                    `${baseURL}room_images/${userName}/${thumbnail}`
-                );
+                $('#roomThumbnail').attr('src', `${baseURL}room_images/${userName}/${thumbnail}`);
 
                 if (allVerified) {
-                    $('.verify-listing__button-rent')
-                        .first()
-                        .attr('disabled', false);
+                    $('.verify-listing__button-rent').first().attr('disabled', false);
                 }
 
                 $('.verify-listing__button-rent').click(async function () {

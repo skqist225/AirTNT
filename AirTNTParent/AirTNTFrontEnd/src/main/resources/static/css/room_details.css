@@ -51,8 +51,8 @@
     /* width: 80px; */
     outline: none;
     padding: 8px;
-    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
-        -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s,
+        transform 0.1s ease 0s;
     -webkit-tap-highlight-color: transparent;
     border: none;
     background: transparent;
@@ -90,7 +90,7 @@
 
 .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
 }
 
@@ -194,8 +194,8 @@
     border-radius: 8px;
     outline: none;
     padding: 14px 24px;
-    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
-        -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s,
+        transform 0.1s ease 0s;
     -webkit-tap-highlight-color: transparent;
     border: none;
     background: linear-gradient(
