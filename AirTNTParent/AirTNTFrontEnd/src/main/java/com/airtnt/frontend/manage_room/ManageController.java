@@ -1,6 +1,11 @@
 package com.airtnt.frontend.manage_room;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.airtnt.common.entity.Amentity;
 import com.airtnt.common.entity.Room;
+import com.airtnt.frontend.amentity.AmentityService;
 import com.airtnt.frontend.country.CountryService;
 import com.airtnt.frontend.privacy.PrivacyTypeService;
 import com.airtnt.frontend.room.RoomService;
@@ -33,6 +38,9 @@ public class ManageController {
     @Autowired
     private PrivacyTypeService privacyTypeService;
 
+    @Autowired
+    private AmentityService amentityService;
+
     @GetMapping(value = "/manage-your-space/{roomId}/details")
     public String getMethodName(@PathVariable("roomId") Integer roomId,
             @AuthenticationPrincipal UserDetails userDetails, Model model) {
@@ -50,6 +58,31 @@ public class ManageController {
         model.addAttribute("roomGroup", roomGroupService.getRoomGroups());
         model.addAttribute("roomType", roomTypeService.getRoomTypes());
         model.addAttribute("privacyType", privacyTypeService.getPrivacyType());
+
+        List<Amentity> prominentAmentities = amentityService.getAmentities("prominent");
+        List<Amentity> favoriteAmentities = amentityService.getAmentities("favorite");
+        List<Amentity> safeAmentities = amentityService.getAmentities("safe");
+
+        model.addAttribute("prominentAmentities", prominentAmentities);
+        model.addAttribute("favoriteAmentities", favoriteAmentities);
+        model.addAttribute("safeAmentities", safeAmentities);
+
+        List<Integer> prominentAmentitiesID = new ArrayList<>();
+        List<Integer> favoriteAmentitiesID = new ArrayList<>();
+        List<Integer> safeAmentitiesID = new ArrayList<>();
+
+        for (Amentity a : room.getAmentities()) {
+            if (a.isProminent())
+                prominentAmentitiesID.add(a.getId());
+            else if (a.isFavorite())
+                favoriteAmentitiesID.add(a.getId());
+            else
+                safeAmentitiesID.add(a.getId());
+        }
+
+        model.addAttribute("prominentAmentitiesID", prominentAmentitiesID);
+        model.addAttribute("favoriteAmentitiesID", favoriteAmentitiesID);
+        model.addAttribute("safeAmentitiesID", safeAmentitiesID);
 
         return new String("manage_space/manage_your_space");
     }

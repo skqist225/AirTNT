@@ -3,7 +3,6 @@ package com.airtnt.frontend.manage_room;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.airtnt.common.entity.Room;
 import com.airtnt.frontend.room.RoomService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +37,9 @@ public class ManageRestController {
             values.put("street", payload.get("street").toString());
         } else if (fieldName.equals("status")) {
             values.put("status", payload.get("status").toString());
+        } else if (fieldName.equals("amentities")) {
+            values.put("checked", payload.get("checkedArray").toString());
+            values.put("unchecked", payload.get("uncheckedArray").toString());
         } else
             values.put(fieldName, payload.get(fieldName).toString());
 

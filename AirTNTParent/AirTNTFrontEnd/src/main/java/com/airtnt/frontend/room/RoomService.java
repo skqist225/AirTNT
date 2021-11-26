@@ -1,10 +1,12 @@
 package com.airtnt.frontend.room;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.airtnt.common.entity.Amentity;
 import com.airtnt.common.entity.Category;
 import com.airtnt.common.entity.City;
 import com.airtnt.common.entity.Country;
@@ -203,44 +206,42 @@ public class RoomService {
 				}
 			}
 		}
+		case "amentities": {
+
+			Set<Amentity> updatedAmentities = room.getAmentities();
+
+			String[] checkedArr = values.get("checked").split(",");
+			String[] uncheckedArr = values.get("unchecked").split(",");
+
+			for (String s : checkedArr)
+				System.out.println(s);
+
+			for (String s : uncheckedArr)
+				System.out.println(s);
+
+			System.out.println(checkedArr.length);
+			System.out.println(uncheckedArr.length);
+
+			for (Amentity a : updatedAmentities) {
+				for (int i = 0; i < uncheckedArr.length; i++) {
+					if (!uncheckedArr[i].equals("") && a.getId() == Integer.parseInt(uncheckedArr[i])) {
+						updatedAmentities.remove(a);
+					} else
+						continue;
+				}
+			}
+
+			for (int i = 0; i < checkedArr.length; i++) {
+				if (!checkedArr[i].equals(""))
+					updatedAmentities.add(new Amentity(Integer.parseInt(checkedArr[i])));
+			}
+
+			room.setAmentities(updatedAmentities);
+		}
 		}
 
 		Room savedRoom = roomRepository.save(room);
 		return savedRoom != null ? "OK" : "ERROR";
 	}
-
-	// public Page<Room> listByPage(int pageNum, String sortField, String sortDir,
-	// String keyword) {
-	// Sort sort = Sort.by(sortField);
-
-	// sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-	// Pageable pageable = PageRequest.of(pageNum - 1, MAX_ROOM_PER_FETCH_BY_HOST,
-	// sort);
-
-	// if (keyword != null) {
-	// return roomRepository.findAll(keyword, pageable);
-	// }
-
-	// return roomRepository.findAll(pageable);
-	// }
-
-	// public Page<Room> listByPage2(int pageNum, String sortField, String sortDir,
-	// String[] keyword) {
-	// Sort sort = Sort.by(sortField);
-
-	// sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
-	// Pageable pageable = PageRequest.of(pageNum - 1, MAX_ROOM_PER_FETCH_BY_HOST,
-	// sort);
-
-	// // for (String key : keyword) {
-
-	// // }
-
-	// // if (keyword != null) {
-	// // return roomRepository.findAll(keyword, pageable);
-	// // }
-
-	// return roomRepository.findAll(pageable);
-	// }
 
 }

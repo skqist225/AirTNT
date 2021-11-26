@@ -182,7 +182,9 @@ ul li.active .li-before {
 }
 
 .manage-ys__minus-btn,
-.manage-ys__plus-btn {
+.manage-ys__plus-btn,
+.manage-ys__check-btn,
+.manage-ys__uncheck-btn {
     width: 32px;
     height: 32px;
     flex-grow: 0;
@@ -207,6 +209,23 @@ ul li.active .li-before {
     justify-content: center;
     background: #ffffff;
     border-radius: 50%;
+}
+
+.manage-ys__check-btn.checked,
+.manage-ys__uncheck-btn.checked {
+    display: flex;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    height: 32px;
+    width: 32px;
+    contain: layout;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border-color: rgb(34, 34, 34);
+    background: rgb(34, 34, 34);
+    color: rgb(255, 255, 255);
 }
 
 #manage-ys__guestNumber,

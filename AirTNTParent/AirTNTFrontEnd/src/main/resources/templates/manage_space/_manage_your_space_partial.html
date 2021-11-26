@@ -93,3 +93,78 @@
         </div>
     </div>
 </div>
+
+<div th:fragment="roomAmentities(title, amentities, dataType)" th:remove="tag">
+    <div>
+        <div class="manage-ys__header-edit-main-title" style="margin-top: 40px">[[${title}]]</div>
+        <div>
+            <th:block th:each="amentity : ${amentities}">
+                <div
+                    class="flex-space"
+                    style="
+                        height: 80px;
+                        padding: 24px 0;
+                        border-bottom: 1px solid rgb(221, 221, 221);
+                    "
+                >
+                    <div>[[${amentity.name}]]</div>
+                    <div class="normal-flex">
+                        <button
+                            class="manage-ys__uncheck-btn"
+                            th:data-edit="${amentity.id}"
+                            style="margin-right: 10px"
+                        >
+                            <span>
+                                <svg
+                                    viewBox="0 0 32 32"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                    role="presentation"
+                                    focusable="false"
+                                    style="
+                                        display: block;
+                                        fill: none;
+                                        height: 16px;
+                                        width: 16px;
+                                        stroke: rgb(113, 113, 113);
+                                        stroke-width: 3;
+                                        overflow: visible;
+                                    "
+                                >
+                                    <path d="m6 6 20 20"></path>
+                                    <path d="m26 6-20 20"></path>
+                                </svg>
+                            </span>
+                        </button>
+                        <button
+                            class="manage-ys__check-btn"
+                            th:data-edit="${amentity.id}"
+                            th:data-type="${dataType}"
+                        >
+                            <span>
+                                <svg
+                                    viewBox="0 0 32 32"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                    role="presentation"
+                                    focusable="false"
+                                    style="
+                                        display: block;
+                                        fill: none;
+                                        height: 16px;
+                                        width: 16px;
+                                        stroke: currentcolor;
+                                        stroke-width: 3;
+                                        overflow: visible;
+                                    "
+                                >
+                                    <path fill="none" d="m4 16.5 8 8 16-16"></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
