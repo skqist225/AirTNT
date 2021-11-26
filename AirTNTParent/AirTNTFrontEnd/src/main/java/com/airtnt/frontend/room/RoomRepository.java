@@ -32,4 +32,5 @@ public interface RoomRepository extends JpaRepository<Room, Integer>, JpaSpecifi
 
         @Query("SELECT r FROM Room r WHERE r.name LIKE %?1%")
         public Page<Room> findAll(String keyword, Pageable pageable);
+
 }

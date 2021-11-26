@@ -37,10 +37,7 @@
                             padding: 0 32px;
                         "
                     >
-                        <h1
-                            class="room-group__left-title"
-                            style="text-align: center"
-                        >
+                        <h1 class="room-group__left-title" style="text-align: center">
                             Hãy đặt tên cho chỗ ở của bạn
                         </h1>
                     </div>
@@ -50,28 +47,19 @@
                        "
                             style="text-decoration: none"
                         >
-                            <img
-                                th:src="@{/images/airtntlogo.png}"
-                                alt=""
-                                id="airTntLogo"
-                            />
+                            <img th:src="@{/images/airtntlogo.png}" alt="" id="airTntLogo" />
                         </a>
                     </div>
                 </div>
                 <div class="room-group__right">
                     <div class="room-group__right-first">
-                        <button
-                            class="become-a-host__right-cancelBtn"
-                            onclick="backtoHomePage();"
-                        >
+                        <button class="become-a-host__right-cancelBtn" onclick="backtoHomePage();">
                             <span style="font-weight: 500">Lưu và thoát</span>
                         </button>
                     </div>
                     <div class="title__right-middle">
                         <div>
-                            <label for="room-name" class="room-name-label"
-                                >Tạo tiêu đề</label
-                            >
+                            <label for="room-name" class="room-name-label">Tạo tiêu đề</label>
                             <div>
                                 <textarea
                                     name=""
@@ -79,7 +67,7 @@
                                     cols="30"
                                     rows="10"
                                     maxlength="50"
-                                    onkeydown="onKeyPress(event);"
+                                    onkeydown="onKeyDown(event);"
                                 ></textarea>
                             </div>
                             <div id="numberOfTextPerMaxLength">
@@ -101,10 +89,7 @@
                                 >Quay lại</a
                             >
                         </div>
-                        <button
-                            class="become-a-host__right-startBtn"
-                            onclick="nextPage();"
-                        >
+                        <button class="become-a-host__right-startBtn" onclick="nextPage();">
                             <span style="font-weight: 500">Tiếp theo</span>
                         </button>
                     </div>
@@ -113,10 +98,7 @@
         </main>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script th:inline="javascript">
             /*<![CDATA[*/
             const baseURL = /*[[@{/}]]*/ 'default';

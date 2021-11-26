@@ -22,7 +22,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.airtnt.common.entity.Category;
+import com.airtnt.common.entity.City;
+import com.airtnt.common.entity.Country;
 import com.airtnt.common.entity.Room;
+import com.airtnt.common.entity.RoomGroup;
+import com.airtnt.common.entity.RoomPrivacy;
+import com.airtnt.common.entity.RoomType;
+import com.airtnt.common.entity.State;
 import com.airtnt.common.entity.User;
 
 @Service
@@ -146,6 +152,61 @@ public class RoomService {
 
 	public int completeRentalProcess(Integer roomId) {
 		return updateRoomStatus(roomId);
+	}
+
+	public String updateField(Integer roomId, String fieldName, Map<String, String> values) {
+		Room room = roomRepository.getById(roomId);
+		switch (fieldName) {
+		case "name": {
+			room.setName(values.get(fieldName));
+			break;
+		}
+		case "roomInfo": {
+			room.setBedCount(Integer.parseInt(values.get("bedCount")));
+			room.setBedroomCount(Integer.parseInt(values.get("bedroomCount")));
+			room.setBathroomCount(Integer.parseInt(values.get("bathroomCount")));
+			break;
+		}
+		case "groupAndTypeAndPrivacy": {
+			room.setRoomGroup(new RoomGroup(Integer.parseInt(values.get("roomGroup"))));
+			room.setRoomType(new RoomType(Integer.parseInt(values.get("roomType"))));
+			room.setPrivacyType(new RoomPrivacy(Integer.parseInt(values.get("roomPrivacy"))));
+			break;
+		}
+		case "location": {
+			Country country = new Country(Integer.parseInt(values.get("country")));
+			State state = new State(values.get("state"), country);
+			City city = new City(values.get("city"), state);
+
+			System.out.println(values.get("country"));
+			System.out.println(values.get("city"));
+			System.out.println(values.get("state"));
+			System.out.println(values.get("street"));
+
+			room.setCountry(country);
+			room.setState(state);
+			room.setCity(city);
+			room.setStreet(values.get("street"));
+		}
+		case "status": {
+			int request = Integer.parseInt(values.get("status"));
+
+			if (request == 1) {
+				room.setStatus(true);
+			} else if (request == 0) {
+				room.setStatus(false);
+			} else {
+				try {
+					roomRepository.delete(room);
+				} catch (Exception e) {
+					return "Delete successfully";
+				}
+			}
+		}
+		}
+
+		Room savedRoom = roomRepository.save(room);
+		return savedRoom != null ? "OK" : "ERROR";
 	}
 
 	// public Page<Room> listByPage(int pageNum, String sortField, String sortDir,

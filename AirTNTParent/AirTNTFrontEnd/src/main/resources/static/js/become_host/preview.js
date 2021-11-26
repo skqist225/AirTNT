@@ -21,14 +21,10 @@ jQuery(document).ready(function () {
         $('#room-preview__room-description').text(
             `Thư giãn tại địa điểm nghỉ dưỡng ${room.descriptions[0]
                 .toString()
-                .toLowerCase()} và ${room.descriptions[1]
-                .toString()
-                .toLowerCase()} này.`
+                .toLowerCase()} và ${room.descriptions[1].toString().toLowerCase()} này.`
         );
 
-        $('#room-preview__room-price').text(
-            seperateNumber(room.roomPricePerNight) + 'đ / đêm'
-        );
+        $('#room-preview__room-price').text(seperateNumber(room.roomPricePerNight) + 'đ / đêm');
 
         /*-------------------------------AMENTITIES-----------------------------------------*/
         $('#prominentAmentity').attr(
@@ -39,10 +35,7 @@ jQuery(document).ready(function () {
             'src',
             `${baseURL}amentity_images/${room.favoriteAmentityImageName}`
         );
-        $('#safeAmentity').attr(
-            'src',
-            `${baseURL}amentity_images/${room.safeAmentityImageName}`
-        );
+        $('#safeAmentity').attr('src', `${baseURL}amentity_images/${room.safeAmentityImageName}`);
         $('#prominentAmentityName').text(room.prominentAmentityName);
         $('#favoriteAmentityName').text(room.favoriteAmentityName);
         $('#safeAmentityName').text(room.safeAmentityName);
@@ -94,15 +87,14 @@ async function nextPage() {
     if (localStorage.getItem('room')) {
         const room = JSON.parse(localStorage.getItem('room'));
         const placeNameLength = room.place_name.toString().split(',').length;
-        const country =
-            room.place_name.toString().split(',')[placeNameLength - 1] ||
-            'no-country';
-        const state =
-            room.place_name.toString().split(',')[placeNameLength - 2] ||
-            'no-state';
-        const city =
-            room.place_name.toString().split(',')[placeNameLength - 3] ||
-            'no-city';
+        let country = room.place_name.toString().split(',')[placeNameLength - 1] || 'no-country';
+        const state = room.place_name.toString().split(',')[placeNameLength - 2] || 'no-state';
+        const city = room.place_name.toString().split(',')[placeNameLength - 3] || 'no-city';
+        const street = room.place_name.toString().split(',')[placeNameLength - 4] || 'no-street';
+
+        if (country === 'Vietnam') {
+            country = 216;
+        }
 
         const fd = new FormData();
 
@@ -115,9 +107,10 @@ async function nextPage() {
             name: room.roomTitle,
             amentities,
             images: room.roomImages,
-            country: 216,
-            state: state,
-            city: city,
+            country,
+            state,
+            city,
+            street,
             bedroomCount: room.bedRoomNumber,
             bathroomCount: room.bathRoomNumber,
             accomodatesCount: room.guestNumber,

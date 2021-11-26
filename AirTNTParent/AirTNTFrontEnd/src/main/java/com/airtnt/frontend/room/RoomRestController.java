@@ -18,6 +18,7 @@ import com.airtnt.common.entity.Image;
 import com.airtnt.common.entity.PriceType;
 import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.RoomGroup;
+import com.airtnt.common.entity.RoomPrivacy;
 import com.airtnt.common.entity.RoomType;
 import com.airtnt.common.entity.Rule;
 import com.airtnt.common.entity.State;
@@ -166,8 +167,8 @@ public class RoomRestController {
                 .state(state).country(country).rules(rules).host(new User(payload.getHost()))
                 .roomGroup(new RoomGroup(payload.getRoomGroup())).roomType(new RoomType(payload.getRoomType()))
                 .host(new User(payload.getHost())).category(new Category(payload.getCategory()))
-                .currency(new Currency(payload.getCurrency())).privacyType(payload.getPrivacyType())
-                .thumbnail(images.iterator().next().getImage()).status(false).build();
+                .currency(new Currency(payload.getCurrency())).privacyType(new RoomPrivacy(payload.getPrivacyType()))
+                .thumbnail(images.iterator().next().getImage()).street(payload.getStreet()).status(false).build();
 
         Room savedRoom = roomService.save(room);
 

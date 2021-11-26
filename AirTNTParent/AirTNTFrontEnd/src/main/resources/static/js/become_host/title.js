@@ -10,7 +10,7 @@ jQuery(document).ready(function () {
     }
 });
 
-function onKeyPress(event) {
+function onKeyDown(event) {
     const currentLength = $('#currentLength');
     const currentValue = currentLength.text();
     if (event.key === 'Backspace') {

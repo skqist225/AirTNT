@@ -18,11 +18,11 @@ public class Room extends BaseEntity {
 
 	@Builder
 	public Room(int id, String name, Set<Image> images, String thumbnail, byte rating, List<Review> reviews,
-			Country country, State state, City city, int bedroomCount, int bathroomCount, int accomodatesCount,
-			int bedCount, RoomGroup roomGroup, RoomType roomType, Currency currency, Category category,
-			String description, Set<Amentity> amentities, float latitude, float longitude, float price,
-			String privacyType, PriceType priceType, int minimumStay, StayType stayType, User host, Set<Rule> rules,
-			boolean status) {
+			Country country, State state, City city, String street, int bedroomCount, int bathroomCount,
+			int accomodatesCount, int bedCount, RoomGroup roomGroup, RoomType roomType, Currency currency,
+			Category category, String description, Set<Amentity> amentities, float latitude, float longitude,
+			float price, RoomPrivacy privacyType, PriceType priceType, int minimumStay, StayType stayType, User host,
+			Set<Rule> rules, boolean status) {
 		super(status);
 		this.name = name;
 		this.images = images;
@@ -51,6 +51,7 @@ public class Room extends BaseEntity {
 		this.stayType = stayType;
 		this.host = host;
 		this.rules = rules;
+		this.street = street;
 	}
 
 	public Room(int id) {
@@ -79,13 +80,15 @@ public class Room extends BaseEntity {
 	@JoinColumn(name = "country_id")
 	private Country country;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "state_id")
 	private State state;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "city_id")
 	private City city;
+
+	private String street;
 
 	@Column(nullable = false, columnDefinition = "SMALLINT DEFAULT 0")
 	private int bedroomCount;
@@ -131,7 +134,9 @@ public class Room extends BaseEntity {
 	@Column(nullable = false)
 	private float price;
 
-	private String privacyType;
+	@ManyToOne
+	@JoinColumn(name = "room_privacy_id")
+	private RoomPrivacy privacyType;
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 20, nullable = false)

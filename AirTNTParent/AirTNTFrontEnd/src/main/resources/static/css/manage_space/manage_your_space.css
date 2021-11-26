@@ -135,14 +135,15 @@ ul li.active .li-before {
     max-width: 65%;
 }
 
-.manage-ys__header {
-}
-
 .manage-ys__section-container {
     width: 853px;
     margin-bottom: 48px;
-    padding-bottom: 48px;
     border-bottom: 1px solid #d3d6db;
+}
+
+.manage-ys__section-container:nth-child(3),
+.manage-ys__section-container:nth-child(4) {
+    padding-bottom: 48px;
 }
 
 .manage-ys__section-title {
@@ -154,7 +155,6 @@ ul li.active .li-before {
 
 .manage-ys__section-content {
     height: 80px;
-    border-bottom: 1px solid #d3d6db;
 }
 
 .manage-ys__section-content:last-child {
@@ -209,7 +209,10 @@ ul li.active .li-before {
     border-radius: 50%;
 }
 
-#manage-ys__guestNumber {
+#manage-ys__guestNumber,
+#manage-ys__bedRoom,
+#manage-ys__bed,
+#manage-ys__bathRoom {
     width: 104px;
     height: 32px;
     color: #222222;
@@ -245,17 +248,6 @@ ul li.active .li-before {
     color: #222222;
 }
 
-@keyframes transformY {
-    from {
-        top: -50%;
-        opacity: 0.5;
-    }
-    to {
-        top: 50%;
-        opacity: 1;
-    }
-}
-
 .manage-ys__save-edit-btn {
     cursor: pointer;
     display: inline-block;
@@ -277,28 +269,94 @@ ul li.active .li-before {
     color: rgb(255, 255, 255);
 }
 
-.manage-ys__section-edit {
+.section-view-and-edit {
+    border-bottom: 1px solid #d3d6db;
+}
+
+#manage-ys__name-control-container,
+#manage-ys__description-control-container,
+#manage-ys__status-control-container,
+#manage-ys__location-control-container,
+#manage-ys__groupAndTypeAndPrivacy-control-container,
+#manage-ys__roomInfo-control-container,
+#manage-ys__amentities-control-container {
     position: relative;
     background: rgb(255, 255, 255);
     border: 1px solid rgb(221, 221, 221);
     border-radius: 16px;
+    height: fit-content;
+    margin: 25px 0;
+}
+
+#manage-ys__name-control-container.unhideEditBox,
+#manage-ys__description-control-container.unhideEditBox,
+#manage-ys__status-control-container.unhideEditBox,
+#manage-ys__location-control-container.unhideEditBox,
+#manage-ys__groupAndTypeAndPrivacy-control-container.unhideEditBox,
+#manage-ys__roomInfo-control-container.unhideEditBox,
+#manage-ys__amentities-control-container.unhideEditBox {
+    display: block;
+}
+
+#manage-ys__name-control-view.hideViewBox,
+#manage-ys__name-control-container,
+#manage-ys__description-control-view.hideViewBox,
+#manage-ys__description-control-container,
+#manage-ys__status-control-view.hideViewBox,
+#manage-ys__status-control-container,
+#manage-ys__location-control-view.hideViewBox,
+#manage-ys__location-control-container,
+#manage-ys__groupAndTypeAndPrivacy-control-view.hideViewBox,
+#manage-ys__groupAndTypeAndPrivacy-control-container,
+#manage-ys__roomInfo-control-view.hideViewBox,
+#manage-ys__roomInfo-control-container,
+#manage-ys__roomInfo-control-view.hideViewBox,
+#manage-ys__amentities-control-container {
+    display: none;
+}
+
+.manage-ys__section-edit {
     padding-top: 24px;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
 ._dsnwjc {
     outline: none;
-    margin: 18px 12px;
+    margin-top: 18px;
     min-height: 1px;
     background-color: transparent;
     appearance: none;
     width: 600px;
     height: 56px;
     border-radius: 10px;
-    border: 1px solid #222;
     padding: 12px;
 }
 
+input[type='text'],
+textarea {
+    border: 1px solid;
+    border-color: rgb(221, 221, 221);
+}
+
+input[type='text']:focus,
+textarea:focus {
+    border-color: #222;
+}
+
 input[type='radio'] {
+    appearance: none;
+    border: 1px solid rgb(176, 176, 176);
+    background: rgb(255, 255, 255);
+    overflow: hidden;
+    border-radius: 50%;
+    vertical-align: top;
+    outline: none;
+    height: 22px;
+    width: 22px;
+}
+
+input[type='radio']:checked {
     appearance: none;
     border-style: solid;
     overflow: hidden;
@@ -310,7 +368,109 @@ input[type='radio'] {
     background: white;
     cursor: pointer;
     box-sizing: border-box;
-    height: 22px;
-    width: 22px;
     margin: 0px;
+}
+
+.manage-ys__status-control-edit-content {
+    padding: 24px 24px 0px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.manage-ys__status-control-subtext {
+    color: rgb(113, 113, 113);
+    margin-top: 4px;
+    word-break: break-word;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.manage-ys__location-control__useCurrentPosition-btn {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    width: auto;
+    touch-action: manipulation;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    border-width: 1px;
+    border-style: solid;
+    outline: none;
+    padding: 7px 15px;
+    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s,
+        transform 0.1s ease 0s;
+    border-color: rgb(34, 34, 34);
+    background: rgb(255, 255, 255);
+    color: rgb(34, 34, 34);
+}
+
+.manage-ys__input {
+    border: 1px solid rgb(221, 221, 221);
+    width: 100%;
+    height: 56px;
+    outline: none;
+    padding-left: 12px;
+    margin: 18px 0px;
+    min-height: 1px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.manage-ys__label {
+    color: rgb(34, 34, 34);
+    font-size: 16px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.manage-ys__location-control-content {
+    padding: 24px 24px 0px;
+    flex: 1;
+}
+
+.col-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.manage-ys__roominfo-control-container {
+    height: 601px;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.manage-ys__header-edit-main-title {
+    font-size: 16px;
+    line-height: 20px;
+    color: rgb(34, 34, 34);
+    display: block;
+    padding: 0px;
+    font-weight: 800;
+}
+
+.manage-ys__header-edit-main-subtitle {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgb(113, 113, 113);
+    font-weight: 400;
+}
+.counter {
+    font-size: 12px;
+    line-height: 16px;
+    color: rgb(113, 113, 113);
+    font-weight: 800;
+    margin-top: 8px;
+    margin-bottom: 12px;
 }

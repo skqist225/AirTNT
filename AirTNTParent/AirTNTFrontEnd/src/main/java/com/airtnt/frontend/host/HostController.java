@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.airtnt.common.entity.Amentity;
 import com.airtnt.common.entity.RoomGroup;
+import com.airtnt.common.entity.RoomPrivacy;
 import com.airtnt.common.entity.RoomType;
 import com.airtnt.common.entity.User;
 import com.airtnt.frontend.amentity.AmentityService;
 import com.airtnt.frontend.country.CountryService;
+import com.airtnt.frontend.privacy.PrivacyTypeService;
 import com.airtnt.frontend.room_group.RoomGroupService;
 import com.airtnt.frontend.room_type.RoomTypeService;
 import com.airtnt.frontend.user.UserService;
@@ -41,6 +43,9 @@ public class HostController {
     @Autowired
     CountryService countryService;
 
+    @Autowired
+    PrivacyTypeService privacyTypeService;
+
     @GetMapping("")
     public String index() {
         return "become_host/index";
@@ -62,12 +67,8 @@ public class HostController {
 
     @GetMapping("privacy-type")
     public String privaceTypeSelect(Model model) {
-        List<String> privacyTypes = new ArrayList<>();
-        privacyTypes.add("Toàn bộ nhà");
-        privacyTypes.add("Phòng riêng");
-        privacyTypes.add("Phòng chung");
+        List<RoomPrivacy> privacyTypes = privacyTypeService.getPrivacyType();
         model.addAttribute("privacyTypes", privacyTypes);
-
         return "become_host/privacy_type";
     }
 
