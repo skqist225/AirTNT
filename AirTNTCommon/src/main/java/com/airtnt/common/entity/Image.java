@@ -40,7 +40,7 @@ public class Image {
 	}
 
 	@Transient
-	public String getImagePath(String userName) {
-		return "/room_images/" + userName + "/" + this.image;
+	public String getImagePath(String userName, Integer roomId) {
+		return "/room_images/" + userName + "/" + roomId + "/" + this.image;
 	}
 }

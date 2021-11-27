@@ -238,6 +238,9 @@ public class RoomService {
 
 			room.setAmentities(updatedAmentities);
 		}
+		case "thumbnail": {
+			room.setThumbnail(values.get("thumbnail"));
+		}
 		}
 
 		Room savedRoom = roomRepository.save(room);

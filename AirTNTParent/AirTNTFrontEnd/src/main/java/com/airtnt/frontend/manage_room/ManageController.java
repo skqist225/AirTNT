@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.airtnt.common.entity.Amentity;
+import com.airtnt.common.entity.Image;
 import com.airtnt.common.entity.Room;
 import com.airtnt.frontend.amentity.AmentityService;
 import com.airtnt.frontend.country.CountryService;
@@ -85,6 +86,27 @@ public class ManageController {
         model.addAttribute("safeAmentitiesID", safeAmentitiesID);
 
         return new String("manage_space/manage_your_space");
+    }
+
+    @GetMapping(value = "/manage-your-space/{roomId}/details/photos")
+    public String managePhotos(@PathVariable("roomId") Integer roomId, @AuthenticationPrincipal UserDetails userDetails,
+            Model model) {
+        if (userDetails == null) {
+            return "redirect:/login";
+        }
+        Room room = roomService.getRoomById(roomId);
+        model.addAttribute("room", room);
+        model.addAttribute("thumbnail", room.getThumbnail());
+        model.addAttribute("userName", userDetails.getUsername());
+
+        List<String> roomImages = new ArrayList<>();
+        for (Image i : room.getImages()) {
+            roomImages.add(i.getImage());
+        }
+
+        model.addAttribute("roomImages", roomImages);
+
+        return "manage_space/manage_photos";
     }
 
 }

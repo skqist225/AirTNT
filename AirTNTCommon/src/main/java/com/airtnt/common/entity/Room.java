@@ -169,9 +169,9 @@ public class Room extends BaseEntity {
 	}
 
 	@Transient
-	public String getImageFirst() {
-		if (!this.images.isEmpty())
-			return "room_images/" + this.host.getEmail() + "/" + this.images.toArray()[0].toString();
+	public String renderThumbnailImage() {
+		if (!this.thumbnail.isEmpty())
+			return "room_images/" + this.host.getEmail() + "/" + this.thumbnail;
 		else
 			return "images/airtntlogo.png";
 	}

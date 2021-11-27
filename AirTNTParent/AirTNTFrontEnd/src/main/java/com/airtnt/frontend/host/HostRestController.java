@@ -7,9 +7,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.airtnt.common.entity.Image;
+import com.airtnt.common.entity.Room;
 import com.airtnt.frontend.FileUploadUtil;
+import com.airtnt.frontend.room.RoomService;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,50 +23,35 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.json.JSONObject;
 import org.springframework.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
-
-class GetPhoto {
-    private String userName;
-    private String[] roomImages;
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String[] getRoomImages() {
-        return roomImages;
-    }
-
-    public void setRoomImages(String[] roomImages) {
-        this.roomImages = roomImages;
-    }
-
-}
 
 @RestController
 @RequestMapping("/become-a-host/")
 public class HostRestController {
 
+    @Autowired
+    private RoomService roomService;
+
     @PostMapping("upload-room-photos")
     public String uploadRoomPhotos(@ModelAttribute PhotoDTO payload) throws IOException, URISyntaxException {
-        String userName = payload.getUserName() != null ? payload.getUserName() : "no-name";
+        String userName = payload.getUsername();
 
-        String uploadDir = "../room_images/" + userName;
+        String uploadDir = "";
 
-        // check here
-        // FileUploadUtil.cleanDir(uploadDir);
+        if (payload.getFolderno() != null) {
+            uploadDir = "../room_images/" + userName + "/" + payload.getFolderno();
+            FileUploadUtil.cleanDir(uploadDir);
+        } else
+            uploadDir = "../room_images/" + userName;
 
         for (MultipartFile multipartFile : payload.getPhotos()) {
             if (!multipartFile.isEmpty()) {
                 String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
             }
-
         }
+
         JSONObject object = new JSONObject();
         object.put("status", "success");
         object.put("userName", userName);
@@ -69,16 +59,52 @@ public class HostRestController {
         return object.toString();
     }
 
+    @PostMapping("update/upload-room-photos")
+    public String updatedUploadRoomPhotos(@ModelAttribute PhotoDTO payload) throws IOException, URISyntaxException {
+        String userName = payload.getUsername();
+        String uploadDir = "../room_images/" + userName + "/" + payload.getFolderno();
+        FileUploadUtil.cleanDir(uploadDir);
+
+        Set<Image> newImages = new HashSet<>();
+
+        for (MultipartFile multipartFile : payload.getPhotos()) {
+            if (!multipartFile.isEmpty()) {
+
+                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                System.out.println(fileName);
+                newImages.add(new Image(fileName));
+                FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            }
+        }
+        // do not assign new set // get new set and push it to old set
+        Room room = roomService.getRoomById(Integer.parseInt(payload.getFolderno()));
+        room.getImages().clear();
+        for (Image i : newImages) {
+            room.getImages().add(i);
+        }
+
+        try {
+            roomService.save(room);
+            return new JSONObject().put("status", "success").toString();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return new JSONObject().put("status", "fail").toString();
+    }
+
     @PostMapping("get-upload-photos")
     public String getUploadPhoto(@ModelAttribute GetPhoto payload) {
-        System.out.println(payload);
-        String userName = payload.getUserName();
+        String userName = payload.getUsername();
         String[] roomImages = payload.getRoomImages();
-        String uploadDir = "../room_images/" + userName;
-        List<MultipartFile> multipartFiles = new ArrayList<>();
 
-        System.out.println(userName);
-        System.out.println(roomImages);
+        String uploadDir = "";
+
+        if (payload.getFolderno() != null) {
+            uploadDir = "../room_images/" + userName + "/" + payload.getFolderno();
+        } else
+            uploadDir = "../room_images/" + userName;
+
+        List<MultipartFile> multipartFiles = new ArrayList<>();
 
         String contentType = "text/plain";
         Path path = Paths.get(uploadDir);

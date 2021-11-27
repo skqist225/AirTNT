@@ -40,6 +40,8 @@ public class ManageRestController {
         } else if (fieldName.equals("amentities")) {
             values.put("checked", payload.get("checkedArray").toString());
             values.put("unchecked", payload.get("uncheckedArray").toString());
+        } else if (fieldName.equals("thumbnail")) {
+            values.put("thumbnail", payload.get("thumbnail").toString());
         } else
             values.put(fieldName, payload.get(fieldName).toString());
 

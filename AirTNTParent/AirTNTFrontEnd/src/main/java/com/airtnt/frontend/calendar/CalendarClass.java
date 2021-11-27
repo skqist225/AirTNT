@@ -19,12 +19,12 @@ public class CalendarClass {
 
         gCal = new GregorianCalendar(selectedYear, selectedMonth, 1);
         int totalWeeks = gCal.getActualMaximum(Calendar.WEEK_OF_MONTH);
-        System.out.println("totalWeeks" + totalWeeks);
-        System.out.println("totalDays:" + days);
-        System.out.println("startInWeek" + startInWeek);
-        System.out.println("selectedMonth: " + selectedMonth);
-        System.out.println("selectedYear" + selectedYear);
-        System.out.println("cDay" + currentDay);
+        // System.out.println("totalWeeks" + totalWeeks);
+        // System.out.println("totalDays:" + days);
+        // System.out.println("startInWeek" + startInWeek);
+        // System.out.println("selectedMonth: " + selectedMonth);
+        // System.out.println("selectedYear" + selectedYear);
+        // System.out.println("cDay" + currentDay);
 
         int count = 1; // Count the days
         for (int i = 1; i <= totalWeeks; i++) {

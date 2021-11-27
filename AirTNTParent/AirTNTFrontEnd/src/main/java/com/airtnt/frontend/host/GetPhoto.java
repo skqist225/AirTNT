@@ -1,19 +1,9 @@
 package com.airtnt.frontend.host;
 
-import org.springframework.web.multipart.MultipartFile;
-
-public class PhotoDTO {
+class GetPhoto {
     private String username;
     private String folderno;
-    private MultipartFile[] photos;
-
-    public MultipartFile[] getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(MultipartFile[] photos) {
-        this.photos = photos;
-    }
+    private String[] roomImages;
 
     public String getUsername() {
         return username;
@@ -23,6 +13,14 @@ public class PhotoDTO {
         this.username = username;
     }
 
+    public String[] getRoomImages() {
+        return roomImages;
+    }
+
+    public void setRoomImages(String[] roomImages) {
+        this.roomImages = roomImages;
+    }
+
     public String getFolderno() {
         return folderno;
     }
@@ -30,5 +28,4 @@ public class PhotoDTO {
     public void setFolderno(String folderno) {
         this.folderno = folderno;
     }
-
 }

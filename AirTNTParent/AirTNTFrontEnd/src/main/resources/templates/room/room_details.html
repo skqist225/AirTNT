@@ -33,7 +33,7 @@
                 <section class="rdt_images grid">
                     <div style="height: 480px">
                         <img
-                            th:src="@{${thumbnail.getImagePath(room.host.email)}}"
+                            th:src="@{${thumbnail.getImagePath(room.host.email, room.id)}}"
                             width="100%"
                             height="100%"
                             class="image"
@@ -44,7 +44,7 @@
                             <th:block th:each="image,iter : ${roomImages}">
                                 <div style="width: 100%; height: calc(470px / 2)">
                                     <img
-                                        th:src="@{${image.getImagePath(room.host.email)}}"
+                                        th:src="@{${image.getImagePath(room.host.email, room.id)}}"
                                         class="image"
                                         style="width: 100%; height: 100%"
                                         th:class="${iter.even}? 'roundedBorder'"

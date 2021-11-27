@@ -1,3 +1,150 @@
+jQuery(document).ready(function () {
+    $('#descriptionCounter').text($('#descriptionInput').val().length);
+    $('#roomNameCounter').text($('#roomNameInput').val().length);
+
+    $('.radioStatus').each(function () {
+        if ($(this).attr('id') === `roomStatus${status === true ? 1 : 0}`) {
+            $(this).prop('checked', true);
+            return false;
+        }
+    });
+
+    $('.manage-ys__changeView').each(function () {
+        $(this).click(function () {
+            animate($(this));
+
+            const dataScroll = $(this).data('scroll');
+            const offsetTop = $(dataScroll).offset().top - 80;
+
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth',
+            });
+        });
+    });
+
+    $('.incAndDecBtn').each(function () {
+        $(this).click(function () {
+            const spanInfoTag = $(this).siblings(`#${$(this).data('edit')}`);
+            let spanValue = spanInfoTag.text() * 1;
+            const dataFunction = $(this).data('function');
+
+            if (dataFunction === 'dec') {
+                if (spanValue > 0) {
+                    if (spanValue === 1) $(this).attr('disabled', true);
+                    spanInfoTag.html(--spanValue);
+                }
+            }
+
+            if (dataFunction === 'inc') {
+                if (spanValue === 0)
+                    $(this).siblings(`.manage-ys__minus-btn.incAndDecBtn`).removeAttr('disabled');
+                spanInfoTag.html(++spanValue);
+            }
+        });
+    });
+
+    const roomImagesTopValue = getOffsetTop('#roomImages');
+    const basicRoomInfosTopValue = getOffsetTop('#basicRoomInfos');
+    const roomAmentitiesTopValue = getOffsetTop('#roomAmentities');
+    const roomLocationTopValue = getOffsetTop('#roomLocation');
+    const roomInfoTopValue = getOffsetTop('#roomInfo');
+
+    let anchorRoomImages = $('a[data-scroll="#roomImages"]');
+    let anchorBasicRoomInfos = $('a[data-scroll="#basicRoomInfos"]');
+    let anchorRoomAmentities = $('a[data-scroll="#roomAmentities"]');
+    let anchorRoomLocation = $('a[data-scroll="#roomLocation"]');
+    let anchorRoomInfo = $('a[data-scroll="#roomInfo"]');
+
+    $(document).on('scroll', function (e) {
+        const topValue = $(document).scrollTop();
+
+        if (topValue <= roomImagesTopValue) {
+            if ($('.manage-ys__left-scrolling-menu').first().hasClass('active'))
+                $('.manage-ys__left-scrolling-menu').first().removeClass('active');
+        } else if (topValue > roomImagesTopValue && topValue < basicRoomInfosTopValue) {
+            animate(anchorRoomImages);
+        } else if (topValue >= basicRoomInfosTopValue && topValue < roomAmentitiesTopValue) {
+            animate(anchorBasicRoomInfos);
+        } else if (topValue >= roomAmentitiesTopValue && top < roomInfoTopValue) {
+            animate(anchorRoomAmentities);
+        } else if (topValue >= roomInfoTopValue && topValue < roomInfoTopValue) {
+            animate(anchorRoomLocation);
+        } else animate(anchorRoomInfo);
+    });
+
+    $('#roomStatus1').change(function () {
+        $('#roomStatus0').prop('checked', false);
+        $('#deleteRoom').prop('checked', false);
+    });
+
+    $('#roomStatus0').change(function () {
+        $('#roomStatus1').prop('checked', false);
+        $('#deleteRoom').prop('checked', false);
+    });
+
+    $('#deleteRoom').change(function () {
+        $('#roomStatus0').prop('checked', false);
+        $('#roomStatus1').prop('checked', false);
+    });
+
+    $('.manage-ys__check-btn').each(function () {
+        const dataType = $(this).data('type');
+
+        if (
+            dataType === 'prominentAmentities' &&
+            prominentAmentitiesID.includes($(this).data('edit'))
+        )
+            $(this).addClass('checked');
+        else if (
+            dataType === 'favoriteAmentities' &&
+            favoriteAmentitiesID.includes($(this).data('edit'))
+        )
+            $(this).addClass('checked');
+        else {
+            if (safeAmentitiesID.includes($(this).data('edit'))) $(this).addClass('checked');
+        }
+
+        $(this).click(function () {
+            const siblings = $(this).siblings('.manage-ys__uncheck-btn');
+            if (siblings.hasClass('checked')) {
+                siblings.removeClass('checked');
+                const svg = siblings.children().children('svg');
+                svg.css('stroke', 'rgb(113, 113, 113)');
+            }
+
+            const svg = $(this).children().children('svg');
+            if (!$(this).hasClass('checked')) {
+                $(this).addClass('checked');
+                svg.css('stroke', '#fff');
+            } else {
+                $(this).removeClass('checked');
+                svg.css('stroke', 'rgb(113, 113, 113)');
+            }
+        });
+    });
+
+    $('.manage-ys__uncheck-btn').each(function () {
+        $(this).click(function () {
+            const siblings = $(this).siblings('.manage-ys__check-btn');
+            if (siblings.hasClass('checked')) {
+                siblings.removeClass('checked');
+                const svg = siblings.children().children('svg');
+                svg.css('stroke', 'rgb(113, 113, 113)');
+            }
+
+            const svg = $(this).children().children('svg');
+            if (!$(this).hasClass('checked')) {
+                $(this).addClass('checked');
+                svg.css('stroke', '#fff');
+            } else {
+                $(this).removeClass('checked');
+                svg.css('stroke', 'rgb(113, 113, 113)');
+            }
+        });
+    });
+});
+
 function getOffsetTop(id) {
     return $(id).offset().top - 80;
 }
@@ -327,4 +474,8 @@ function onKeyDown(event, inputId) {
 
 function previewRoom() {
     window.location.href = `${baseURL}rooms/${roomId}`;
+}
+
+function redirectToPhotoPage() {
+    window.location.href = `${baseURL}manage-your-space/${roomId}/details/photos`;
 }

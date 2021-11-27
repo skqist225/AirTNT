@@ -36,21 +36,11 @@
 
     <body>
         <div th:replace="header :: content"></div>
-        <div id="map"></div>
+
         <main>
             <div id="manage-ys__container">
                 <div class="manage-ys__left">
-                    <div
-                        style="
-                            font-size: 26px;
-                            font-weight: 600;
-                            line-height: 30px;
-                            margin-bottom: 48px;
-                        "
-                        id="roomName"
-                    >
-                        [[${room.name}]]
-                    </div>
+                    <div id="roomName">[[${room.name}]]</div>
                     <div class="manage-ys__left-scrolling-menu">
                         <div class="manage-ys__left-room-details">Chi tiết nhà/phòng cho thuê</div>
                         <div style="height: 300px" class="menuContainer">
@@ -148,7 +138,10 @@
                             >
                                 <div class="manage-ys__section-title">Ảnh</div>
                                 <div>
-                                    <button class="manage-ys__transparent-btn">
+                                    <button
+                                        class="manage-ys__transparent-btn"
+                                        onclick="redirectToPhotoPage();"
+                                    >
                                         <span>Chỉnh sửa</span>
                                         <span>
                                             <img
@@ -161,13 +154,13 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="normal-flex" style="overflow: hidden">
+                            <div class="normal-flex" style="overflow: hidden; position: relative">
                                 <th:block th:each="image : ${room.images}">
                                     <div style="margin-right: 10px">
                                         <img
-                                            th:src="@{${image.getImagePath(userName)}}"
+                                            th:src="@{${image.getImagePath(userName, room.id)}}"
                                             alt=""
-                                            width="240px"
+                                            width="210px"
                                             height="140px"
                                             style="
                                                 object-fit: cover;
@@ -177,6 +170,30 @@
                                         />
                                     </div>
                                 </th:block>
+                                <div
+                                    style="
+                                        position: absolute;
+                                        top: 50%;
+                                        right: 0;
+                                        transform: translateY(-50%);
+                                    "
+                                >
+                                    <button
+                                        class="manage-ys__transparent-btn"
+                                        style="
+                                            height: fit-content;
+                                            padding: 5px;
+                                            width: fit-content;
+                                            background-color: #eee;
+
+                                            border-radius: 8px;
+                                        "
+                                    >
+                                        <span style="font-size: 14px"
+                                            >[[${#lists.size(room.images)}]] ảnh</span
+                                        >
+                                    </button>
+                                </div>
                             </div>
                         </article>
                         <article
@@ -378,12 +395,7 @@
                                 </div>
                             </div>
                         </article>
-                        <article
-                            class="manage-ys__section-container"
-                            id="roomAmentities"
-                            data-aos="fade-left"
-                            data-aos-duration="2000"
-                        >
+                        <article class="manage-ys__section-container" id="roomAmentities">
                             <div id="manage-ys__amentities-control-view" class="flex-space">
                                 <div>
                                     <div class="manage-ys__section-title">Tiện nghi</div>
@@ -433,12 +445,7 @@
                                 ></div>
                             </div>
                         </article>
-                        <article
-                            class="manage-ys__section-container"
-                            id="roomLocation"
-                            data-aos="fade-right"
-                            data-aos-duration="2000"
-                        >
+                        <article class="manage-ys__section-container" id="roomLocation">
                             <div id="manage-ys__location-control-view">
                                 <h3 class="manage-ys__section-title">Vị trí</h3>
                                 <div>
@@ -735,15 +742,10 @@
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-
         <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-
-        /*---------------------------- KEY FRAME JQUERY--------------------------*/
         <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        /*---------------------------- KEY FRAME JQUERY--------------------------*/
-        <script type="text/javascript" th:src="@{/js/jquery.keyframes.js}"></script>
-
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script type="text/javascript" th:src="@{/js/jquery.keyframes.js}"></script>
         <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
         <div th:replace="header :: javascript"></div>
@@ -776,164 +778,6 @@
             var supportedFlag = $.keyframe.isSupported();
             AOS.init();
             /*]]>*/
-        </script>
-        <script>
-            jQuery(document).ready(function () {
-                $('#descriptionCounter').text($('#descriptionInput').val().length);
-                $('#roomNameCounter').text($('#roomNameInput').val().length);
-
-                $('.radioStatus').each(function () {
-                    if ($(this).attr('id') === `roomStatus${status === true ? 1 : 0}`) {
-                        $(this).prop('checked', true);
-                        return false;
-                    }
-                });
-
-                $('.manage-ys__changeView').each(function () {
-                    $(this).click(function () {
-                        animate($(this));
-
-                        const dataScroll = $(this).data('scroll');
-                        const offsetTop = $(dataScroll).offset().top - 80;
-
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth',
-                        });
-                    });
-                });
-
-                $('.incAndDecBtn').each(function () {
-                    $(this).click(function () {
-                        const spanInfoTag = $(this).siblings(`#${$(this).data('edit')}`);
-                        let spanValue = spanInfoTag.text() * 1;
-                        const dataFunction = $(this).data('function');
-
-                        if (dataFunction === 'dec') {
-                            if (spanValue > 0) {
-                                if (spanValue === 1) $(this).attr('disabled', true);
-                                spanInfoTag.html(--spanValue);
-                            }
-                        }
-
-                        if (dataFunction === 'inc') {
-                            if (spanValue === 0)
-                                $(this)
-                                    .siblings(`.manage-ys__minus-btn.incAndDecBtn`)
-                                    .removeAttr('disabled');
-                            spanInfoTag.html(++spanValue);
-                        }
-                    });
-                });
-
-                const roomImagesTopValue = getOffsetTop('#roomImages');
-                const basicRoomInfosTopValue = getOffsetTop('#basicRoomInfos');
-                const roomAmentitiesTopValue = getOffsetTop('#roomAmentities');
-                const roomLocationTopValue = getOffsetTop('#roomLocation');
-                const roomInfoTopValue = getOffsetTop('#roomInfo');
-
-                let anchorRoomImages = $('a[data-scroll="#roomImages"]');
-                let anchorBasicRoomInfos = $('a[data-scroll="#basicRoomInfos"]');
-                let anchorRoomAmentities = $('a[data-scroll="#roomAmentities"]');
-                let anchorRoomLocation = $('a[data-scroll="#roomLocation"]');
-                let anchorRoomInfo = $('a[data-scroll="#roomInfo"]');
-
-                $(document).on('scroll', function (e) {
-                    const topValue = $(document).scrollTop();
-
-                    if (topValue <= roomImagesTopValue) {
-                        if ($('.manage-ys__left-scrolling-menu').first().hasClass('active'))
-                            $('.manage-ys__left-scrolling-menu').first().removeClass('active');
-                    } else if (topValue > roomImagesTopValue && topValue < basicRoomInfosTopValue) {
-                        animate(anchorRoomImages);
-                    } else if (
-                        topValue >= basicRoomInfosTopValue &&
-                        topValue < roomAmentitiesTopValue
-                    ) {
-                        animate(anchorBasicRoomInfos);
-                    } else if (topValue >= roomAmentitiesTopValue && top < roomInfoTopValue) {
-                        animate(anchorRoomAmentities);
-                    } else if (topValue >= roomInfoTopValue && topValue < roomInfoTopValue) {
-                        animate(anchorRoomLocation);
-                    } else animate(anchorRoomInfo);
-                });
-
-                $('#roomStatus1').change(function () {
-                    // if (!$(this).prop('checked')) $(this).prop('checked', false);
-
-                    $('#roomStatus0').prop('checked', false);
-                    $('#deleteRoom').prop('checked', false);
-                });
-
-                $('#roomStatus0').change(function () {
-                    // if (!$(this).prop('checked')) $(this).prop('checked', false);
-                    $('#roomStatus1').prop('checked', false);
-                    $('#deleteRoom').prop('checked', false);
-                });
-
-                $('#deleteRoom').change(function () {
-                    // if (!$(this).prop('checked')) $(this).prop('checked', false);
-                    $('#roomStatus0').prop('checked', false);
-                    $('#roomStatus1').prop('checked', false);
-                });
-
-                $('.manage-ys__check-btn').each(function () {
-                    const dataType = $(this).data('type');
-
-                    if (
-                        dataType === 'prominentAmentities' &&
-                        prominentAmentitiesID.includes($(this).data('edit'))
-                    )
-                        $(this).addClass('checked');
-                    else if (
-                        dataType === 'favoriteAmentities' &&
-                        favoriteAmentitiesID.includes($(this).data('edit'))
-                    )
-                        $(this).addClass('checked');
-                    else {
-                        if (safeAmentitiesID.includes($(this).data('edit')))
-                            $(this).addClass('checked');
-                    }
-
-                    $(this).click(function () {
-                        const siblings = $(this).siblings('.manage-ys__uncheck-btn');
-                        if (siblings.hasClass('checked')) {
-                            siblings.removeClass('checked');
-                            const svg = siblings.children().children('svg');
-                            svg.css('stroke', 'rgb(113, 113, 113)');
-                        }
-
-                        const svg = $(this).children().children('svg');
-                        if (!$(this).hasClass('checked')) {
-                            $(this).addClass('checked');
-                            svg.css('stroke', '#fff');
-                        } else {
-                            $(this).removeClass('checked');
-                            svg.css('stroke', 'rgb(113, 113, 113)');
-                        }
-                    });
-                });
-
-                $('.manage-ys__uncheck-btn').each(function () {
-                    $(this).click(function () {
-                        const siblings = $(this).siblings('.manage-ys__check-btn');
-                        if (siblings.hasClass('checked')) {
-                            siblings.removeClass('checked');
-                            const svg = siblings.children().children('svg');
-                            svg.css('stroke', 'rgb(113, 113, 113)');
-                        }
-
-                        const svg = $(this).children().children('svg');
-                        if (!$(this).hasClass('checked')) {
-                            $(this).addClass('checked');
-                            svg.css('stroke', '#fff');
-                        } else {
-                            $(this).removeClass('checked');
-                            svg.css('stroke', 'rgb(113, 113, 113)');
-                        }
-                    });
-                });
-            });
         </script>
         <script th:src="@{/js/manage_your_space/manage_your_space.js}"></script>
     </body>
