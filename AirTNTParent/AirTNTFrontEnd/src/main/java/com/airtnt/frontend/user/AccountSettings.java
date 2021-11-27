@@ -17,7 +17,6 @@ import com.airtnt.frontend.FileUploadUtil;
 import com.airtnt.frontend.city.CityService;
 import com.airtnt.frontend.country.CountryService;
 import com.airtnt.frontend.security.AirtntUserDetails;
-import com.airtnt.frontend.state.StateRepository;
 import com.airtnt.frontend.state.StateService;
 
 import org.springframework.beans.factory.annotation.Autowired;

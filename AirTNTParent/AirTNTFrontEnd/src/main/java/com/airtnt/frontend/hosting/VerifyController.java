@@ -1,7 +1,6 @@
 package com.airtnt.frontend.hosting;
 
 import com.airtnt.common.entity.Room;
-import com.airtnt.common.entity.User;
 import com.airtnt.frontend.room.RoomService;
 import com.airtnt.frontend.user.UserService;
 

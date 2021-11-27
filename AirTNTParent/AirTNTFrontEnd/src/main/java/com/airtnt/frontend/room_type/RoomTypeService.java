@@ -16,7 +16,7 @@ public class RoomTypeService {
 
     public List<RoomType> getRoomTypes() {
         List<RoomType> roomTypes = new ArrayList<>();
-        Iterator iterator = roomGroupRepository.findAll().iterator();
+        Iterator<RoomType> iterator = roomGroupRepository.findAll().iterator();
 
         while (iterator.hasNext()) {
             RoomType rt = (RoomType) iterator.next();

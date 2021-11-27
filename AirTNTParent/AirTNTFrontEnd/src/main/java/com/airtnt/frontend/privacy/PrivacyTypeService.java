@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.airtnt.common.entity.PriceType;
 import com.airtnt.common.entity.RoomPrivacy;
 
 import org.springframework.beans.factory.annotation.Autowired;

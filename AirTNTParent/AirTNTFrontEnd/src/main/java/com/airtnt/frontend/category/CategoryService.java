@@ -3,10 +3,8 @@ package com.airtnt.frontend.category;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import com.airtnt.common.entity.Category;
-import com.airtnt.common.entity.Room;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

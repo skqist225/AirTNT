@@ -1,6 +1,5 @@
 package com.airtnt.frontend.host;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.airtnt.common.entity.Amentity;

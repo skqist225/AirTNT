@@ -3,8 +3,6 @@ package com.airtnt.frontend.room_group;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.RoomGroup;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,11 +3,9 @@ package com.airtnt.backend.room;
 import java.util.List;
 
 import com.airtnt.backend.address.CountryService;
-import com.airtnt.backend.amentity.AmentityRepository;
 import com.airtnt.backend.amentity.AmentityService;
 import com.airtnt.backend.category.CategoryService;
 import com.airtnt.backend.currency.CurrencyRepository;
-import com.airtnt.backend.rule.RuleRepository;
 import com.airtnt.backend.rule.RuleService;
 import com.airtnt.backend.user.UserService;
 import com.airtnt.common.Exception.RoomNotFoundException;
@@ -33,57 +31,59 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @Transactional
 public class RoomController {
-    @Autowired RoomService service;
-    @Autowired CountryService countryService;
-    @Autowired UserService userService;
-    @Autowired CategoryService categoryService;
-    @Autowired CurrencyRepository currencyRepository;
-    @Autowired AmentityService amentityService;
-    @Autowired RuleService ruleService;
-    
+    @Autowired
+    RoomService service;
+    @Autowired
+    CountryService countryService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    CurrencyRepository currencyRepository;
+    @Autowired
+    AmentityService amentityService;
+    @Autowired
+    RuleService ruleService;
+
     @GetMapping("/rooms")
-    public String listFirstPage(Model model){
+    public String listFirstPage(Model model) {
         return listByPage(1, "name", "asc", null, model);
     }
 
     @GetMapping("/rooms/page/{pageNum}")
-    public String listByPage(
-        @PathVariable("pageNum") int pageNum,
-        @Param("sortField") String sortField,
-        @Param("sortDir") String sortDir,
-        @Param("keyword") String keyword,
-        Model model
-    ){
+    public String listByPage(@PathVariable("pageNum") int pageNum, @Param("sortField") String sortField,
+            @Param("sortDir") String sortDir, @Param("keyword") String keyword, Model model) {
         Page<Room> page = service.listByPage(pageNum, sortField, sortDir, keyword);
-		List<Room> listRooms = page.getContent();
-		
-		long startCount = (pageNum - 1) * RoomService.ROOMS_PER_PAGE + 1;
-		long endCount = startCount + RoomService.ROOMS_PER_PAGE -1;
-		if(endCount>page.getTotalElements()) {
-			endCount = page.getTotalElements();
-		}
-		
-		String reverseSortDir = sortDir.equals("asc")?"desc":"asc";
-		
-		model.addAttribute("currentPage", pageNum);
-		model.addAttribute("totalPages", page.getTotalPages());
-		model.addAttribute("startCount", startCount);
-		model.addAttribute("endCount", endCount);
-		model.addAttribute("totalItems", page.getTotalElements());
-		model.addAttribute("listRooms", listRooms);
-		model.addAttribute("sortField", sortField);
-		model.addAttribute("sortDir", sortDir);
-		model.addAttribute("reverseSortDir", reverseSortDir);
-		model.addAttribute("keyword", keyword);
-        
+        List<Room> listRooms = page.getContent();
+
+        long startCount = (pageNum - 1) * RoomService.ROOMS_PER_PAGE + 1;
+        long endCount = startCount + RoomService.ROOMS_PER_PAGE - 1;
+        if (endCount > page.getTotalElements()) {
+            endCount = page.getTotalElements();
+        }
+
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("listRooms", listRooms);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", reverseSortDir);
+        model.addAttribute("keyword", keyword);
+
         return "rooms/rooms";
     }
 
     @GetMapping("/rooms/new")
-    public String newRoom(Model model){
+    public String newRoom(Model model) {
         List<User> listUsers = userService.findAllUsers();
         List<Category> listCategories = categoryService.listAll();
-        List<Currency> listCurrencies = (List<Currency>)currencyRepository.findAll();
+        List<Currency> listCurrencies = (List<Currency>) currencyRepository.findAll();
         List<Country> listCountries = countryService.listAll();
         List<Rule> listRules = ruleService.listAll();
         List<Amentity> listAmentities = amentityService.listAll();
@@ -102,26 +102,24 @@ public class RoomController {
     }
 
     @PostMapping("/rooms/save")
-    public String saveRoom(Room room, RedirectAttributes ra){
+    public String saveRoom(Room room, RedirectAttributes ra) {
         service.save(room);
         ra.addFlashAttribute("message", "The room has been saved successfully.");
         return getRedirectURLtoAffectedRoom(room);
     }
 
     private String getRedirectURLtoAffectedRoom(Room room) {
-		String name = room.getName();
-		return "redirect:/rooms/page/1?sortField=id&sortDir=asc&keyword=" + name;
-	}
+        String name = room.getName();
+        return "redirect:/rooms/page/1?sortField=id&sortDir=asc&keyword=" + name;
+    }
 
     @GetMapping("/rooms/edit/{id}")
-    public String editRoom(Model model,
-		@PathVariable("id") int id,
-		RedirectAttributes ra
-	) throws RoomNotFoundException{
-		try{
+    public String editRoom(Model model, @PathVariable("id") int id, RedirectAttributes ra)
+            throws RoomNotFoundException {
+        try {
             List<User> listUsers = userService.findAllUsers();
             List<Category> listCategories = categoryService.listAll();
-            List<Currency> listCurrencies = (List<Currency>)currencyRepository.findAll();
+            List<Currency> listCurrencies = (List<Currency>) currencyRepository.findAll();
             List<Country> listCountries = countryService.listAll();
             List<Rule> listRules = ruleService.listAll();
             List<Amentity> listAmentities = amentityService.listAll();
@@ -131,45 +129,39 @@ public class RoomController {
             model.addAttribute("listCategories", listCategories);
             model.addAttribute("listCurrencies", listCurrencies);
             model.addAttribute("listCountries", listCountries);
-            
-			Room room = service.getById(id);
-			model.addAttribute("room", room);
 
-			model.addAttribute("pageTitle", "Edit Room (ID: " + id + ")");
-	
-			return "rooms/room_form";
-			
-		} catch(RoomNotFoundException ex) {
-			ra.addFlashAttribute("message", ex.getMessage());
-			return "redirect:/rooms";
-		}
+            Room room = service.getById(id);
+            model.addAttribute("room", room);
+
+            model.addAttribute("pageTitle", "Edit Room (ID: " + id + ")");
+
+            return "rooms/room_form";
+
+        } catch (RoomNotFoundException ex) {
+            ra.addFlashAttribute("message", ex.getMessage());
+            return "redirect:/rooms";
+        }
     }
 
     @GetMapping("/rooms/{id}/enabled/{enable}")
-	public String updateStatus(
-		@PathVariable("id") Integer id,
-		@PathVariable("enable") Boolean enable,
-		RedirectAttributes redirectAttributes
-	){
-		service.updateRoomEnabledStatus(id, enable);
-		String status = enable?"enabled":"disabled";
-		String message = "The room ID " + id + " has been " + status;
-		redirectAttributes.addFlashAttribute("message", message);
-		return "redirect:/rooms";
-	}
+    public String updateStatus(@PathVariable("id") Integer id, @PathVariable("enable") Boolean enable,
+            RedirectAttributes redirectAttributes) {
+        service.updateRoomEnabledStatus(id, enable);
+        String status = enable ? "enabled" : "disabled";
+        String message = "The room ID " + id + " has been " + status;
+        redirectAttributes.addFlashAttribute("message", message);
+        return "redirect:/rooms";
+    }
 
-	@GetMapping("/rooms/delete/{id}")
-	public String deleteRoom(
-		@PathVariable("id") Integer id,
-		RedirectAttributes ra
-	){
-		try {
-			service.deleteRoom(id);
-			ra.addFlashAttribute("message", "The room ID " + id + " has been deleted successully");	
-		} catch(RoomNotFoundException ex) {
-			ra.addFlashAttribute("message", ex.getMessage());
-		}		
-		return "redirect:/rooms";
-	}
+    @GetMapping("/rooms/delete/{id}")
+    public String deleteRoom(@PathVariable("id") Integer id, RedirectAttributes ra) {
+        try {
+            service.deleteRoom(id);
+            ra.addFlashAttribute("message", "The room ID " + id + " has been deleted successully");
+        } catch (RoomNotFoundException ex) {
+            ra.addFlashAttribute("message", ex.getMessage());
+        }
+        return "redirect:/rooms";
+    }
 
 }
