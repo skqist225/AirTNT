@@ -34,6 +34,7 @@ function setTotalPrice(manyDays) {
 
 function displayPreviewLine() {
     $('.previewPrice-line').css('display', 'block');
+    $('.previewPrice-line').last().css('border-bottom', '1px solid rgb(211,211,211)');
 }
 
 function getElementsOfDate(date) {
@@ -221,12 +222,14 @@ const seperateNumber = number => {
 
 function processBooking() {
     if (startDate === '' && endDate === '') {
-        alert('Vui lòng chọn ngày bắt đầu và ngày kết thúc');
+        var toastLiveExample = document.getElementById('liveToast');
+        $('#toast-message').text('Vui lòng chọn ngày bắt đầu và ngày kết thúc');
+        var toast = new bootstrap.Toast(toastLiveExample);
+        toast.show();
         return;
     }
 
     const numberOfNights = $('#numberOfNight').text();
-
     window.location.href = `${baseURL}book/${roomId}?checkin=${startDate.replace(
         /\//g,
         '-'
@@ -383,12 +386,12 @@ async function showFullscreenImage() {
         let imgHtml;
         if (index === 0) {
             imgHtml = `
-                        <img src="/airtnt/room_images/${userName}/${image.image}" id="${
+                        <img src="/airtnt/room_images/${userName}/${roomId}/${image.image}" id="${
                 image.id
             }" class="bigImage active" data-index="${index + 1}"/>
                     `;
         } else {
-            imgHtml = `<img src="/airtnt/room_images/${userName}/${image.image}" id="${
+            imgHtml = `<img src="/airtnt/room_images/${userName}/${roomId}/${image.image}" id="${
                 image.id
             }" class="bigImage" data-index="${index + 1}"/>`;
         }

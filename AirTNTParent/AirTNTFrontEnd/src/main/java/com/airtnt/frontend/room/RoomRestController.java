@@ -1,5 +1,6 @@
 package com.airtnt.frontend.room;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -35,6 +36,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,12 +67,21 @@ public class RoomRestController {
     private CityService cityService;
 
     @PostMapping("/homes")
-    public String fetchRoomsByCategoryId(@RequestBody Map<String, Object> payLoad) {
+    public String fetchRoomsByCategoryId(@RequestBody Map<String, Object> payLoad,
+            @AuthenticationPrincipal UserDetails userDetails) {
         int id = Integer.parseInt(payLoad.get("catId").toString());
         int page = Integer.parseInt(payLoad.get("page").toString());
 
         System.out.println("id: " + id);
         System.out.println("page: " + page);
+        User user = null;
+        List<Integer> roomIds = new ArrayList<>();
+        if (userDetails != null) {
+            user = userService.getByEmail(userDetails.getUsername());
+            for (Room r : user.getRooms()) {
+                roomIds.add(r.getId());
+            }
+        }
 
         Category category = categoryService.getCategoryById(id);
         JSONArray array = new JSONArray();
@@ -77,9 +89,9 @@ public class RoomRestController {
         // Replicate room to test
         List<Room> roomT = roomService.getRoomsByCategoryId(category, page);
         if (roomT.size() > 0) {
-            for (int i = 0; i <= 50; i++) {
-                roomT.add(roomT.get(0));
-            }
+            // for (int i = 0; i <= 50; i++) {
+            // roomT.add(roomT.get(0));
+            // }
             // Replicate room to test
 
             try {
@@ -95,7 +107,12 @@ public class RoomRestController {
             } catch (JSONException e) {
 
             }
-            return new JSONObject().put("root", array).toString();
+
+            if (user != null) {
+                return new JSONObject().put("root", array).put("wishlists", roomIds).toString();
+            } else
+                return new JSONObject().put("root", array).toString();
+
         } else {
             return new JSONObject().put("root", new JSONArray()).toString();
         }
@@ -186,4 +203,33 @@ public class RoomRestController {
             return new String("Verify phone fail");
     }
 
+    @GetMapping(value = "add-to-wishlists/{roomId}")
+    public String getMethodName(@AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable("roomId") Integer roomId) {
+        Room room = roomService.getRoomById(roomId);
+        User user = userService.getByEmail(userDetails.getUsername());
+
+        user.addToWishLists(room);
+        User savedUser = userService.save(user);
+
+        if (savedUser != null)
+            return "success";
+
+        return new String("failure");
+    }
+
+    @GetMapping(value = "remove-from-wishlists/{roomId}")
+    public String removeFromWishLists(@AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable("roomId") Integer roomId) {
+        Room room = roomService.getRoomById(roomId);
+        User user = userService.getByEmail(userDetails.getUsername());
+
+        user.removeFromWishLists(room);
+        User savedUser = userService.save(user);
+
+        if (savedUser != null)
+            return "success";
+
+        return new String("failure");
+    }
 }

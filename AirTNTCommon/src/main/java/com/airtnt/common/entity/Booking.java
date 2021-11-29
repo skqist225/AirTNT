@@ -45,11 +45,16 @@ public class Booking extends BaseEntity {
 	@Column(columnDefinition = "Decimal(10,2)", nullable = false)
 	private float siteFee;
 
+	@Column(columnDefinition = "Decimal(10,2) default '0.00'")
+	private float totalFee;
+
+	private boolean isComplete;
+
 	@ManyToOne
-	@JoinColumn(name = "customer_id")
+	@JoinColumn(name = "customer_id", nullable = false)
 	private User customer;
 
 	@OneToOne
-	@JoinColumn(name = "room_id")
+	@JoinColumn(name = "room_id", nullable = false)
 	private Room room;
 }

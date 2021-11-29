@@ -117,6 +117,16 @@ public class User extends BaseEntity {
 		return this.firstName + " " + this.lastName;
 	}
 
+	@Transient
+	public void addToWishLists(Room room) {
+		this.rooms.add(room);
+	}
+
+	@Transient
+	public void removeFromWishLists(Room room) {
+		this.rooms.remove(room);
+	}
+
 	public boolean hasRole(String roleName) {
 		if (roleName == this.getRole().getName())
 			return true;

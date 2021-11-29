@@ -1,10 +1,14 @@
 async function fetchRooms(catId, page) {
     const {
-        data: { root },
+        data: { root, wishlists },
     } = await axios.post('/airtnt/homes', {
         catId,
         page,
     });
+
+    if (wishlists) {
+        wishlistsArr = wishlists;
+    }
 
     return Promise.resolve(root);
 }
@@ -54,13 +58,7 @@ function setActiveTab(catContainer, self) {
     image.addClass(active);
 }
 
-async function fetchRoomsByCategory(
-    self,
-    catContainer,
-    roomsContainer,
-    globalPage,
-    rooms
-) {
+async function fetchRoomsByCategory(self, catContainer, roomsContainer, globalPage, rooms) {
     let root = [];
     rooms = [];
     setActiveTab(catContainer, self);
@@ -89,13 +87,4 @@ async function fetchRoomsByCategory(
     }
 
     return Promise.resolve({ catId, page: globalPage });
-}
-
-function likeRoom(self) {
-    self = $(self);
-    if (self.hasClass('like')) {
-        self.removeClass('like');
-    } else {
-        self.addClass('like');
-    }
 }

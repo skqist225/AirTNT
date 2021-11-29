@@ -13,6 +13,14 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
             rel="stylesheet"
         />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"
+        />
         <div th:replace="header :: css"></div>
     </head>
     <body>
@@ -22,10 +30,7 @@
                 <div class="flex">
                     <th:block th:each="cat,itr : ${categories}">
                         <div class="cat__container">
-                            <button
-                                class="button__container"
-                                th:id="${itr.index  + 1}"
-                            >
+                            <button class="button__container" th:id="${itr.index  + 1}">
                                 <div>
                                     <img
                                         th:src="@{${cat.iconPath}}"
@@ -35,15 +40,8 @@
                                         class="cat__image"
                                     />
                                 </div>
-                                <div
-                                    th:text="${cat.name}"
-                                    class="cat__name"
-                                ></div>
-                                <input
-                                    type="hidden"
-                                    th:value="${cat.id}"
-                                    class="cat__id"
-                                />
+                                <div th:text="${cat.name}" class="cat__name"></div>
+                                <input type="hidden" th:value="${cat.id}" class="cat__id" />
                             </button>
                         </div>
                     </th:block>
@@ -54,25 +52,27 @@
             </section>
         </div>
 
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/js/room/roomComponent.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/js/room/roomComponent.js}"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const baseURL = /*[[@{/}]]*/ 'default';
+            /*]]>*/
+        </script>
         <script>
             const active = 'active';
             const imageClassName = '.' + 'cat__image';
             const loadTime = 200;
             const defaultHeight = 1902;
+            let wishlistsArr = [];
             let globalPage = 1;
             let globalCatId = 0;
             let rooms = [];
 
-            $(document).ready(function () {
+            $(document).ready(async function () {
                 const catContainers = $('.cat__container');
                 const buttonContainers = $('.button__container');
                 const roomsContainer = $('#rooms__container');
@@ -80,6 +80,16 @@
                 const activeWhenLoaded = catContainers.first().addClass(active);
                 const img = $(imageClassName, catContainers.first());
                 img.addClass(active);
+
+                let { catId, page } = await fetchRoomsByCategory(
+                    buttonContainers.first(),
+                    catContainers,
+                    roomsContainer,
+                    globalPage,
+                    rooms
+                );
+                globalPage = page;
+                globalCatId = catId;
 
                 buttonContainers.each(function (index) {
                     $(this).click(async function () {
@@ -111,13 +121,71 @@
                         }
                     }
                 });
+
+                $('.room__likeBtn').each(function () {
+                    if (wishlistsArr.length) {
+                        if (wishlistsArr.includes($(this).data('room-id')))
+                            $(this).children('svg').addClass('like');
+                    }
+
+                    $(this).click(async function () {
+                        const children = $(this).children('svg');
+                        console.log(children);
+                        if (children.hasClass('like')) {
+                            console.log('true');
+                            const { data } = await axios.get(
+                                `${baseURL}remove-from-wishlists/${$(this).data('room-id')}`
+                            );
+
+                            if (data === 'success') {
+                                children.removeClass('like');
+                                alertify.success('Gỡ bỏ danh sách yêu thích thành công');
+                            } else alertify.error('Gỡ bỏ danh sách yêu thích thất bại');
+                        } else {
+                            const { data } = await axios.get(
+                                `${baseURL}add-to-wishlists/${$(this).data('room-id')}`
+                            );
+
+                            if (data === 'success') {
+                                children.addClass('like');
+                                alertify.success('Thêm vào danh sách yêu thích thành công');
+                            } else alertify.error('Thêm vào danh sách yêu thích thất bại');
+                        }
+                    });
+                });
             });
+
+            const seperateNumber = number => {
+                let dotNum = 0;
+
+                const countDotNum = number => {
+                    const resultOfDivisionOperator = number / 1000;
+
+                    if (resultOfDivisionOperator >= 1) {
+                        dotNum++;
+                        const _number = resultOfDivisionOperator;
+                        countDotNum(_number);
+                    } else {
+                        return;
+                    }
+                };
+
+                countDotNum(number);
+
+                let finalString = [];
+                let numString = String(number);
+
+                for (let i = 0; i < dotNum; i++) {
+                    const subString = '.' + numString.substr(-3);
+                    numString = numString.substring(0, numString.length - 3);
+                    finalString.unshift(subString);
+                }
+
+                return numString + finalString.join('');
+            };
         </script>
         <script type="text/javascript" th:src="@{/js/room/room.js}"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/js/room/room_slider.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/js/room/room_slider.js}"></script>
         <div th:replace="header :: javascript"></div>
     </body>
 </html>

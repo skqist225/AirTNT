@@ -63,6 +63,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
     @Transactional
     public int verifyPhoneNumber(Integer userId) {
         return userRepository.verifyPhoneNumber(userId);

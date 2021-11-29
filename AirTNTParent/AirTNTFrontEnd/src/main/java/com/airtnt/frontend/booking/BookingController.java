@@ -27,9 +27,6 @@ public class BookingController {
     private RoomService roomService;
 
     @Autowired
-    private BookingService bookingService;
-
-    @Autowired
     private UserService userService;
 
     @Value("${stripe.pubkey}")
@@ -53,22 +50,15 @@ public class BookingController {
         return "booking/booking";
     }
 
-    @GetMapping(value = "success-booking/{roomId}")
-    public String successBooking(@AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable("roomId") Integer roomId,
-            @Param("checkin") String checkin,
-            @Param("checkout") String checkout,
-            @Param("numberOfDays") Integer numberOfDays,
-            @Param("siteFee") Float siteFee, Model model) throws ParseException {
-        Room room = roomService.getRoomById(roomId);
-        User customer = userService.getByEmail(userDetails.getUsername());
-        Booking booking = bookingService.createBooking(checkin, checkout, room, numberOfDays, siteFee, customer);
-
-        if (booking == null) {
-            return new String("booking/failure");
-        }
-
-        model.addAttribute("booking", booking);
+    @GetMapping(value = "success-booking")
+    public String booking(@AuthenticationPrincipal UserDetails userDetails, Model model) throws ParseException {
+        User user = userService.getByEmail(userDetails.getUsername());
+        model.addAttribute("username", user.getFullName());
         return new String("booking/success");
+    }
+
+    @GetMapping(value = "listings")
+    public String listings(Model model) throws ParseException {
+        return new String("booking/listings");
     }
 }

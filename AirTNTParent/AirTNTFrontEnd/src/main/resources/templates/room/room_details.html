@@ -2,27 +2,35 @@
 <html xml:lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
-        <title>Room Details</title>
-        <link rel="stylesheet" th:href="@{/css/room_details.css}" type="text/css" />
+        <title>[[${room.name}]]</title>
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
             rel="stylesheet"
         />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+        />
+        <link rel="stylesheet" th:href="@{/css/room_details.css}" type="text/css" />
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet" />
         <div th:replace="header :: css"></div>
     </head>
     <body>
         <div th:replace="header :: content"></div>
 
         <div class="rdt_container">
-            <div class="rdt_header">
+            <div class="rdt_header" style="position: relative">
                 <h1 class="rdt_name">[[${room.name}]]</h1>
                 <input type="hidden" id="roomId" th:value="${room.id}" />
                 <div class="rdt_below__header flex">
                     <div class="rdt_location__info text">
-                        <span th:if="${room.city.name != null}">[[${room.city.name}]]</span>
-                        <span th:if="${room.state.name != null}">[[${room.state.name}]]</span>
+                        <span th:if="${room.city.name != null}">[[${room.city.name}]], </span>
+                        <span th:if="${room.state.name != null}">[[${room.state.name}]], </span>
                         <span th:if="${room.country.name != null}">[[${room.country.name}]]</span>
                     </div>
                     <div class="rdt_header__action">
@@ -32,12 +40,7 @@
 
                 <section class="rdt_images grid">
                     <div style="height: 480px">
-                        <img
-                            th:src="@{${thumbnail.getImagePath(room.host.email, room.id)}}"
-                            width="100%"
-                            height="100%"
-                            class="image"
-                        />
+                        <img th:src="${thumbnail}" width="100%" height="100%" class="image" />
                     </div>
                     <div style="position: relative">
                         <div class="rdt_images__left" style="height: 470px">
@@ -96,9 +99,9 @@
                                         [[${room.host.firstName}]] [[${room.host.lastName}]]
                                     </h2>
                                     <p style="font-size: 16px; font-weight: 500">
-                                        [[${room.accomodatesCount}]] khách.
-                                        [[${room.bathroomCount}]] phòng ngủ . [[${room.bedCount}]]
-                                        giường. [[${room.bedroomCount}]] phòng tắm riêng
+                                        [[${room.accomodatesCount}]] khách ·
+                                        [[${room.bathroomCount}]] phòng ngủ · [[${room.bedCount}]]
+                                        giường · [[${room.bedroomCount}]] phòng tắm riêng
                                     </p>
                                 </div>
                                 <div>
@@ -116,7 +119,7 @@
                                 <p>[[${room.description}]]</p>
                             </div>
                             <div class="rdt_bedroom_info rdt_body__common">
-                                <h4 class="rdt_amentity__header">Nơi bạn sẽ ngủ nghỉ</h4>
+                                <div class="rdt_amentity__header">Nơi bạn sẽ ngủ nghỉ</div>
                                 <div class="rdt_room__decor">
                                     <div
                                         style="
@@ -273,52 +276,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="rdt_review"></div>
-                            <div class="rdt_host rdt_body__common">
-                                <div class="host_info">
-                                    <div>
-                                        <img
-                                            th:src="@{${room.host.avatarPath}}"
-                                            alt=""
-                                            class="image"
-                                            width="64px"
-                                            height="64px"
-                                            style="border-radius: 50%"
-                                        />
-                                    </div>
-                                    <div style="margin-left: 20px">
-                                        <h2 style="font-size: 22px; line-height: 26px">
-                                            Chủ nhà [[${room.host.firstName}]]
-                                            [[${room.host.lastName}]]
-                                        </h2>
-                                        <div
-                                            style="
-                                                padding-top: 8px;
-                                                color: #717171;
-                                                font-size: 14px;
-                                                line-height: 18px;
-                                            "
-                                        >
-                                            [[${room.host.createdDate}]]
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rdt_rules rdt_body__common">
-                                <h4 class="rdt_amentity__header">Những điều cần biết</h4>
-                                <th:block th:each="rule : ${room.rules}">
-                                    <div
-                                        style="
-                                            display: flex;
-                                            align-items: center;
-                                            margin-bottom: 8px;
-                                        "
-                                    >
-                                        <span th:remove="tag" th:utext="${rule.icon}"></span>
-                                        <span style="padding-left: 16px">[[${rule.title}]]</span>
-                                    </div>
-                                </th:block>
-                            </div>
                         </article>
 
                         <article class="rdt_booking">
@@ -423,10 +380,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div
-                                    class="flex"
-                                    style="padding-top: 16px; border-top: 1px solid #b0b0b0"
-                                >
+                                <div class="flex" style="padding-top: 16px">
                                     <div class="totalPriceTitle">Tổng</div>
                                     <div class="totalPriceTitle">
                                         [[${room.currency.symbol}]]<span
@@ -437,7 +391,85 @@
                             </div>
                         </article>
                     </div>
+                    <div>
+                        <div class="rdt_review"></div>
+                        <div class="rdt__location">
+                            <div class="rdt_amentity__header">Nơi bạn sẽ đến</div>
+                            <div id="map"></div>
+                        </div>
+                        <div class="rdt_host rdt_body__common">
+                            <div class="host_info">
+                                <div>
+                                    <img
+                                        th:src="@{${room.host.avatarPath}}"
+                                        alt=""
+                                        class="image"
+                                        width="64px"
+                                        height="64px"
+                                        style="border-radius: 50%"
+                                    />
+                                </div>
+                                <div style="margin-left: 20px">
+                                    <h2 style="font-size: 22px; line-height: 26px">
+                                        Chủ nhà [[${room.host.firstName}]] [[${room.host.lastName}]]
+                                    </h2>
+                                    <div
+                                        style="
+                                            padding-top: 8px;
+                                            color: #717171;
+                                            font-size: 14px;
+                                            line-height: 18px;
+                                        "
+                                    >
+                                        [[${room.host.createdDate}]]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rdt_rules rdt_body__common">
+                            <h4 class="rdt_amentity__header">Những điều cần biết</h4>
+                            <th:block th:each="rule : ${room.rules}">
+                                <div style="display: flex; align-items: center; margin-bottom: 8px">
+                                    <span th:remove="tag" th:utext="${rule.icon}"></span>
+                                    <span style="padding-left: 16px">[[${rule.title}]]</span>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
                 </main>
+
+                <div
+                    style="
+                        position: absolute;
+                        top: 10px;
+                        right: 0;
+                        box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+                            rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+                    "
+                    class="toast"
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                    id="liveToast"
+                    data-delay="4000"
+                    animation="true"
+                >
+                    <div
+                        class="toast-header"
+                        style="display: flex; align-items: center; justify-content: space-between"
+                    >
+                        <div>
+                            <img
+                                th:src="@{/images/warning.png}"
+                                class="rounded me-2"
+                                width="16px"
+                                height="16px"
+                            />
+                            <strong class="me-auto">Warning</strong>
+                        </div>
+                    </div>
+                    <div class="toast-body" id="toast-message"></div>
+                </div>
             </div>
         </div>
 
@@ -459,6 +491,7 @@
 
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
         <script type="text/javascript" th:src="@{/js/room/room_slider.js}"></script>
         <script type="text/javascript" th:src="@{/js/room/room_details.js}"></script>
@@ -472,6 +505,11 @@
             const baseURL = /*[[@{/}]]*/ 'default';
             const roomId = /*[[${room.id}]]*/ 0;
             const bookedDates = /*[[${bookedDates}]]*/ [];
+            const roomLongitude = /*[[${room.longitude}]]*/ '';
+            const roomLatitude = /*[[${room.latitude}]]*/ '';
+            const username = /*[[${room.host.fullName}]]*/ '';
+            const userid = /*[[${room.host.id}]]*/ '';
+            const userimage = /*[[${room.host.avatar}]]*/ '';
             /*]]>*/
         </script>
 
@@ -482,7 +520,96 @@
             let startDate = '';
             let endDate = '';
 
+            function getRoomlocation() {
+                const accessToken =
+                    'pk.eyJ1IjoibG9yZGVkc3dpZnQyMjUiLCJhIjoiY2t3MDJvZ2E5MDB0dDJxbndxbjZxM20wOCJ9.hYxzgffyfc93Aiogipp5bA';
+
+                mapboxgl.accessToken = accessToken;
+
+                showPosition({
+                    coords: {
+                        latitude: roomLatitude,
+                        longitude: roomLongitude,
+                    },
+                });
+
+                async function showPosition(position, doReverseSearch = true) {
+                    let userLat = position.coords.latitude;
+                    let userLng = position.coords.longitude;
+
+                    var map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v11',
+                        center: [userLng * 1, userLat * 1], // starting position [lng, lat]
+                        zoom: 13, // starting zoom
+                    });
+
+                    const markerHeight = 50;
+                    const markerRadius = 10;
+                    const linearOffset = 25;
+                    const popupOffsets = {
+                        top: [0, 0],
+                        'top-left': [0, 0],
+                        'top-right': [0, 0],
+                        bottom: [0, -markerHeight],
+                        'bottom-left': [
+                            linearOffset,
+                            (markerHeight - markerRadius + linearOffset) * -1,
+                        ],
+                        'bottom-right': [
+                            -linearOffset,
+                            (markerHeight - markerRadius + linearOffset) * -1,
+                        ],
+                        left: [markerRadius, (markerHeight - markerRadius) * -1],
+                        right: [-markerRadius, (markerHeight - markerRadius) * -1],
+                    };
+
+                    const image = document.createElement('img');
+                    image.src = `/airtnt/user-photos/${userid}/${userimage}`;
+                    image.style = 'width:40px; height:40px; border-radius:50%;object-fit:cover';
+
+                    const marker = new mapboxgl.Marker(image)
+                        .setPopup(
+                            new mapboxgl.Popup({
+                                offset: popupOffsets,
+                                className: 'my-class',
+                            }) // add popups
+                                .setHTML(`<h2>${username}</h2>`)
+                                .setMaxWidth('300px')
+                        )
+                        .setLngLat([userLng, userLat])
+                        .addTo(map);
+
+                    const popup = new mapboxgl.Popup({
+                        offset: popupOffsets,
+                        className: 'my-class',
+                    })
+                        .setLngLat([userLng, userLat])
+                        .setHTML(`<h1>${username}</h1>`)
+                        .setMaxWidth('300px')
+                        .addTo(map);
+                }
+
+                function showError(error) {
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            x.innerHTML = 'User denied the request for Geolocation.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            x.innerHTML = 'Location information is unavailable.';
+                            break;
+                        case error.TIMEOUT:
+                            x.innerHTML = 'The request to get user location timed out.';
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            x.innerHTML = 'An unknown error occurred.';
+                            break;
+                    }
+                }
+            }
+
             $(document).ready(async function () {
+                getRoomlocation();
                 $('#roomPriceType').text(roomPriceType === 'PER_NIGHT' ? ' / đêm' : ' / tuần');
                 const date = new Date();
                 const month = date.getMonth();

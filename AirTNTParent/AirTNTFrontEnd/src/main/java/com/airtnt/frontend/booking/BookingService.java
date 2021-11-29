@@ -35,7 +35,7 @@ public class BookingService {
 
         Booking booking = Booking.builder().checkinDate(checkinDate).checkoutDate(checkoutDate)
                 .pricePerDay(room.getPrice()).numberOfDays(numberOfDays).siteFee(siteFee).room(room).customer(customer)
-                .bookingDate(LocalDateTime.now()).build();
+                .bookingDate(LocalDateTime.now()).totalFee(numberOfDays * room.getPrice()).isComplete(true).build();
 
         Booking savedBooking = bookingRepository.save(booking);
 
