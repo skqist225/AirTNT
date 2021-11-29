@@ -235,13 +235,13 @@
                         <div style="display: flex; align-items: center">
                             <div style="width: 56px; height: 40px">
                                 <img
-                                    th:src="@{'/room_images/' + ${userEmail + '/' + room.thumbnail}}"
+                                    th:src="@{'/room_images/' + ${userEmail + '/' + room.id + '/' + room.thumbnail}}"
                                     alt="Room's thumbnail'"
                                     class="listings__room-thumbnail"
                                     th:if="${room.thumbnail != null}"
                                 />
                                 <img
-                                    th:src="@{'/room_images/' + ${userEmail + '/' + room.images[0].image}}"
+                                    th:src="@{'/room_images/' + ${userEmail + '/' + room.id + '/' + room.images[0].image}}"
                                     alt="Room's thumbnail'"
                                     class="listings__room-thumbnail"
                                     th:if="${room.thumbnail == null}"

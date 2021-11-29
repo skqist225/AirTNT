@@ -1,8 +1,10 @@
-* {
+*,
+*::before,
+*::after {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
 }
 
 .rdt_container {
@@ -295,7 +297,7 @@
 .shareSvg.white,
 .loveSvg.white,
 .backIcon.white {
-    stroke: #fff !important;
+    stroke: #fff;
 }
 
 #rdt__imagesFullScreenContainer {
@@ -429,19 +431,80 @@ border: 1.5px solid rgb(255, 255, 255); */
 }
 
 .dayInWeek {
-    width: calc(334px / 7);
+    width: 42px;
     height: 42px;
     display: flex;
     align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    margin-left: 1px;
+    margin-right: 1px;
+    position: relative;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+    color: rgb(34, 34, 34);
+    border: 1.5px solid rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+.dayInWeek.false:hover {
+    border: 1px solid #222;
+    border-radius: 50%;
+}
+
+.dayInWeek.false.between {
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    margin-left: 1px;
+    margin-right: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+    color: rgb(34, 34, 34);
+    border: 1.5px solid rgb(247, 247, 247);
+    background-color: palegreen;
+}
+
+.dayInWeek.false.checked {
+    -webkit-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    margin-left: 1px;
+    margin-right: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 100%;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+    background: rgb(34, 34, 34);
+    border: 1.5 px solid rgb(34, 34, 34);
+    color: rgb(255, 255, 255);
+    position: relative;
 }
 
 .date {
-    width: calc(334px / 7);
+    width: 42px;
+    text-align: center;
 }
 
-.MonthTitle {
+.monthTitle {
     text-align: center;
     padding: 22px 49px;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .secondMonthTitle {
@@ -456,7 +519,7 @@ border: 1.5px solid rgb(255, 255, 255); */
     text-align: center;
 }
 
-.getTheNextTwoMonth {
+.getMonth-btn {
     appearance: none;
     display: inline-block;
     border-radius: 50%;
@@ -488,4 +551,26 @@ border: 1.5px solid rgb(255, 255, 255); */
     color: rgb(176, 176, 176);
     font-weight: 400;
     text-decoration: line-through;
+}
+
+.totalPriceTitle {
+    color: rgb(32, 32, 32);
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.previewPrice-line {
+    padding-bottom: 12px;
+    display: none;
+}
+
+.normal-flex {
+    display: flex;
+    align-items: center;
+}
+
+.flex-space {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

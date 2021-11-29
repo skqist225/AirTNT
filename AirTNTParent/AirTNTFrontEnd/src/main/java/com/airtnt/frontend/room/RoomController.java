@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -14,6 +15,8 @@ import java.util.Set;
 
 import com.airtnt.common.entity.Image;
 import com.airtnt.common.entity.Room;
+import com.airtnt.frontend.booking.BookedDate;
+import com.airtnt.frontend.booking.BookingService;
 
 @Controller
 public class RoomController {
@@ -21,8 +24,11 @@ public class RoomController {
 	@Autowired
 	private RoomService roomService;
 
+	@Autowired
+	private BookingService bookingService;
+
 	@GetMapping("/rooms/{id}")
-	public String getRoomById(@PathVariable("id") int id, Model model) {
+	public String getRoomById(@PathVariable("id") int id, Model model) throws ParseException {
 		Room room = roomService.getRoomById(id);
 
 		Image firstImage = room.getImages().iterator().next();
@@ -50,6 +56,8 @@ public class RoomController {
 		model.addAttribute("roomImages", secondToFive);
 		model.addAttribute("room", room);
 
+		List<BookedDate> bookedDates = bookingService.getBookedDate(room);
+		model.addAttribute("bookedDates", bookedDates);
 		return "room/room_details";
 	}
 

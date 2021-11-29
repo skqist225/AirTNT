@@ -39,7 +39,7 @@
                             class="image"
                         />
                     </div>
-                    <div>
+                    <div style="position: relative">
                         <div class="rdt_images__left" style="height: 470px">
                             <th:block th:each="image,iter : ${roomImages}">
                                 <div style="width: 100%; height: calc(470px / 2)">
@@ -165,10 +165,14 @@
                                                 height: 40px;
                                             "
                                         >
-                                            <span
-                                                th:remove="tag"
-                                                th:utext="${amt.iconImage}"
-                                            ></span>
+                                            <span th:remove="tag">
+                                                <img
+                                                    th:src="${'/airtnt/' + amt.iconImagePath}"
+                                                    alt=""
+                                                    width="36px"
+                                                    height="36px"
+                                                />
+                                            </span>
                                             <span style="padding-left: 16px">[[${amt.name}]]</span>
                                         </div>
                                     </th:block>
@@ -181,14 +185,50 @@
                                     >
                                 </div>
                             </div>
-                            <div class="rdt_calender">
-                                <h2>7 đêm tại 有馬温泉・六甲山</h2>
-                                <div>Từ ngày - đến ngày</div>
+                            <div class="rdt_calender" style="margin-top: 50px">
+                                <div>
+                                    <div
+                                        style="
+                                            font-size: 20px;
+                                            font-weight: 500;
+                                            margin-bottom: 5px;
+                                        "
+                                    >
+                                        Chọn ngày nhận phòng
+                                    </div>
+                                    <div
+                                        style="
+                                            display: none;
+                                            font-size: 20px;
+                                            font-weight: 500;
+                                            margin-bottom: 5px;
+                                        "
+                                        id="numberOfDaysContainer"
+                                    >
+                                        <span id="daysAtHere">1</span> đêm tại [[${room.city.name}]]
+                                    </div>
+                                </div>
+                                <div style="color: #717171">
+                                    <div id="beforeEndDateContainer">
+                                        <span id="beforeChooseDay" style="font-size: 14px"
+                                            >Thêm ngày đi để biết giá chính xác</span
+                                        >
+                                    </div>
+                                    <div style="display: none" id="fromDayToDayContainer">
+                                        <span id="fromDay">Từ ngày</span> -
+                                        <span id="toDay">đến ngày</span>
+                                    </div>
+                                </div>
                                 <div class="rdt_calender__header">
                                     <div class="flex3">
                                         <div class="firstMonth">
-                                            <div class="MonthTitle firstMonthAndYear">
-                                                Tháng MM năm YYY
+                                            <div style="display: flex; align-items: center">
+                                                <div
+                                                    th:replace="room/room_fragment :: nextCoupleOfMonth('close3', 'getThePrevTwoMonth')"
+                                                ></div>
+                                                <div class="monthTitle firstMonthAndYear">
+                                                    Tháng MM năm YYY
+                                                </div>
                                             </div>
                                             <div class="rdt_calender__body">
                                                 <div class="flex3">
@@ -206,12 +246,15 @@
                                         <div class="secondMonth">
                                             <div class="secondMonthTitle">
                                                 <div class="pseudoContainer">
-                                                    <div class="secondMonthAndYear">
+                                                    <div
+                                                        class="secondMonthAndYear"
+                                                        style="font-size: 16px; font-weight: 600"
+                                                    >
                                                         Tháng MM + 1 năm YYYY
                                                     </div>
                                                 </div>
                                                 <div
-                                                    th:replace="room/room_fragment :: nextCoupleOfMonth"
+                                                    th:replace="room/room_fragment :: nextCoupleOfMonth('nextMonth', 'getTheNextTwoMonth')"
                                                 ></div>
                                             </div>
                                             <div class="rdt_calender__body">
@@ -291,12 +334,10 @@
                             >
                                 <div style="margin-bottom: 24px">
                                     <span class="rdt__price"
-                                        >[[${room.currency.symbol}]] [[${room.price}]]</span
+                                        >[[${room.currency.symbol}]][[${#numbers.formatDecimal(room.price,3,
+                                        'POINT',0, 'COMMA')}]]</span
                                     >
-                                    <span
-                                        style="font-size: 16px"
-                                        th:text="${room.priceType == 'PER_NIGHT' ? '/ đêm' : '/ tuần'}"
-                                    ></span>
+                                    <span style="font-size: 16px" id="roomPriceType"> </span>
                                 </div>
                                 <div
                                     style="
@@ -308,72 +349,30 @@
                                     "
                                 >
                                     <div class="flex">
-                                        <div
-                                            style="
-                                                padding: 10px 12px 10px;
-                                                width: 50%;
-                                                border: 0.5px solid red;
-                                            "
-                                        >
+                                        <div style="padding: 10px 12px 10px; width: 50%">
                                             <div style="font-weight: 600">Nhận phòng</div>
-                                            <div>7/2/2022</div>
+                                            <div id="checkinDate">Thêm ngày</div>
                                         </div>
                                         <div
                                             style="
                                                 padding: 10px 12px 10px;
                                                 width: 50%;
-                                                border: 0.5px solid red;
+                                                border-left: 0.5px solid rgb(211, 211, 211);
                                             "
                                         >
                                             <div style="font-weight: 600">Trả phòng</div>
-                                            <div>7/2/2022</div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex"
-                                        style="height: 56px; padding: 16px 16px 10px 12px"
-                                    >
-                                        <div>
-                                            <div style="font-weight: 600">Khách</div>
-                                            <div>1 khách</div>
-                                        </div>
-                                        <div
-                                            style="
-                                                display: flex;
-                                                align-items: center;
-                                                justify-content: center;
-                                                height: 100%;
-                                            "
-                                        >
-                                            <svg
-                                                viewBox="0 0 18 18"
-                                                role="presentation"
-                                                aria-hidden="true"
-                                                focusable="false"
-                                                style="
-                                                    height: 16px;
-                                                    width: 16px;
-                                                    display: block;
-                                                    fill: currentcolor;
-                                                "
-                                            >
-                                                <path
-                                                    d="m16.29 4.3a1 1 0 1 1 1.41 1.42l-8 8a1 1 0 0 1 -1.41 0l-8-8a1 1 0 1 1 1.41-1.42l7.29 7.29z"
-                                                    fill-rule="evenodd"
-                                                ></path>
-                                            </svg>
+                                            <div id="checkoutDate">Thêm ngày</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
                                     <button
-                                        data-testid="homes-pdp-cta-btn"
                                         type="submit"
                                         class="rdt_booking_button"
+                                        onclick="processBooking();"
                                     >
-                                        <span class="_163rr5i"
+                                        <span
                                             ><span
-                                                class="_19di23v"
                                                 style="
                                                     background-position: calc(
                                                             (100 - var(--mouse-x, 0)) * 1%
@@ -383,34 +382,57 @@
                                                     --mouse-y: 50;
                                                 "
                                             ></span></span
-                                        ><span class="_tcp689">Đặt phòng </span>
+                                        ><span>Đặt phòng</span>
                                     </button>
                                 </div>
-                                <div style="font-size: 14px; text-align: center; margin-top: 8px">
-                                    Bạn vẫn chưa bị trừ tiền
-                                </div>
-                                <div class="flex" style="padding-bottom: 12px">
-                                    <button class="rdt_transparent__btn">
-                                        <div class="_m6lwl6">
-                                            [[${room.currency.symbol}]]460 x 7&nbsp;đêm&nbsp;
+                                <div class="previewPrice-line" style="margin-top: 20px">
+                                    <div class="flex-space">
+                                        <div>
+                                            <button class="rdt_transparent__btn">
+                                                <div
+                                                    style="color: rgb(32, 32, 32); font-size: 14px"
+                                                >
+                                                    [[${room.currency.symbol}]][[${#numbers.formatDecimal(room.price,3,
+                                                    'POINT',0, 'COMMA')}]] x
+                                                    <span id="numberOfNight">7</span>&nbsp;đêm&nbsp;
+                                                </div>
+                                            </button>
                                         </div>
-                                    </button>
-                                    <div>[[${room.currency.symbol}]]3.222</div>
-                                </div>
-                                <div class="flex" style="padding-bottom: 20px">
-                                    <button class="rdt_transparent__btn">
-                                        <div class="_m6lwl6">
-                                            [[${room.currency.symbol}]]460 x 7&nbsp;đêm&nbsp;
+                                        <div style="font-size: 14px">
+                                            [[${room.currency.symbol}]]<span id="totalPrice"></span>
                                         </div>
-                                    </button>
-                                    <div>[[${room.currency.symbol}]]3.222</div>
+                                    </div>
+                                </div>
+                                <div class="previewPrice-line">
+                                    <div class="flex-space">
+                                        <div>
+                                            <button class="rdt_transparent__btn">
+                                                <div
+                                                    style="
+                                                        color: rgb(32, 32, 32);
+                                                        font-size: 14px;
+                                                        text-decoration: underline;
+                                                    "
+                                                >
+                                                    Phí dịch vụ
+                                                </div>
+                                            </button>
+                                        </div>
+                                        <div style="font-size: 14px">
+                                            [[${room.currency.symbol}]]<span id="siteFee"></span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div
                                     class="flex"
                                     style="padding-top: 16px; border-top: 1px solid #b0b0b0"
                                 >
-                                    <div>Tổng</div>
-                                    <div>[[${room.currency.symbol}]]3.222</div>
+                                    <div class="totalPriceTitle">Tổng</div>
+                                    <div class="totalPriceTitle">
+                                        [[${room.currency.symbol}]]<span
+                                            id="finalTotalPrice"
+                                        ></span>
+                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -441,5 +463,264 @@
         <script type="text/javascript" th:src="@{/js/room/room_slider.js}"></script>
         <script type="text/javascript" th:src="@{/js/room/room_details.js}"></script>
         <div th:replace="header :: javascript"></div>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const roomPrice = /*[[${room.price}]]*/ 0;
+            const roomPriceType = /*[[${room.priceType}]]*/ 'đêm';
+            const symbol = /*[[${room.currency.symbol}]]*/ 'đ';
+            const baseURL = /*[[@{/}]]*/ 'default';
+            const roomId = /*[[${room.id}]]*/ 0;
+            const bookedDates = /*[[${bookedDates}]]*/ [];
+            /*]]>*/
+        </script>
+
+        <script>
+            const active = 'active';
+            let haveStartDate = false;
+            let haveEndDate = false;
+            let startDate = '';
+            let endDate = '';
+
+            $(document).ready(async function () {
+                $('#roomPriceType').text(roomPriceType === 'PER_NIGHT' ? ' / đêm' : ' / tuần');
+                const date = new Date();
+                const month = date.getMonth();
+                const year = date.getFullYear();
+
+                const closeShowImgBtn = $('#closeShowImgBtn');
+                closeShowImgBtn.click(function () {
+                    toggleHiddenImages();
+                });
+
+                const firstMonthAndYear = $('.firstMonthAndYear').first();
+                const secondMonthAndYear = $('.secondMonthAndYear').first();
+                const getTheNextTwoMonth = $('.getTheNextTwoMonth').first();
+
+                await fetchTheNextCoupleOfMonth(firstMonthAndYear, secondMonthAndYear, month, year);
+
+                getTheNextTwoMonth.on('click', async function () {
+                    const currentFirstMonthInCalendar = secondMonthAndYear.text().split(' ')[1];
+                    const currentYearInCalendar = secondMonthAndYear.text().split(' ')[3];
+
+                    await fetchTheNextCoupleOfMonth(
+                        firstMonthAndYear,
+                        secondMonthAndYear,
+                        currentFirstMonthInCalendar * 1,
+                        currentYearInCalendar * 1
+                    );
+                });
+
+                let isClicked = false;
+                const navMenu = $('.loginAndLogoutHidden').first();
+                $('.account__button')
+                    .first()
+                    .click(function () {
+                        if (!isClicked) {
+                            navMenu.addClass('active');
+                            isClicked = true;
+                        } else {
+                            navMenu.removeClass('active');
+                            isClicked = false;
+                        }
+                    });
+
+                // addClickEventForDay();
+            });
+
+            function addClickEventForDay() {
+                $('.dayInWeek.false').each(function () {
+                    $(this).click(function () {
+                        $('.dayInWeek.false').each(function () {
+                            if ($(this).hasClass('checked')) {
+                                haveStartDate = true;
+                                return false;
+                            }
+                        });
+
+                        if (!haveStartDate && !haveEndDate) {
+                            $(this).addClass('checked');
+                            startDate +=
+                                $(this).text() +
+                                '/' +
+                                $(this).data('month') +
+                                '/' +
+                                $(this).data('year');
+                        } else if (haveStartDate && !haveEndDate && $(this).hasClass('checked')) {
+                            $(this).removeClass('checked');
+                            startDate = '';
+                            haveStartDate = false;
+                        } else if (haveStartDate && haveEndDate && $(this).hasClass('checked')) {
+                            $(this).removeClass('checked');
+                            endDate = '';
+                            haveEndDate = false;
+                        } else if (haveStartDate && haveEndDate) {
+                            const [currDate, currMonth, currYear] = getElementsOfDate(
+                                $(this).text() +
+                                    '/' +
+                                    $(this).data('month') +
+                                    '/' +
+                                    $(this).data('year')
+                            );
+
+                            // console.log('currDate', currDate);
+                            // console.log('currMonth', currMonth);
+                            // console.log('currYear', currYear);
+
+                            const [startDateDate, startDateMonth, startDateYear] =
+                                getElementsOfDate(startDate);
+                            const [endDateDate, endDateMonth, endDateYear] =
+                                getElementsOfDate(endDate);
+
+                            // console.log('startDateDate', startDateDate);
+                            // console.log('startDateMonth', startDateMonth);
+                            // console.log('startDateMonth', startDateMonth);
+
+                            // console.log('endDateDate', endDateDate);
+                            // console.log('endDateMonth', endDateMonth);
+                            // console.log('endDateYear', endDateYear);
+
+                            //if two month equal compare date
+                            //CASE 1:
+                            if (currMonth === startDateMonth && currYear === startDateYear) {
+                                if (currDate < startDateDate) {
+                                    setStartDate(
+                                        $(this),
+                                        startDateDate,
+                                        startDateMonth,
+                                        startDateYear,
+                                        currDate,
+                                        currMonth,
+                                        currYear
+                                    );
+                                    return;
+                                }
+                            }
+                            if (currYear < startDateYear || currMonth < startDateMonth) {
+                                setStartDate(
+                                    $(this),
+                                    startDateDate,
+                                    startDateMonth,
+                                    startDateYear,
+                                    currDate,
+                                    currMonth,
+                                    currYear
+                                );
+                                return;
+                            }
+
+                            //CASE 2:
+                            if (currMonth === startDateMonth && currMonth === endDateMonth) {
+                                if (
+                                    currDate > startDateDate &&
+                                    currDate < endDateDate &&
+                                    currMonth >= startDateMonth &&
+                                    currMonth <= endDateMonth &&
+                                    currYear >= startDateYear &&
+                                    currYear <= endDateYear
+                                ) {
+                                    setStartDate(
+                                        $(this),
+                                        startDateDate,
+                                        startDateMonth,
+                                        startDateYear,
+                                        currDate,
+                                        currMonth,
+                                        currYear
+                                    );
+                                    return;
+                                }
+                            }
+                            if (startDateMonth !== endDateMonth) {
+                                if (currMonth === startDateMonth) {
+                                    if (currDate > startDateDate) {
+                                        setStartDate(
+                                            $(this),
+                                            startDateDate,
+                                            startDateMonth,
+                                            startDateYear,
+                                            currDate,
+                                            currMonth,
+                                            currYear
+                                        );
+                                        return;
+                                    }
+                                } else if (currMonth === endDateMonth) {
+                                    if (currDate < endDateDate) {
+                                        setStartDate(
+                                            $(this),
+                                            startDateDate,
+                                            startDateMonth,
+                                            startDateYear,
+                                            currDate,
+                                            currMonth,
+                                            currYear
+                                        );
+                                        return;
+                                    }
+                                } else {
+                                    if (currMonth > startDateMonth && currMonth < endDateMonth) {
+                                        setStartDate(
+                                            $(this),
+                                            startDateDate,
+                                            startDateMonth,
+                                            startDateYear,
+                                            currDate,
+                                            currMonth,
+                                            currYear
+                                        );
+                                        return;
+                                    }
+                                }
+                            }
+
+                            setEndDate(
+                                $(this),
+                                endDateDate,
+                                endDateMonth,
+                                endDateYear,
+                                currDate,
+                                currMonth,
+                                currYear
+                            );
+                        } else {
+                            //end date
+                            const date2 = $(this).text() * 1;
+                            const month2 = $(this).data('month') * 1;
+                            const year2 = $(this).data('year') * 1;
+
+                            const startDateDate = startDate.split('/')[0] * 1;
+                            const startDateMonth = startDate.split('/')[1] * 1;
+                            const startDateYear = startDate.split('/')[2] * 1;
+
+                            if (
+                                month2 < startDateMonth ||
+                                (month2 === startDateMonth && date2 < startDateDate)
+                            ) {
+                                alert('Kh thể chọn ngày bé hơn start date');
+                                return false;
+                            }
+
+                            $(this).addClass('checked');
+                            endDate +=
+                                $(this).text() +
+                                '/' +
+                                $(this).data('month') +
+                                '/' +
+                                $(this).data('year');
+
+                            haveEndDate = true;
+                            const endDateDate = endDate.split('/')[0] * 1;
+                            const endDateMonth = endDate.split('/')[1] * 1;
+                            const endDateYear = endDate.split('/')[2] * 1;
+
+                            hightlightBetween(startDate, endDate);
+                            displayStartDateAndEndDate(startDate, endDate);
+                            setCheckInAndOutDate(startDate, endDate);
+                        }
+                    });
+                });
+            }
+        </script>
     </body>
 </html>

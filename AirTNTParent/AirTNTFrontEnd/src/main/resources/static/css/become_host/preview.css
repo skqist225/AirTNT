@@ -1,3 +1,12 @@
+*,
+*::before,
+*::after {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 .room-preview__left {
     flex: 1;
     max-width: 50%;
@@ -34,8 +43,8 @@
     border-radius: 8px;
     outline: none;
     padding: 14px 2px;
-    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
-        -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+    transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s,
+        transform 0.1s ease 0s;
     -webkit-tap-highlight-color: transparent;
     border: none;
     background: linear-gradient(

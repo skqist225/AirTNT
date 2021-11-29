@@ -6,18 +6,12 @@ function Room(room, indexParent) {
                                 <div class="image__slider">
                                     ${(function () {
                                         console.log(room);
-                                        const newArr = room.images.map(
-                                            (image, index) => {
-                                                return `<img src='/airtnt/room_images/${
-                                                    room.userName
-                                                }/${image.image}' data-index="${
-                                                    index + 1
-                                                }"
-                                                class='room__image${
-                                                    indexParent + 1
-                                                }'/>`;
-                                            }
-                                        );
+                                        const newArr = room.images.map((image, index) => {
+                                            return `<img src='/airtnt/room_images/${
+                                                room.userName
+                                            }/${room.id}/${image.image}' data-index="${index + 1}"
+                                                class='room__image${indexParent + 1}'/>`;
+                                        });
 
                                         return newArr.join('');
                                     })()}
@@ -74,9 +68,7 @@ function Room(room, indexParent) {
                         <a href="/airtnt/rooms/${room.id}">
                             <div class="flex" style="padding-top: 15px;">
                                 <div class="room__name">${room.name}</div>
-                                <div class="room__price">${
-                                    room.currencySymbol
-                                } ${room.price} / ${
+                                <div class="room__price">${room.currencySymbol} ${room.price} / ${
         room.priceType === 'PER_NIGHT' ? 'đêm' : 'tuần'
     }</div>
                             </div>

@@ -1,9 +1,15 @@
 package com.airtnt.common.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.*;
 
@@ -15,33 +21,35 @@ import lombok.*;
 @Entity
 @Table(name = "bookings")
 public class Booking extends BaseEntity {
+	private Date checkinDate;
 
-	private Date checkinDay;
-	
-	private Date checkoutDay;
-	
-	private Date cancelDay;
-	
+	private Date checkoutDate;
+
+	private LocalDateTime bookingDate;
+
+	private Date cancelDate;
+
 	@Column(columnDefinition = "Decimal(10,2)", nullable = false)
 	private float pricePerDay;
-	
-	@Column(columnDefinition = "Decimal(10,2) default '0.00'")
-	private float priceForStay;
-	
+
+	@Column(columnDefinition = "SMALLINT default 0")
+	private int numberOfDays;
+
 	@Builder.Default
 	@Column(columnDefinition = "boolean default false")
 	private boolean isRefund = false;
-	
+
 	@Column(columnDefinition = "Decimal(10,2) default '0.00'")
 	private float refundPaid;
-	
-	private Date bookingDay;
-	
-	@Column(columnDefinition = "Decimal(10,2)", nullable = false)
-	private float taxPaid;
-	
+
 	@Column(columnDefinition = "Decimal(10,2)", nullable = false)
 	private float siteFee;
-	
-	
+
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private User customer;
+
+	@OneToOne
+	@JoinColumn(name = "room_id")
+	private Room room;
 }
