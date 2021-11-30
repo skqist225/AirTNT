@@ -73,7 +73,7 @@ public class Room extends BaseEntity {
 	@Column(columnDefinition = "smallint")
 	private byte rating;
 
-	@OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "room")
 	private List<Review> reviews = new ArrayList<>();
 
 	@ManyToOne

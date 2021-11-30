@@ -22,3 +22,5 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 ///List of MIMETYPE
 https://www.iana.org/assignments/media-types/media-types.xhtml#image
+
+//INSERT INTO `airtnt`.`reviews` (`created_at`, `comment`, `final_rating`, `accuracy_rating`, `checkin_rating`, `cleanliness_rating`, `contact_rating`, `location_rating`, `value_rating`, `booking_id`, `user_id`, `room_id`) VALUES (NOW(), 'hay lam', 4, 4, 4, 4, 4, 4, 4, 1, 17, 1);

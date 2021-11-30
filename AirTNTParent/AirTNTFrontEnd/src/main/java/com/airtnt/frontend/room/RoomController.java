@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.airtnt.common.entity.Image;
+import com.airtnt.common.entity.Review;
 import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
 import com.airtnt.frontend.booking.BookedDate;
@@ -58,12 +59,22 @@ public class RoomController {
 			bedCount.add(1);
 		}
 
+		float avgRatings = 0;
+
+		for (Review r : room.getReviews()) {
+			avgRatings += r.getFinalRating();
+		}
+
+		avgRatings /= room.getReviews().size();
+
 		// checking thumbnail here
 		model.addAttribute("thumbnail", room.renderThumbnailImage());
 		model.addAttribute("numberOfBed", bedCount);
 		model.addAttribute("roomImages", secondToFive);
 		model.addAttribute("room", room);
 		model.addAttribute("bookedDates", bookedDates);
+		model.addAttribute("avgRatings", avgRatings);
+		model.addAttribute("numberOfReviews", room.getReviews().size());
 		return "room/room_details";
 	}
 
