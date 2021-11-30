@@ -65,7 +65,8 @@ public class RoomController {
 			avgRatings += r.getFinalRating();
 		}
 
-		avgRatings /= room.getReviews().size();
+		if (room.getReviews().size() > 0)
+			avgRatings /= room.getReviews().size();
 
 		// checking thumbnail here
 		model.addAttribute("thumbnail", room.renderThumbnailImage());

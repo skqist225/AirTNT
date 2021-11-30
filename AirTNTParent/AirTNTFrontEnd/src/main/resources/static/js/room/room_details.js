@@ -604,3 +604,59 @@ function addClickEventForDay() {
         });
     });
 }
+
+function updateRatingUI() {
+    let cleanliness = 0;
+    let contact = 0;
+    let checkin = 0;
+    let accuracy = 0;
+    let location = 0;
+    let value = 0;
+
+    const cleanlinessRating = $('.cleanliness-rating');
+    const contactRating = $('.contact-rating');
+    const checkinRating = $('.checkin-rating');
+    const accuracyRating = $('.accuracy-rating');
+    const locationRating = $('.location-rating');
+    const valueRating = $('.value-rating');
+
+    cleanlinessRating.each(function () {
+        cleanliness += $(this).val() * 1;
+    });
+    contactRating.each(function () {
+        contact += $(this).val() * 1;
+    });
+    checkinRating.each(function () {
+        checkin += $(this).val() * 1;
+    });
+    accuracyRating.each(function () {
+        accuracy += $(this).val() * 1;
+    });
+    locationRating.each(function () {
+        location += $(this).val() * 1;
+    });
+    valueRating.each(function () {
+        value += $(this).val() * 1;
+    });
+
+    cleanliness /= cleanlinessRating.length || 1;
+    contact /= contactRating.length || 1;
+    checkin /= checkinRating.length || 1;
+    accuracy /= accuracyRating.length || 1;
+    location /= locationRating.length || 1;
+    value /= valueRating.length || 1;
+
+    $('#cleanlinessRating').css('width', `${(cleanliness / 5) * 100}%`);
+    $('#contactRating').css('width', `${(contact / 5) * 100}%`);
+    $('#checkinRating').css('width', `${(checkin / 5) * 100}%`);
+    $('#accuracyRating').css('width', `${(accuracy / 5) * 100}%`);
+    $('#locationRating').css('width', `${(location / 5) * 100}%`);
+    $('#valueRating').css('width', `${(value / 5) * 100}%`);
+
+    $('#averageCleanlinessRating').text(cleanliness);
+    $('#averageContactRating').text(contact);
+    $('#averageCheckinRating').text(checkin);
+    $('#averageAccuracyRating').text(accuracy);
+    $('#averageLocationRating').text(location);
+    $('#averageValueRating').text(value);
+}
