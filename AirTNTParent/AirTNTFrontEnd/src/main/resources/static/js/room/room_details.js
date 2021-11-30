@@ -85,8 +85,6 @@ function blockBetween(startDateArgs, endDateArgs) {
     });
 }
 
-function addBgColorForElsBetweenAndCountDays(self, work, howManyDays) {}
-
 function hightlightBetween(startDateArgs, endDateArgs) {
     const [startDateDate, startDateMonth, startDateYear] = getElementsOfDate(startDateArgs);
     const [endDateDate, endDateMonth, endDateYear] = getElementsOfDate(endDateArgs);
@@ -191,35 +189,6 @@ function setEndDate(self, endDateDate, endDateMonth, endDateYear, currDate, curr
     hightlightBetween(startDate, endDate);
 }
 
-const seperateNumber = number => {
-    let dotNum = 0;
-
-    const countDotNum = number => {
-        const resultOfDivisionOperator = number / 1000;
-
-        if (resultOfDivisionOperator >= 1) {
-            dotNum++;
-            const _number = resultOfDivisionOperator;
-            countDotNum(_number);
-        } else {
-            return;
-        }
-    };
-
-    countDotNum(number);
-
-    let finalString = [];
-    let numString = String(number);
-
-    for (let i = 0; i < dotNum; i++) {
-        const subString = '.' + numString.substr(-3);
-        numString = numString.substring(0, numString.length - 3);
-        finalString.unshift(subString);
-    }
-
-    return numString + finalString.join('');
-};
-
 function processBooking() {
     if (startDate === '' && endDate === '') {
         var toastLiveExample = document.getElementById('liveToast');
@@ -234,6 +203,62 @@ function processBooking() {
         /\//g,
         '-'
     )}&checkout=${endDate.replace(/\//g, '-')}&numberOfNights=${numberOfNights}`;
+}
+
+async function fetchThePrevCoupleOfMonth(firstMonthAndYear, secondMonthAndYear, month, year) {
+    let secondMonth;
+    let copyMonth;
+    let copyYear;
+    if (month === 1) {
+        secondMonth = await fetchDaysInMonth(10, year - 1);
+        firstMonthAndYear.html(`Tháng 10 năm ${year - 1}`);
+        secondMonthAndYear.html(`Tháng 11 năm ${year - 1}`);
+
+        copyMonth = 10;
+        copyYear = year - 1;
+    } else if (month === 2) {
+        secondMonth = await fetchDaysInMonth(11, year - 1);
+        firstMonthAndYear.html(`Tháng 11 năm ${year - 1}`);
+        secondMonthAndYear.html(`Tháng 12 năm ${year - 1}`);
+
+        copyMonth = 11;
+        copyYear = year - 1;
+    } else {
+        secondMonth = await fetchDaysInMonth(month - 3, year);
+        firstMonthAndYear.html(`Tháng ${month * 1 - 3} năm ${year}`);
+        secondMonthAndYear.html(`Tháng ${month * 1 - 2} năm ${year}`);
+
+        copyMonth = month * 1 - 3;
+        copyYear = year;
+    }
+    console.log(month);
+    const firstMonth = await fetchDaysInMonth(month - 4, year);
+
+    const rdt_calender__days = $('.rdt_calender__days').first();
+    const rdt_calender__days_plus__1 = $('.rdt_calender__days_plus-1').first();
+
+    const daysInMonthJs1 = getDaysInMonth(firstMonth.daysInMonth, copyMonth, copyYear);
+    let decidedMonth = 0;
+    if (copyMonth === 12) decidedMonth = 1;
+    else if (copyMonth === 1) decidedMonth = 2;
+    else decidedMonth = copyMonth + 1;
+
+    const daysInMonthJs2 = getDaysInMonth(secondMonth.daysInMonth, decidedMonth, copyYear);
+
+    rdt_calender__days.empty();
+    rdt_calender__days_plus__1.empty();
+
+    daysInMonthJs1.forEach(day => {
+        rdt_calender__days.append(day);
+    });
+    daysInMonthJs2.forEach(day => {
+        rdt_calender__days_plus__1.append(day);
+    });
+
+    addClickEventForDay();
+    bookedDates.forEach(({ checkinDate, checkoutDate }) => {
+        blockBetween(checkinDate, checkoutDate);
+    });
 }
 
 async function fetchTheNextCoupleOfMonth(firstMonthAndYear, secondMonthAndYear, month, year) {
@@ -311,11 +336,9 @@ function getDaysInMonth(daysInMonth, month, year) {
             if (dayInWeek === '') {
             } else if (dayInWeek.trim() !== '_') {
                 let isBlocked = false;
-                if (
-                    dayInWeek < date.getDate() &&
-                    month <= date.getMonth() + 1 &&
-                    year <= date.getFullYear()
-                )
+
+                if (month < date.getMonth() + 1 && year <= date.getFullYear()) isBlocked = true;
+                else if (month === date.getMonth() + 1 && dayInWeek < date.getDate())
                     isBlocked = true;
                 else {
                     const dateThis =
@@ -403,4 +426,181 @@ async function showFullscreenImage() {
 async function fetchRoomImages(roomId) {
     const { data } = await axios.get('/airtnt/homes/' + roomId);
     return data;
+}
+
+function removeBetweenClass() {
+    $('.dayInWeek.false').each(function () {
+        if ($(this).hasClass('between')) $(this).removeClass('between');
+    });
+
+    /* Hide start date and end date */
+    $('#fromDayToDayContainer').css('display', 'none');
+    $('#beforeEndDateContainer').css('display', 'block');
+    $('#numberOfDaysContainer').css('display', 'none');
+    $('#numberOfDaysContainer').siblings('div').css('display', 'block');
+    $('.previewPrice-line').css('display', 'none');
+    $('#checkinDate').text(startDate);
+    $('#checkoutDate').text(endDate);
+}
+
+function addClickEventForDay() {
+    $('.dayInWeek.false').each(function () {
+        $(this).click(function () {
+            $('.dayInWeek.false').each(function () {
+                if ($(this).hasClass('checked')) {
+                    haveStartDate = true;
+                    return false;
+                }
+            });
+
+            if (!haveStartDate && !haveEndDate) {
+                $(this).addClass('checked');
+                startDate +=
+                    $(this).text() + '/' + $(this).data('month') + '/' + $(this).data('year');
+            } else if (haveStartDate && !haveEndDate && $(this).hasClass('checked')) {
+                $(this).removeClass('checked');
+                startDate = '';
+                haveStartDate = false;
+
+                removeBetweenClass();
+            } else if (haveStartDate && haveEndDate && $(this).hasClass('checked')) {
+                $(this).removeClass('checked');
+                endDate = '';
+                haveEndDate = false;
+            } else if (haveStartDate && haveEndDate) {
+                const [currDate, currMonth, currYear] = getElementsOfDate(
+                    $(this).text() + '/' + $(this).data('month') + '/' + $(this).data('year')
+                );
+
+                const [startDateDate, startDateMonth, startDateYear] = getElementsOfDate(startDate);
+                const [endDateDate, endDateMonth, endDateYear] = getElementsOfDate(endDate);
+
+                //if two month equal compare date
+                //CASE 1:
+                if (
+                    currMonth === startDateMonth &&
+                    currYear === startDateYear &&
+                    currDate < startDateDate
+                ) {
+                    setStartDate(
+                        $(this),
+                        startDateDate,
+                        startDateMonth,
+                        startDateYear,
+                        currDate,
+                        currMonth,
+                        currYear
+                    );
+                    return;
+                }
+                if (currYear < startDateYear || currMonth < startDateMonth) {
+                    setStartDate(
+                        $(this),
+                        startDateDate,
+                        startDateMonth,
+                        startDateYear,
+                        currDate,
+                        currMonth,
+                        currYear
+                    );
+                    return;
+                }
+
+                //CASE 2:
+                if (currMonth === startDateMonth && currMonth === endDateMonth) {
+                    if (
+                        currDate > startDateDate &&
+                        currDate < endDateDate &&
+                        currMonth >= startDateMonth &&
+                        currMonth <= endDateMonth &&
+                        currYear >= startDateYear &&
+                        currYear <= endDateYear
+                    ) {
+                        setStartDate(
+                            $(this),
+                            startDateDate,
+                            startDateMonth,
+                            startDateYear,
+                            currDate,
+                            currMonth,
+                            currYear
+                        );
+                        return;
+                    }
+                }
+                if (startDateMonth !== endDateMonth) {
+                    if (currMonth === startDateMonth && currDate > startDateDate) {
+                        setStartDate(
+                            $(this),
+                            startDateDate,
+                            startDateMonth,
+                            startDateYear,
+                            currDate,
+                            currMonth,
+                            currYear
+                        );
+                        return;
+                    } else if (currMonth === endDateMonth && currDate < endDateDate) {
+                        setStartDate(
+                            $(this),
+                            startDateDate,
+                            startDateMonth,
+                            startDateYear,
+                            currDate,
+                            currMonth,
+                            currYear
+                        );
+                        return;
+                    } else {
+                        if (currMonth > startDateMonth && currMonth < endDateMonth) {
+                            setStartDate(
+                                $(this),
+                                startDateDate,
+                                startDateMonth,
+                                startDateYear,
+                                currDate,
+                                currMonth,
+                                currYear
+                            );
+                            return;
+                        }
+                    }
+                }
+
+                setEndDate(
+                    $(this),
+                    endDateDate,
+                    endDateMonth,
+                    endDateYear,
+                    currDate,
+                    currMonth,
+                    currYear
+                );
+            } else {
+                //end date
+                const [date2, month2, year2] = getElementsOfDate(
+                    $(this).text() + '/' + $(this).data('month') + '/' + $(this).data('year')
+                );
+
+                const [startDateDate, startDateMonth, startDateYear] = getElementsOfDate(startDate);
+                if (
+                    month2 < startDateMonth ||
+                    (month2 === startDateMonth && date2 < startDateDate)
+                ) {
+                    alertify.error('Không thể chọn ngày bé hơn ngày bắt đầu');
+                    return false;
+                }
+
+                $(this).addClass('checked');
+                endDate = '';
+                endDate +=
+                    $(this).text() + '/' + $(this).data('month') + '/' + $(this).data('year');
+                haveEndDate = true;
+
+                hightlightBetween(startDate, endDate);
+                displayStartDateAndEndDate(startDate, endDate);
+                setCheckInAndOutDate(startDate, endDate);
+            }
+        });
+    });
 }

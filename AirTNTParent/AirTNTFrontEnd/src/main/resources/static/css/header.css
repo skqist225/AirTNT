@@ -109,7 +109,8 @@
 }
 
 .header__become-host:hover {
-    background-color: rgb(179, 219, 192);
+    background-color: rgb(134, 143, 219);
+    color: #fff;
     cursor: pointer;
     height: 42px;
     width: 150px;

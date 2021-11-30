@@ -3,7 +3,6 @@
     <head>
         <meta charset="UTF-8" />
         <title>[[${room.name}]]</title>
-
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -15,9 +14,17 @@
             type="text/css"
             th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
         />
-        <link rel="stylesheet" th:href="@{/css/room_details.css}" type="text/css" />
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
         <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"
+        />
+        <link rel="stylesheet" th:href="@{/css/room/room_details.css}" type="text/css" />
         <div th:replace="header :: css"></div>
     </head>
     <body>
@@ -34,7 +41,7 @@
                         <span th:if="${room.country.name != null}">[[${room.country.name}]]</span>
                     </div>
                     <div class="rdt_header__action">
-                        <div th:replace="room/room_fragment :: saveAndShare"></div>
+                        <div th:replace="room/_room_details_partial :: saveAndShare"></div>
                     </div>
                 </div>
 
@@ -158,7 +165,7 @@
                             </div>
                             <div class="rdt_amentity rdt_body__common">
                                 <h4 class="rdt_amentity__header">Nơi này có những gì cho bạn</h4>
-                                <div>
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr)">
                                     <th:block th:each="amt : ${room.amentities}">
                                         <div
                                             style="
@@ -180,13 +187,13 @@
                                         </div>
                                     </th:block>
                                 </div>
-                                <div class="rdt_anchor__container">
+                                <!-- <div class="rdt_anchor__container">
                                     <a href="" class="rdt_anchor"
                                         >Hiển thị tất cả
                                         <span th:text="${#arrays.length(room.amentities)}"></span>
                                         tiện nghi</a
                                     >
-                                </div>
+                                </div> -->
                             </div>
                             <div class="rdt_calender" style="margin-top: 50px">
                                 <div>
@@ -227,14 +234,14 @@
                                         <div class="firstMonth">
                                             <div style="display: flex; align-items: center">
                                                 <div
-                                                    th:replace="room/room_fragment :: nextCoupleOfMonth('close3', 'getThePrevTwoMonth')"
+                                                    th:replace="room/_room_details_partial :: nextCoupleOfMonth('close3', 'getThePrevTwoMonth')"
                                                 ></div>
                                                 <div class="monthTitle firstMonthAndYear">
                                                     Tháng MM năm YYY
                                                 </div>
                                             </div>
                                             <div class="rdt_calender__body">
-                                                <div class="flex3">
+                                                <div class="flex3" style="width: calc(44px * 7)">
                                                     <div class="date">CN</div>
                                                     <div class="date">T2</div>
                                                     <div class="date">T3</div>
@@ -247,21 +254,18 @@
                                             </div>
                                         </div>
                                         <div class="secondMonth">
-                                            <div class="secondMonthTitle">
+                                            <div style="display: flex; align-items: center">
                                                 <div class="pseudoContainer">
-                                                    <div
-                                                        class="secondMonthAndYear"
-                                                        style="font-size: 16px; font-weight: 600"
-                                                    >
+                                                    <div class="secondMonthAndYear monthTitle">
                                                         Tháng MM + 1 năm YYYY
                                                     </div>
                                                 </div>
                                                 <div
-                                                    th:replace="room/room_fragment :: nextCoupleOfMonth('nextMonth', 'getTheNextTwoMonth')"
+                                                    th:replace="room/_room_details_partial :: nextCoupleOfMonth('nextMonth', 'getTheNextTwoMonth')"
                                                 ></div>
                                             </div>
                                             <div class="rdt_calender__body">
-                                                <div class="flex3">
+                                                <div class="flex3" style="width: calc(44px * 7)">
                                                     <div class="date">CN</div>
                                                     <div class="date">T2</div>
                                                     <div class="date">T3</div>
@@ -474,16 +478,16 @@
         </div>
 
         <div class="rdt_hidden">
-            <div th:replace="/room/room_fragment :: showMoreImage"></div>
+            <div th:replace="room/_room_details_partial :: showMoreImage"></div>
         </div>
 
         <div class="rdt__fullScreen">
-            <div th:replace="room/room_fragment :: image__header"></div>
+            <div th:replace="room/_room_details_partial :: image__header"></div>
             <div id="rdt__imagesFullScreenContainer">
                 <div id="innerContainer"></div>
             </div>
             <div id="button__changeImage">
-                <div th:replace="room/room_fragment :: changeImage"></div>
+                <div th:replace="room/_room_details_partial :: changeImage"></div>
             </div>
         </div>
 
@@ -492,9 +496,10 @@
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
         <script type="text/javascript" th:src="@{/js/room/room_slider.js}"></script>
-        <script type="text/javascript" th:src="@{/js/room/room_details.js}"></script>
+
+        <script type="text/javascript" th:src="@{/js/helpers/format_number.js}"></script>
         <div th:replace="header :: javascript"></div>
 
         <script th:inline="javascript">
@@ -510,103 +515,19 @@
             const username = /*[[${room.host.fullName}]]*/ '';
             const userid = /*[[${room.host.id}]]*/ '';
             const userimage = /*[[${room.host.avatar}]]*/ '';
+            const wishlistsArr =
+                [
+                    /*[[${wishlists}]]*/
+                ] || [];
             /*]]>*/
         </script>
-
+        <script type="text/javascript" th:src="@{/js/helpers/get_location.js}"></script>
         <script>
             const active = 'active';
             let haveStartDate = false;
             let haveEndDate = false;
             let startDate = '';
             let endDate = '';
-
-            function getRoomlocation() {
-                const accessToken =
-                    'pk.eyJ1IjoibG9yZGVkc3dpZnQyMjUiLCJhIjoiY2t3MDJvZ2E5MDB0dDJxbndxbjZxM20wOCJ9.hYxzgffyfc93Aiogipp5bA';
-
-                mapboxgl.accessToken = accessToken;
-
-                showPosition({
-                    coords: {
-                        latitude: roomLatitude,
-                        longitude: roomLongitude,
-                    },
-                });
-
-                async function showPosition(position, doReverseSearch = true) {
-                    let userLat = position.coords.latitude;
-                    let userLng = position.coords.longitude;
-
-                    var map = new mapboxgl.Map({
-                        container: 'map',
-                        style: 'mapbox://styles/mapbox/streets-v11',
-                        center: [userLng * 1, userLat * 1], // starting position [lng, lat]
-                        zoom: 13, // starting zoom
-                    });
-
-                    const markerHeight = 50;
-                    const markerRadius = 10;
-                    const linearOffset = 25;
-                    const popupOffsets = {
-                        top: [0, 0],
-                        'top-left': [0, 0],
-                        'top-right': [0, 0],
-                        bottom: [0, -markerHeight],
-                        'bottom-left': [
-                            linearOffset,
-                            (markerHeight - markerRadius + linearOffset) * -1,
-                        ],
-                        'bottom-right': [
-                            -linearOffset,
-                            (markerHeight - markerRadius + linearOffset) * -1,
-                        ],
-                        left: [markerRadius, (markerHeight - markerRadius) * -1],
-                        right: [-markerRadius, (markerHeight - markerRadius) * -1],
-                    };
-
-                    const image = document.createElement('img');
-                    image.src = `/airtnt/user-photos/${userid}/${userimage}`;
-                    image.style = 'width:40px; height:40px; border-radius:50%;object-fit:cover';
-
-                    const marker = new mapboxgl.Marker(image)
-                        .setPopup(
-                            new mapboxgl.Popup({
-                                offset: popupOffsets,
-                                className: 'my-class',
-                            }) // add popups
-                                .setHTML(`<h2>${username}</h2>`)
-                                .setMaxWidth('300px')
-                        )
-                        .setLngLat([userLng, userLat])
-                        .addTo(map);
-
-                    const popup = new mapboxgl.Popup({
-                        offset: popupOffsets,
-                        className: 'my-class',
-                    })
-                        .setLngLat([userLng, userLat])
-                        .setHTML(`<h1>${username}</h1>`)
-                        .setMaxWidth('300px')
-                        .addTo(map);
-                }
-
-                function showError(error) {
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            x.innerHTML = 'User denied the request for Geolocation.';
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            x.innerHTML = 'Location information is unavailable.';
-                            break;
-                        case error.TIMEOUT:
-                            x.innerHTML = 'The request to get user location timed out.';
-                            break;
-                        case error.UNKNOWN_ERROR:
-                            x.innerHTML = 'An unknown error occurred.';
-                            break;
-                    }
-                }
-            }
 
             $(document).ready(async function () {
                 getRoomlocation();
@@ -638,6 +559,18 @@
                     );
                 });
 
+                $('.getThePrevTwoMonth').click(async function () {
+                    const currentFirstMonthInCalendar = secondMonthAndYear.text().split(' ')[1];
+                    const currentYearInCalendar = secondMonthAndYear.text().split(' ')[3];
+
+                    await fetchThePrevCoupleOfMonth(
+                        firstMonthAndYear,
+                        secondMonthAndYear,
+                        currentFirstMonthInCalendar * 1,
+                        currentYearInCalendar * 1
+                    );
+                });
+
                 let isClicked = false;
                 const navMenu = $('.loginAndLogoutHidden').first();
                 $('.account__button')
@@ -652,202 +585,10 @@
                         }
                     });
 
-                // addClickEventForDay();
+                addClickEventForLoveButton();
             });
-
-            function addClickEventForDay() {
-                $('.dayInWeek.false').each(function () {
-                    $(this).click(function () {
-                        $('.dayInWeek.false').each(function () {
-                            if ($(this).hasClass('checked')) {
-                                haveStartDate = true;
-                                return false;
-                            }
-                        });
-
-                        if (!haveStartDate && !haveEndDate) {
-                            $(this).addClass('checked');
-                            startDate +=
-                                $(this).text() +
-                                '/' +
-                                $(this).data('month') +
-                                '/' +
-                                $(this).data('year');
-                        } else if (haveStartDate && !haveEndDate && $(this).hasClass('checked')) {
-                            $(this).removeClass('checked');
-                            startDate = '';
-                            haveStartDate = false;
-                        } else if (haveStartDate && haveEndDate && $(this).hasClass('checked')) {
-                            $(this).removeClass('checked');
-                            endDate = '';
-                            haveEndDate = false;
-                        } else if (haveStartDate && haveEndDate) {
-                            const [currDate, currMonth, currYear] = getElementsOfDate(
-                                $(this).text() +
-                                    '/' +
-                                    $(this).data('month') +
-                                    '/' +
-                                    $(this).data('year')
-                            );
-
-                            // console.log('currDate', currDate);
-                            // console.log('currMonth', currMonth);
-                            // console.log('currYear', currYear);
-
-                            const [startDateDate, startDateMonth, startDateYear] =
-                                getElementsOfDate(startDate);
-                            const [endDateDate, endDateMonth, endDateYear] =
-                                getElementsOfDate(endDate);
-
-                            // console.log('startDateDate', startDateDate);
-                            // console.log('startDateMonth', startDateMonth);
-                            // console.log('startDateMonth', startDateMonth);
-
-                            // console.log('endDateDate', endDateDate);
-                            // console.log('endDateMonth', endDateMonth);
-                            // console.log('endDateYear', endDateYear);
-
-                            //if two month equal compare date
-                            //CASE 1:
-                            if (currMonth === startDateMonth && currYear === startDateYear) {
-                                if (currDate < startDateDate) {
-                                    setStartDate(
-                                        $(this),
-                                        startDateDate,
-                                        startDateMonth,
-                                        startDateYear,
-                                        currDate,
-                                        currMonth,
-                                        currYear
-                                    );
-                                    return;
-                                }
-                            }
-                            if (currYear < startDateYear || currMonth < startDateMonth) {
-                                setStartDate(
-                                    $(this),
-                                    startDateDate,
-                                    startDateMonth,
-                                    startDateYear,
-                                    currDate,
-                                    currMonth,
-                                    currYear
-                                );
-                                return;
-                            }
-
-                            //CASE 2:
-                            if (currMonth === startDateMonth && currMonth === endDateMonth) {
-                                if (
-                                    currDate > startDateDate &&
-                                    currDate < endDateDate &&
-                                    currMonth >= startDateMonth &&
-                                    currMonth <= endDateMonth &&
-                                    currYear >= startDateYear &&
-                                    currYear <= endDateYear
-                                ) {
-                                    setStartDate(
-                                        $(this),
-                                        startDateDate,
-                                        startDateMonth,
-                                        startDateYear,
-                                        currDate,
-                                        currMonth,
-                                        currYear
-                                    );
-                                    return;
-                                }
-                            }
-                            if (startDateMonth !== endDateMonth) {
-                                if (currMonth === startDateMonth) {
-                                    if (currDate > startDateDate) {
-                                        setStartDate(
-                                            $(this),
-                                            startDateDate,
-                                            startDateMonth,
-                                            startDateYear,
-                                            currDate,
-                                            currMonth,
-                                            currYear
-                                        );
-                                        return;
-                                    }
-                                } else if (currMonth === endDateMonth) {
-                                    if (currDate < endDateDate) {
-                                        setStartDate(
-                                            $(this),
-                                            startDateDate,
-                                            startDateMonth,
-                                            startDateYear,
-                                            currDate,
-                                            currMonth,
-                                            currYear
-                                        );
-                                        return;
-                                    }
-                                } else {
-                                    if (currMonth > startDateMonth && currMonth < endDateMonth) {
-                                        setStartDate(
-                                            $(this),
-                                            startDateDate,
-                                            startDateMonth,
-                                            startDateYear,
-                                            currDate,
-                                            currMonth,
-                                            currYear
-                                        );
-                                        return;
-                                    }
-                                }
-                            }
-
-                            setEndDate(
-                                $(this),
-                                endDateDate,
-                                endDateMonth,
-                                endDateYear,
-                                currDate,
-                                currMonth,
-                                currYear
-                            );
-                        } else {
-                            //end date
-                            const date2 = $(this).text() * 1;
-                            const month2 = $(this).data('month') * 1;
-                            const year2 = $(this).data('year') * 1;
-
-                            const startDateDate = startDate.split('/')[0] * 1;
-                            const startDateMonth = startDate.split('/')[1] * 1;
-                            const startDateYear = startDate.split('/')[2] * 1;
-
-                            if (
-                                month2 < startDateMonth ||
-                                (month2 === startDateMonth && date2 < startDateDate)
-                            ) {
-                                alert('Kh thể chọn ngày bé hơn start date');
-                                return false;
-                            }
-
-                            $(this).addClass('checked');
-                            endDate +=
-                                $(this).text() +
-                                '/' +
-                                $(this).data('month') +
-                                '/' +
-                                $(this).data('year');
-
-                            haveEndDate = true;
-                            const endDateDate = endDate.split('/')[0] * 1;
-                            const endDateMonth = endDate.split('/')[1] * 1;
-                            const endDateYear = endDate.split('/')[2] * 1;
-
-                            hightlightBetween(startDate, endDate);
-                            displayStartDateAndEndDate(startDate, endDate);
-                            setCheckInAndOutDate(startDate, endDate);
-                        }
-                    });
-                });
-            }
         </script>
+        <script type="text/javascript" th:src="@{/js/room/room_details.js}"></script>
+        <script type="text/javascript" th:src="@{/js/helpers/add_add_remove_fav_room.js}"></script>
     </body>
 </html>

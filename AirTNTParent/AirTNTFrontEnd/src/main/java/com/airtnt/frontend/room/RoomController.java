@@ -14,9 +14,10 @@ import java.util.List;
 
 import com.airtnt.common.entity.Image;
 import com.airtnt.common.entity.Room;
+import com.airtnt.common.entity.User;
 import com.airtnt.frontend.booking.BookedDate;
 import com.airtnt.frontend.booking.BookingService;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.airtnt.frontend.user.UserService;
 
 @Controller
 public class RoomController {
@@ -27,16 +28,25 @@ public class RoomController {
 	@Autowired
 	private BookingService bookingService;
 
-	@GetMapping("/rooms/{roomId}")
-	public String getRoomById(@PathVariable("roomId") Integer roomId, Model model) throws ParseException {
-		Room room = roomService.getRoomById(roomId);
+	@Autowired
+	private UserService userService;
 
+	@GetMapping("/rooms/{roomId}")
+	public String getRoomById(@PathVariable("roomId") Integer roomId, @AuthenticationPrincipal UserDetails userDetails,
+			Model model) throws ParseException {
+		Room room = roomService.getRoomById(roomId);
+		User user = userService.getByEmail(userDetails.getUsername());
+		List<Room> favRooms = new ArrayList<>(user.getRooms());
+		if (user.getRooms().contains(room)) {
+			model.addAttribute("wishlists", favRooms.get(favRooms.indexOf(room)).getId());
+		}
+
+		List<BookedDate> bookedDates = bookingService.getBookedDate(room);
 		List<Image> images = new ArrayList<>(room.getImages());
 		List<Image> secondToFive = new ArrayList<>();
 		for (int i = 0; i < images.size(); i++) {
 			if (secondToFive.size() == 4)
 				break;
-
 			if (images.get(i).getImage().equals(room.getThumbnail()))
 				continue;
 			else
@@ -53,14 +63,16 @@ public class RoomController {
 		model.addAttribute("numberOfBed", bedCount);
 		model.addAttribute("roomImages", secondToFive);
 		model.addAttribute("room", room);
-
-		List<BookedDate> bookedDates = bookingService.getBookedDate(room);
 		model.addAttribute("bookedDates", bookedDates);
 		return "room/room_details";
 	}
 
 	@GetMapping(value = "wishlists")
 	public String wishlists(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+		User user = userService.getByEmail(userDetails.getUsername());
+
+		model.addAttribute("wishlists", user.getRooms());
+
 		return new String("room/wishlists");
 	}
 

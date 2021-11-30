@@ -72,8 +72,6 @@ public class RoomRestController {
         int id = Integer.parseInt(payLoad.get("catId").toString());
         int page = Integer.parseInt(payLoad.get("page").toString());
 
-        System.out.println("id: " + id);
-        System.out.println("page: " + page);
         User user = null;
         List<Integer> roomIds = new ArrayList<>();
         if (userDetails != null) {
@@ -89,11 +87,6 @@ public class RoomRestController {
         // Replicate room to test
         List<Room> roomT = roomService.getRoomsByCategoryId(category, page);
         if (roomT.size() > 0) {
-            // for (int i = 0; i <= 50; i++) {
-            // roomT.add(roomT.get(0));
-            // }
-            // Replicate room to test
-
             try {
                 for (Room room : roomT) {
                     RoomDTO roomDTO = new RoomDTO(room.getId(), room.getImages(), room.getName(), room.getPrice(),

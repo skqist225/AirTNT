@@ -1,20 +1,26 @@
 <div th:fragment="saveAndShare" th:remove="tag">
-    <!-- <button class="rdt_button__action">
-        <div class="rdt_button__inner">
-            <span>
-                <img
-                    th:src="@{/svg/share.svg}"
-                    alt=""
-                    style="height: 16px; width: 16px; display: block"
-                />
-            </span>
-            <span>Chia sẻ</span>
-        </div>
-    </button> -->
-    <button class="rdt_button__action">
-        <span>
-            <img th:src="@{/svg/love.svg}" height="16px;" width="16px" />
-        </span>
+    <button class="room__likeBtn rdt_button__action" th:data-room-id="${room.id}">
+        <svg
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+                display: block;
+                fill: rgba(0, 0, 0, 0.5);
+                height: 24px;
+                width: 24px;
+                stroke: rgb(255, 255, 255);
+                stroke-width: 2;
+                overflow: visible;
+            "
+            class="heartSvg"
+        >
+            <path
+                d="m16 28c7-4.733 14-10 14-17 0-1.792-.683-3.583-2.05-4.95-1.367-1.366-3.158-2.05-4.95-2.05-1.791 0-3.583.684-4.949 2.05l-2.051 2.051-2.05-2.051c-1.367-1.366-3.158-2.05-4.95-2.05-1.791 0-3.583.684-4.949 2.05-1.367 1.367-2.051 3.158-2.051 4.95 0 7 7 12.267 14 17z"
+            ></path>
+        </svg>
         <span>Lưu</span>
     </button>
 </div>
@@ -37,7 +43,7 @@
             </div>
             <div>
                 <div class="rdt_header__action">
-                    <div th:replace="room/room_fragment :: saveAndShare"></div>
+                    <div th:replace="room/_room_details_partial :: saveAndShare"></div>
                 </div>
             </div>
         </div>
@@ -45,7 +51,7 @@
 </div>
 
 <div th:fragment="showMoreImage" th:remove="tag">
-    <div th:replace="room/room_fragment :: image__header"></div>
+    <div th:replace="room/_room_details_partial :: image__header"></div>
     <div class="rdt_images_show">
         <a href="javascript:showFullscreenImage()">
             <div th:each="image,itr : ${room.images}">

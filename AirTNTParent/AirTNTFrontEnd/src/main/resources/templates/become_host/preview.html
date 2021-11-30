@@ -37,10 +37,7 @@
                             padding: 0 32px;
                         "
                     >
-                        <h1
-                            class="room-group__left-title"
-                            style="text-align: center; color: #fff"
-                        >
+                        <h1 class="room-group__left-title" style="text-align: center; color: #fff">
                             Hãy xem mục cho thuê của bạn!
                         </h1>
                     </div>
@@ -50,20 +47,13 @@
                        "
                             style="text-decoration: none"
                         >
-                            <img
-                                th:src="@{/images/airtntlogo.png}"
-                                alt=""
-                                id="airTntLogo"
-                            />
+                            <img th:src="@{/images/airtntlogo.png}" alt="" id="airTntLogo" />
                         </a>
                     </div>
                 </div>
                 <div class="room-group__right">
                     <div class="room-group__right-first">
-                        <button
-                            class="become-a-host__right-cancelBtn"
-                            onclick="backtoHomePage();"
-                        >
+                        <button class="become-a-host__right-cancelBtn" onclick="backtoHomePage();">
                             <span style="font-weight: 500">Lưu và thoát</span>
                         </button>
                     </div>
@@ -80,10 +70,7 @@
                                         height="229px"
                                     />
                                 </div>
-                                <div
-                                    id="room-preview__room-title"
-                                    class="room-preview__line"
-                                ></div>
+                                <div id="room-preview__room-title" class="room-preview__line"></div>
                                 <div class="room-preview__line flex">
                                     <div
                                         id="room-preview__room-type"
@@ -102,35 +89,17 @@
                                         "
                                     />
                                 </div>
-                                <div
-                                    id="room-preview__room-info"
-                                    class="room-preview__line"
-                                ></div>
+                                <div id="room-preview__room-info" class="room-preview__line"></div>
                                 <div
                                     id="room-preview__room-description"
                                     class="room-preview__line"
                                 ></div>
-                                <div
-                                    id="room-preview__room-price"
-                                    class="room-preview__line"
-                                ></div>
-                                <div
-                                    id="room-preview__room-amentities"
-                                    class="room-preview__line"
-                                >
-                                    <div class="room-preview__amentity-title">
-                                        Tiện nghi
-                                    </div>
+                                <div id="room-preview__room-price" class="room-preview__line"></div>
+                                <div id="room-preview__room-amentities" class="room-preview__line">
+                                    <div class="room-preview__amentity-title">Tiện nghi</div>
                                     <div>
-                                        <div
-                                            class="
-                                                flex
-                                                room-preview__amentity-container
-                                            "
-                                        >
-                                            <div
-                                                id="prominentAmentityName"
-                                            ></div>
+                                        <div class="flex room-preview__amentity-container">
+                                            <div id="prominentAmentityName"></div>
                                             <div>
                                                 <img
                                                     src=""
@@ -141,15 +110,8 @@
                                                 />
                                             </div>
                                         </div>
-                                        <div
-                                            class="
-                                                flex
-                                                room-preview__amentity-container
-                                            "
-                                        >
-                                            <div
-                                                id="favoriteAmentityName"
-                                            ></div>
+                                        <div class="flex room-preview__amentity-container">
+                                            <div id="favoriteAmentityName"></div>
                                             <div>
                                                 <img
                                                     src=""
@@ -161,12 +123,7 @@
                                                 />
                                             </div>
                                         </div>
-                                        <div
-                                            class="
-                                                flex
-                                                room-preview__amentity-container
-                                            "
-                                        >
+                                        <div class="flex room-preview__amentity-container">
                                             <div id="safeAmentityName"></div>
                                             <div>
                                                 <img
@@ -186,9 +143,7 @@
                                     style="margin: 0 24px; padding-bottom: 24px"
                                 >
                                     <h2>Vị trí</h2>
-                                    <div
-                                        id="room-preview__room-location-txt"
-                                    ></div>
+                                    <div id="room-preview__room-location-txt"></div>
                                 </div>
                             </div>
                         </div>
@@ -207,13 +162,8 @@
                                 >Quay lại</a
                             >
                         </div>
-                        <button
-                            class="become-a-host__save-room"
-                            onclick="nextPage();"
-                        >
-                            <span style="font-weight: 500"
-                                >Lưu mục cho thuê của bạn</span
-                            >
+                        <button class="become-a-host__save-room" onclick="nextPage();">
+                            <span style="font-weight: 500">Lưu mục cho thuê của bạn</span>
                         </button>
                     </div>
                 </div>
@@ -221,10 +171,7 @@
         </main>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 
         <script th:inline="javascript">
             /*<![CDATA[*/
@@ -232,9 +179,7 @@
             const hostName = /*[[${host}]]*/ 'no-name';
             /*]]>*/
         </script>
-        <script
-            type="text/javascript"
-            th:src="@{'/js/become_host/preview.js'}"
-        ></script>
+        <script type="text/javascript" th:src="@{/js/helpers/format_number.js}"></script>
+        <script type="text/javascript" th:src="@{'/js/become_host/preview.js'}"></script>
     </body>
 </html>

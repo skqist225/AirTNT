@@ -141,7 +141,7 @@ public class RoomService {
 
 	public List<Room> getRoomsByCategoryId(Category category, int page) {
 		Pageable pageable = PageRequest.of(page - 1, MAX_ROOM_PER_FETCH);
-		Iterator<Room> itr = roomRepository.findByCategory(category, pageable).iterator();
+		Iterator<Room> itr = roomRepository.findByCategoryAndStatus(category, true, pageable).iterator();
 		List<Room> rooms = new ArrayList<>();
 
 		itr.forEachRemaining(rooms::add);
@@ -159,87 +159,92 @@ public class RoomService {
 	public String updateField(Integer roomId, String fieldName, Map<String, String> values) {
 		Room room = roomRepository.getById(roomId);
 		switch (fieldName) {
-		case "name": {
-			room.setName(values.get(fieldName));
-			break;
-		}
-		case "roomInfo": {
-			room.setBedCount(Integer.parseInt(values.get("bedCount")));
-			room.setBedroomCount(Integer.parseInt(values.get("bedroomCount")));
-			room.setBathroomCount(Integer.parseInt(values.get("bathroomCount")));
-			break;
-		}
-		case "groupAndTypeAndPrivacy": {
-			room.setRoomGroup(new RoomGroup(Integer.parseInt(values.get("roomGroup"))));
-			room.setRoomType(new RoomType(Integer.parseInt(values.get("roomType"))));
-			room.setPrivacyType(new RoomPrivacy(Integer.parseInt(values.get("roomPrivacy"))));
-			break;
-		}
-		case "location": {
-			Country country = new Country(Integer.parseInt(values.get("country")));
-			State state = new State(values.get("state"), country);
-			City city = new City(values.get("city"), state);
+			case "name": {
+				room.setName(values.get(fieldName));
+				break;
+			}
+			case "roomInfo": {
+				room.setBedCount(Integer.parseInt(values.get("bedCount")));
+				room.setBedroomCount(Integer.parseInt(values.get("bedroomCount")));
+				room.setBathroomCount(Integer.parseInt(values.get("bathroomCount")));
+				break;
+			}
+			case "groupAndTypeAndPrivacy": {
+				room.setRoomGroup(new RoomGroup(Integer.parseInt(values.get("roomGroup"))));
+				room.setRoomType(new RoomType(Integer.parseInt(values.get("roomType"))));
+				room.setPrivacyType(new RoomPrivacy(Integer.parseInt(values.get("roomPrivacy"))));
+				break;
+			}
+			case "location": {
+				Country country = new Country(Integer.parseInt(values.get("country")));
+				State state = new State(values.get("state"), country);
+				City city = new City(values.get("city"), state);
 
-			System.out.println(values.get("country"));
-			System.out.println(values.get("city"));
-			System.out.println(values.get("state"));
-			System.out.println(values.get("street"));
+				System.out.println(values.get("country"));
+				System.out.println(values.get("city"));
+				System.out.println(values.get("state"));
+				System.out.println(values.get("street"));
 
-			room.setCountry(country);
-			room.setState(state);
-			room.setCity(city);
-			room.setStreet(values.get("street"));
-		}
-		case "status": {
-			int request = Integer.parseInt(values.get("status"));
+				room.setCountry(country);
+				room.setState(state);
+				room.setCity(city);
+				room.setStreet(values.get("street"));
+			}
+			case "status": {
 
-			if (request == 1) {
-				room.setStatus(true);
-			} else if (request == 0) {
-				room.setStatus(false);
-			} else {
-				try {
-					roomRepository.delete(room);
-				} catch (Exception e) {
-					return "Delete successfully";
+				int request = Integer.parseInt(values.get("status"));
+
+				if (request == 1) {
+					room.setStatus(true);
+				} else if (request == 0) {
+					room.setStatus(false);
+				} else {
+					try {
+						roomRepository.delete(room);
+						return "Delete successfully";
+					} catch (Exception e) {
+						return "Delete fail";
+					}
 				}
+				break;
 			}
-		}
-		case "amentities": {
+			case "amentities": {
 
-			Set<Amentity> updatedAmentities = room.getAmentities();
+				Set<Amentity> updatedAmentities = room.getAmentities();
 
-			String[] checkedArr = values.get("checked").split(",");
-			String[] uncheckedArr = values.get("unchecked").split(",");
+				String[] checkedArr = values.get("checked").split(",");
+				String[] uncheckedArr = values.get("unchecked").split(",");
 
-			for (String s : checkedArr)
-				System.out.println(s);
+				for (String s : checkedArr)
+					System.out.println(s);
 
-			for (String s : uncheckedArr)
-				System.out.println(s);
+				for (String s : uncheckedArr)
+					System.out.println(s);
 
-			System.out.println(checkedArr.length);
-			System.out.println(uncheckedArr.length);
+				System.out.println(checkedArr.length);
+				System.out.println(uncheckedArr.length);
 
-			for (Amentity a : updatedAmentities) {
-				for (int i = 0; i < uncheckedArr.length; i++) {
-					if (!uncheckedArr[i].equals("") && a.getId() == Integer.parseInt(uncheckedArr[i])) {
-						updatedAmentities.remove(a);
-					} else
-						continue;
+				for (Amentity a : updatedAmentities) {
+					for (int i = 0; i < uncheckedArr.length; i++) {
+						if (!uncheckedArr[i].equals("") && a.getId() == Integer.parseInt(uncheckedArr[i])) {
+							updatedAmentities.remove(a);
+						} else
+							continue;
+					}
 				}
-			}
 
-			for (int i = 0; i < checkedArr.length; i++) {
-				if (!checkedArr[i].equals(""))
-					updatedAmentities.add(new Amentity(Integer.parseInt(checkedArr[i])));
-			}
+				for (int i = 0; i < checkedArr.length; i++) {
+					if (!checkedArr[i].equals(""))
+						updatedAmentities.add(new Amentity(Integer.parseInt(checkedArr[i])));
+				}
 
-			room.setAmentities(updatedAmentities);
-		}
-		case "thumbnail": {
-			room.setThumbnail(values.get("thumbnail"));
-		}
+				room.setAmentities(updatedAmentities);
+				break;
+			}
+			case "thumbnail": {
+				room.setThumbnail(values.get("thumbnail"));
+				break;
+			}
 		}
 
 		Room savedRoom = roomRepository.save(room);

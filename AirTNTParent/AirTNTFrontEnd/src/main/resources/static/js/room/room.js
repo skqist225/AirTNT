@@ -1,3 +1,63 @@
+const active = 'active';
+const imageClassName = '.' + 'cat__image';
+const loadTime = 200;
+const defaultHeight = 1902;
+let wishlistsArr = [];
+let globalPage = 1;
+let globalCatId = 0;
+let rooms = [];
+
+$(document).ready(async function () {
+    const catContainers = $('.cat__container');
+    const buttonContainers = $('.button__container');
+    const roomsContainer = $('#rooms__container');
+
+    const activeWhenLoaded = catContainers.first().addClass(active);
+    const img = $(imageClassName, catContainers.first());
+    img.addClass(active);
+
+    let { catId, page } = await fetchRoomsByCategory(
+        buttonContainers.first(),
+        catContainers,
+        roomsContainer,
+        globalPage,
+        rooms
+    );
+    globalPage = page;
+    globalCatId = catId;
+
+    buttonContainers.each(function (index) {
+        $(this).click(async function () {
+            let { catId, page } = await fetchRoomsByCategory(
+                this,
+                catContainers,
+                roomsContainer,
+                globalPage,
+                rooms
+            );
+            globalPage = page;
+            globalCatId = catId;
+        });
+    });
+
+    $(this).on('scroll', async function () {
+        let root = [];
+        const scrollY = $(this).scrollTop();
+        console.log(scrollY);
+        if (
+            scrollY > defaultHeight * (globalPage - 1) &&
+            scrollY < defaultHeight * (globalPage - 1) + 50
+        ) {
+            root = await fetchRooms(globalCatId, globalPage);
+
+            if (root.length > 0) {
+                rooms.push.apply(root);
+                appendRoomToRoomsContainer(rooms, roomsContainer);
+            }
+        }
+    });
+});
+
 async function fetchRooms(catId, page) {
     const {
         data: { root, wishlists },
@@ -79,6 +139,7 @@ async function fetchRoomsByCategory(self, catContainer, roomsContainer, globalPa
         });
 
         appendRoomToRoomsContainer(rooms, roomsContainer);
+        addClickEventForLoveButton();
     } else {
         roomsContainer.html(`<p>${catName.text()}</p>`);
     }
@@ -87,4 +148,8 @@ async function fetchRoomsByCategory(self, catContainer, roomsContainer, globalPa
     }
 
     return Promise.resolve({ catId, page: globalPage });
+}
+
+function redirectToRoomDetails(self) {
+    window.location.href = `${baseURL}rooms/${self.data('room-id')}`;
 }

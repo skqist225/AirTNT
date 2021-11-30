@@ -17,6 +17,21 @@
     right: 0;
 }
 
+.rdt__location {
+    height: 600px;
+    margin-top: 48px;
+    border-top: 1px solid rgb(211, 211, 211);
+    border-bottom: 1px solid rgb(211, 211, 211);
+}
+
+.heartSvg.like {
+    fill: rgb(255, 56, 92) !important;
+}
+
+#map {
+    height: 500px;
+}
+
 .rdt_name {
     font-size: 26px;
     color: #222;
@@ -60,6 +75,14 @@
     background: transparent;
     color: rgb(34, 34, 34);
     text-decoration: underline;
+    display: flex;
+    align-items: center;
+}
+
+.rdt_button__action:hover {
+    border: none !important;
+    background: rgb(247, 247, 247) !important;
+    color: rgb(0, 0, 0) !important;
 }
 
 .rdt_button__inner {
@@ -158,8 +181,10 @@
 }
 
 .rdt_amentity__header {
+    padding-top: 24px;
     padding-bottom: 24px;
     font-size: 22px;
+    font-weight: 600;
 }
 
 .rdt_anchor__container {
@@ -228,11 +253,11 @@
     padding: 7px 15px;
     color: rgb(34, 34, 34);
     background: rgb(255, 255, 255);
-    border: 1 px solid rgb(34, 34, 34);
+    border: 1px solid rgb(34, 34, 34);
     border-radius: 8px;
     position: absolute;
     right: 20px;
-    bottom: 30px;
+    bottom: 20px;
     font-size: 14px;
     line-height: 18px;
     display: flex;
@@ -498,9 +523,11 @@ border: 1.5px solid rgb(255, 255, 255); */
 .date {
     width: 42px;
     text-align: center;
+    font-size: 14px;
 }
 
-.monthTitle {
+.monthTitle,
+.secondMonthTitle {
     text-align: center;
     padding: 22px 49px;
     font-size: 16px;
@@ -509,9 +536,9 @@ border: 1.5px solid rgb(255, 255, 255); */
 
 .secondMonthTitle {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    padding: 22px 49px;
+    padding-bottom: 0;
 }
 
 .pseudoContainer {
@@ -534,6 +561,15 @@ border: 1.5px solid rgb(255, 255, 255); */
     background: transparent;
     transition: -ms-transform 0.25s ease 0s, -webkit-transform 0.25s ease 0s,
         transform 0.25s ease 0s;
+
+    width: 48px;
+    height: 48px;
+}
+
+.getMonth-btn:hover {
+    border: none !important;
+    background: rgb(247, 247, 247) !important;
+    color: rgb(0, 0, 0) !important;
 }
 
 .block__date {

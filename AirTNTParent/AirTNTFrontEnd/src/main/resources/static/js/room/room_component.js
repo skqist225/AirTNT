@@ -10,7 +10,9 @@ function Room(room, indexParent) {
                                             return `<img src='/airtnt/room_images/${
                                                 room.userName
                                             }/${room.id}/${image.image}' data-index="${index + 1}"
-                                                class='room__image${indexParent + 1}'/>`;
+                                                class='room__image${
+                                                    indexParent + 1
+                                                }' style="object-fit:cover;"/>`;
                                         });
 
                                         return newArr.join('');
@@ -26,6 +28,9 @@ function Room(room, indexParent) {
                                             <path d="m10.8 16c-.4 0-.7-.1-.9-.4l-6.8-6.7c-.5-.5-.5-1.3 0-1.8l6.8-6.7c.5-.5 1.2-.5 1.7 0s .5 1.2 0 1.7l-5.8 5.9 5.8 5.9c.5.5.5 1.2 0 1.7-.2.3-.5.4-.8.4"></path>
                                         </svg>
                                     </button>
+                                    <div style="flex:1; cursor:pointer; height: 50px;" data-room-id="${
+                                        room.id
+                                    }" onclick="redirectToRoomDetails($(this));"></div>
                                     <button type="button" class="nextImgBtn" data-room-id="${
                                         indexParent + 1
                                     }" onclick="changeImage(this, 'room__image');" data-function-name="nextImage">
