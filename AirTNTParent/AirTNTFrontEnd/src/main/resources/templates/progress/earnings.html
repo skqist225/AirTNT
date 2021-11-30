@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xml:lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title></title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+        />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"
+        />
+        <link rel="stylesheet" th:href="@{/css/progress/earnings.css}" type="text/css" />
+        <div th:replace="header :: css"></div>
+    </head>
+    <body>
+        <div th:replace="header :: content"></div>
+
+        <main>
+            <div id="earnings__header">
+                <div>
+                    <div class="earnings__total-earnings-in-year">
+                        [[${currencySymbol}]][[${#numbers.formatDecimal(totalFee, 3, 'POINT', 2,
+                        'COMMA')}]]
+                    </div>
+                    <div class="earnings__total-earnings-in-year-title">
+                        Thu nhập đặt phòng trong năm 2021
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div>$0,00</div>
+                        <div>Đã chi trả</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="earnings__body">
+                <canvas id="myChart" width="400px" height="400px"></canvas>
+            </div>
+
+            <div id="earnings__footer" class="normal-flex">
+                <div class="normal-flex">
+                    <img th:src="@{/svg/close3.svg}" alt="" width="18px" height="18px" />
+                    <div class="earnings__year">2020</div>
+                </div>
+                <div class="flex-1"></div>
+                <div id="earnings__current-year" class="earnings__year" style="font-weight: 600">
+                    2021
+                </div>
+                <div class="flex-1"></div>
+                <div class="normal-flex">
+                    <div class="earnings__year">2022</div>
+                    <img th:src="@{/svg/next.svg}" alt="" width="18px" height="18px" />
+                </div>
+            </div>
+        </main>
+
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script> -->
+
+        <script type="text/javascript" th:src="@{/js/helpers/format_number.js}"></script>
+        <div th:replace="header :: javascript"></div>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            const feesInMonth = /*[[${feesInMonth}]]*/ [];
+            const numberOfBookingsInMonth = /*[[${numberOfBookingsInMonth}]]*/ [];
+            /*]]>*/
+        </script>
+        <script>
+            const labels = [];
+            for (let i = 0; i <= 12; i++) {
+                labels.push(`Tháng ${i}`);
+            }
+
+            const dataFotDatasets = [];
+            const dataFotDatasets2 = [];
+            for (let i = 0; i <= 12; i++) {
+                if (feesInMonth[i]) dataFotDatasets.push(feesInMonth[i]);
+                else dataFotDatasets.push(0);
+
+                if (numberOfBookingsInMonth[i])
+                    dataFotDatasets2.push(feesInMonth[i] / numberOfBookingsInMonth[i]);
+                else dataFotDatasets2.push(0);
+            }
+
+            let delayed;
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: 'Tổng doanh thu trong tháng',
+                            backgroundColor: 'rgb(255, 99, 132)',
+                            borderColor: 'rgb(255, 99, 132)',
+                            data: dataFotDatasets,
+                        },
+                        {
+                            label: 'Thu nhập trung bình trong tháng',
+                            fill: false,
+                            backgroundColor: '#4bc0c0',
+                            borderColor: '#4bc0c0',
+                            borderDash: [5, 5],
+                            data: dataFotDatasets2,
+                        },
+                    ],
+                },
+                options: {
+                    animation: {
+                        onComplete: () => {
+                            delayed = true;
+                        },
+                        delay: context => {
+                            let delay = 0;
+                            if (context.type === 'data' && context.mode === 'default' && !delayed) {
+                                delay = context.dataIndex * 300 + context.datasetIndex * 100;
+                            }
+                            return delay;
+                        },
+                    },
+                    scales: {
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Tiền đơn vị(VND)',
+                            },
+                        },
+                        x: {
+                            beginAtZero: true,
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Tháng',
+                            },
+                        },
+                    },
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Tổng doanh thu trong năm 2021',
+                        },
+                    },
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

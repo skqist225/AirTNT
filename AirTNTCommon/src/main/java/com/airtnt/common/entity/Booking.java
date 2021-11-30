@@ -29,7 +29,7 @@ public class Booking extends BaseEntity {
 
 	private Date cancelDate;
 
-	@Column(columnDefinition = "Decimal(10,2)", nullable = false)
+	@Column(columnDefinition = "Decimal(20,2)", nullable = false)
 	private float pricePerDay;
 
 	@Column(columnDefinition = "SMALLINT default 0")
@@ -39,13 +39,13 @@ public class Booking extends BaseEntity {
 	@Column(columnDefinition = "boolean default false")
 	private boolean isRefund = false;
 
-	@Column(columnDefinition = "Decimal(10,2) default '0.00'")
+	@Column(columnDefinition = "Decimal(20,2) default '0.00'")
 	private float refundPaid;
 
-	@Column(columnDefinition = "Decimal(10,2)", nullable = false)
+	@Column(columnDefinition = "Decimal(20,2)", nullable = false)
 	private float siteFee;
 
-	@Column(columnDefinition = "Decimal(10,2) default '0.00'")
+	@Column(columnDefinition = "Decimal(20,2) default '0.00'")
 	private float totalFee;
 
 	private boolean isComplete;

@@ -61,10 +61,13 @@ public class BookingService {
                                 checkinDate2[0],
                                 checkoutDate2[2] + "/" + checkoutDate2[1] + "/" + checkoutDate2[0]));
             }
-
         }
-
         return bookedDates;
+    }
+
+    public List<Booking> getBookingsByRooms(List<Integer> rooms, LocalDateTime startDate, LocalDateTime endDate) {
+        List<Booking> bookings = bookingRepository.getBookingsByRooms(rooms, startDate, endDate);
+        return bookings;
     }
 
 }

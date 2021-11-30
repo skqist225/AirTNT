@@ -19,6 +19,8 @@ import com.airtnt.common.entity.User;
 public interface RoomRepository extends JpaRepository<Room, Integer>, JpaSpecificationExecutor<Room> {
         public List<Room> findByCategoryAndStatus(Category category, boolean status, Pageable pageable);
 
+        public List<Room> findByHost(User host);
+
         @Query("SELECT r FROM Room r JOIN r.amentities ra WHERE r.host = :host" + " AND r.name LIKE %:query%"
                         + " AND r.bedroomCount >= :bedroomCount AND r.bathroomCount >= :bathroomCount AND r.bedCount >= :bedCount"
                         + " AND ra.id IN (:amentitiesID)" + " AND r.status IN (:statusesID)")

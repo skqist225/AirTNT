@@ -46,6 +46,13 @@ public class RoomService {
 		return roomRepository.save(room);
 	}
 
+	public List<Room> getRoomsByHostId(User host) {
+		Iterator<Room> itr = roomRepository.findByHost(host).iterator();
+		List<Room> rooms = new ArrayList<>();
+		itr.forEachRemaining(rooms::add);
+		return rooms;
+	}
+
 	public Room getRoomById(int id) {
 		Optional<Room> optionalRoom = roomRepository.findById(id);
 		Room room = new Room();
