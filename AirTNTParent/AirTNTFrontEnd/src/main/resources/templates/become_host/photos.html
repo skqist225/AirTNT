@@ -18,6 +18,14 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
             rel="stylesheet"
         />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"
+        />
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"
+        />
 
         <link rel="stylesheet" th:href="@{/css/become_host/photos.css}" />
         <link rel="stylesheet" th:href="@{/css/become_host/room_type.css}" />
@@ -37,10 +45,7 @@
                             padding: 0 32px;
                         "
                     >
-                        <h1
-                            class="room-group__left-title"
-                            style="text-align: center; color: #fff"
-                        >
+                        <h1 class="room-group__left-title" style="text-align: center; color: #fff">
                             Tiếp theo, hãy thêm một số ảnh chụp chỗ ở của bạn
                         </h1>
                     </div>
@@ -50,20 +55,13 @@
                        "
                             style="text-decoration: none"
                         >
-                            <img
-                                th:src="@{/images/airtntlogo.png}"
-                                alt=""
-                                id="airTntLogo"
-                            />
+                            <img th:src="@{/images/airtntlogo.png}" alt="" id="airTntLogo" />
                         </a>
                     </div>
                 </div>
                 <div class="room-group__right">
                     <div class="room-group__right-first">
-                        <button
-                            class="become-a-host__right-cancelBtn"
-                            onclick="backtoHomePage();"
-                        >
+                        <button class="become-a-host__right-cancelBtn" onclick="backtoHomePage();">
                             <span style="font-weight: 500">Lưu và thoát</span>
                         </button>
                     </div>
@@ -81,9 +79,7 @@
                                     height="64px"
                                 />
                             </div>
-                            <div class="photos__drag-title">
-                                Kéo ảnh của bạn vào đây
-                            </div>
+                            <div class="photos__drag-title">Kéo ảnh của bạn vào đây</div>
                             <div>Thêm ít nhất 5 ảnh</div>
                             <div style="text-align: center; margin-top: 20px">
                                 <button
@@ -133,10 +129,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button
-                                        class="upload__btn"
-                                        onclick="uploadImagesToFolder();"
-                                    >
+                                    <button class="upload__btn" onclick="uploadImagesToFolder();">
                                         <img
                                             th:src="@{'/amentity_images/upload.svg'}"
                                             alt=""
@@ -169,10 +162,7 @@
                                 >Quay lại</a
                             >
                         </div>
-                        <button
-                            class="become-a-host__right-startBtn"
-                            onclick="nextPage();"
-                        >
+                        <button class="become-a-host__right-startBtn" onclick="nextPage();">
                             <span style="font-weight: 500">Tiếp theo</span>
                         </button>
                     </div>
@@ -181,10 +171,8 @@
         </main>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
         <script th:inline="javascript">
             /*<![CDATA[*/
             const baseURL = /*[[@{/}]]*/ 'default';

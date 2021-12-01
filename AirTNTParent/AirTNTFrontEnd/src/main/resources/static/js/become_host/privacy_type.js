@@ -5,9 +5,7 @@ $(document).ready(function () {
         const { privacyType } = JSON.parse(localStorage.getItem('room'));
 
         privacyTypeBox.each(function () {
-            if (
-                $(this).children('.privacy-type__name').text() === privacyType
-            ) {
+            if ($(this).children('.privacy-type__name').text() === privacyType) {
                 $(this).addClass('active');
                 return false;
             }
@@ -30,10 +28,11 @@ function backtoHomePage() {
 }
 
 function nextPage() {
-    const choosenPrivacyType = $('div.privacy-type__box')
-        .filter('.active')
-        .children('.privacy-type__name')
-        .text();
+    const choosenPrivacyType =
+        $('div.privacy-type__box')
+            .filter('.active')
+            .children('.privacy-type__name')
+            .data('privacy-id') * 1;
 
     let room = {};
     if (!localStorage.getItem('room')) {

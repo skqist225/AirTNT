@@ -1,28 +1,28 @@
 package com.airtnt.frontend.progress;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.airtnt.common.entity.Booking;
+import com.airtnt.common.entity.Review;
 import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
 import com.airtnt.frontend.booking.BookingService;
+import com.airtnt.frontend.review.ReviewService;
 import com.airtnt.frontend.room.RoomService;
 import com.airtnt.frontend.user.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -38,17 +38,22 @@ public class ProgressController {
     @Autowired
     private RoomService roomService;
 
+    @Autowired
+    private ReviewService reviewService;
+
     @GetMapping(value = "earnings")
-    public String earnings(@AuthenticationPrincipal UserDetails UserDetails, Model model) throws ParseException {
-        User host = userService.getByEmail(UserDetails.getUsername());
+    public String earnings(@AuthenticationPrincipal UserDetails userDetails, @Param("year") Integer year,
+            Model model) throws ParseException {
+        User host = userService.getByEmail(userDetails.getUsername());
         List<Room> rooms = roomService.getRoomsByHostId(host);
-        List<Integer> roomIds = new ArrayList<>();
-        for (Room r : rooms) {
-            roomIds.add(r.getId());
+        Integer[] roomIds = new Integer[rooms.size()];
+
+        for (int i = 0; i < rooms.size(); i++) {
+            roomIds[i] = rooms.get(i).getId();
         }
 
-        LocalDateTime startDate = LocalDateTime.of(2021, 1, 1, 0, 0, 0);
-        LocalDateTime endDate = LocalDateTime.of(2021, 12, 31, 0, 0, 0);
+        LocalDateTime startDate = LocalDateTime.of(year, 1, 1, 0, 0, 0);
+        LocalDateTime endDate = LocalDateTime.of(year, 12, 31, 0, 0, 0);
 
         List<Booking> bookings = bookingService.getBookingsByRooms(roomIds, startDate, endDate);
 
@@ -56,22 +61,26 @@ public class ProgressController {
         Map<Integer, Float> feesInMonth = new HashMap<>();
         Map<Integer, Integer> numberOfBookingsInMonth = new HashMap<>();
         for (Booking b : bookings) {
-            totalFee += b.getTotalFee();
+            if (b.getRoom().getCurrency().getSymbol().equals("$"))
+                totalFee += b.getTotalFee() * 22705;
+            else
+                totalFee += b.getTotalFee();
+
             Integer monthValue = b.getBookingDate().getMonthValue();
 
-            if (feesInMonth.get(monthValue) == null)
-                feesInMonth.put(monthValue, b.getTotalFee());
-            else
+            if (feesInMonth.containsKey(monthValue))
                 feesInMonth.put(
                         monthValue,
                         b.getTotalFee() + feesInMonth.get(monthValue));
-
-            if (numberOfBookingsInMonth.get(monthValue) == null)
-                numberOfBookingsInMonth.put(monthValue, 1);
             else
+                feesInMonth.put(monthValue, b.getTotalFee());
+
+            if (numberOfBookingsInMonth.containsKey(monthValue))
                 numberOfBookingsInMonth.put(
                         monthValue,
                         1 + numberOfBookingsInMonth.get(monthValue));
+            else
+                numberOfBookingsInMonth.put(monthValue, 1);
         }
 
         feesInMonth.entrySet().stream().sorted(Map.Entry.comparingByKey());
@@ -83,6 +92,28 @@ public class ProgressController {
         model.addAttribute("totalFee", totalFee);
         model.addAttribute("currencySymbol", "đ");
         return new String("progress/earnings");
+    }
+
+    @GetMapping(value = "reviews")
+    public String reviews(@AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(name = "numberOfStars", required = false, defaultValue = "0") String numberOfStars,
+            Model model) throws ParseException {
+        User host = userService.getByEmail(userDetails.getUsername());
+        List<Room> rooms = roomService.getRoomsByHostId(host);
+        Integer[] roomIds = new Integer[rooms.size()];
+
+        for (int i = 0; i < rooms.size(); i++) {
+            roomIds[i] = rooms.get(i).getId();
+        }
+        float finalRatings = 0;
+        List<Review> reviews = reviewService.getReviewsByRoom(roomIds, Integer.parseInt(numberOfStars));
+        for (Review r : reviews) {
+            finalRatings += r.getFinalRating();
+        }
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("finalRatings", finalRatings / reviews.size());
+
+        return new String("progress/reviews");
     }
 
 }

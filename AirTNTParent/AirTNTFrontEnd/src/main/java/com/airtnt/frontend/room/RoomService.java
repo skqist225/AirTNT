@@ -37,7 +37,7 @@ import com.airtnt.common.entity.User;
 @Transactional
 public class RoomService {
 	public static final int MAX_ROOM_PER_FETCH = 20;
-	public static final int MAX_ROOM_PER_FETCH_BY_HOST = 3;
+	public static final int MAX_ROOM_PER_FETCH_BY_HOST = 9;
 
 	@Autowired
 	private RoomRepository roomRepository;
@@ -146,12 +146,9 @@ public class RoomService {
 		return rooms;
 	}
 
-	public List<Room> getRoomsByCategoryId(Category category, int page) {
+	public List<Room> getRoomsByCategoryId(Integer categoryId, boolean status, int page) {
 		Pageable pageable = PageRequest.of(page - 1, MAX_ROOM_PER_FETCH);
-		Iterator<Room> itr = roomRepository.findByCategoryAndStatus(category, true, pageable).iterator();
-		List<Room> rooms = new ArrayList<>();
-
-		itr.forEachRemaining(rooms::add);
+		List<Room> rooms = roomRepository.getByCategoryAndStatus(categoryId, status, pageable);
 		return rooms;
 	}
 

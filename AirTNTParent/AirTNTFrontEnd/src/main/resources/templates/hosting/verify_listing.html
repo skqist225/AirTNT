@@ -71,55 +71,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="verify-listing__body-right-middle">
-                        <div
-                            class="verify-listing__body-right-first__title"
-                            style="
-                                display: flex;
-                                align-items: center;
-                                justify-content: space-between;
-                            "
-                        >
-                            <div>Thêm ảnh trên giấy tờ tùy thân của bạn</div>
-                            <div
-                                style="
-                                    width: 20px;
-                                    height: 20px;
-                                    cursor: pointer;
-                                    display: flex;
-                                    align-items: center;
-                                "
-                            >
-                                <img
-                                    th:src="@{/svg/next.svg}"
-                                    alt=""
-                                    width="16px"
-                                    height="16px"
-                                />
-                            </div>
-                        </div>
-                        <div class="verify-listing__body-right-first__subtitle">
-                            Điều này giúp chúng tôi xác minh đó đúng là bạn.
-                            Chúng tôi tuyệt đối không chia sẻ thông tin giấy tờ
-                            tùy thân của bạn với khách.
-                        </div>
-                        <div
-                            class="
-                                verify-listing__body-right-first__is-mandatory-or-complete
-                            "
-                        >
-                            <div
-                                style="
-                                    font-size: 12px;
-                                    line-height: 16px !important;
-                                    font-weight: 500 !important;
-                                "
-                            >
-                                Bắt buộc
-                            </div>
-                            <div class="isCompleted"></div>
-                        </div>
-                    </div> -->
                     <div class="verify-listing__body-right-last">
                         <div
                             class="verify-listing__body-right-first__title"
@@ -212,7 +163,10 @@
         </script>
         <script>
             jQuery(document).ready(function () {
-                $('#roomThumbnail').attr('src', `${baseURL}room_images/${userName}/${thumbnail}`);
+                $('#roomThumbnail').attr(
+                    'src',
+                    `${baseURL}room_images/${userName}/${roomId}/${thumbnail}`
+                );
 
                 if (allVerified) {
                     $('.verify-listing__button-rent').first().attr('disabled', false);
@@ -226,7 +180,7 @@
                     if (data === 'Complete!') {
                         alertify.success('Đăng phòng/nhà cho thuê thành công!');
                         setTimeout(() => {
-                            window.location.href = `${baseURL}hosting/listings`;
+                            window.location.href = `${baseURL}hosting/listings/1`;
                         }, 1000);
                     }
                 });

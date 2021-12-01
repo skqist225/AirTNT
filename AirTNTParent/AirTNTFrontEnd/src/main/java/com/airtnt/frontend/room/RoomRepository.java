@@ -10,14 +10,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-import com.airtnt.common.entity.Category;
 import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer>, JpaSpecificationExecutor<Room> {
-        public List<Room> findByCategoryAndStatus(Category category, boolean status, Pageable pageable);
+        @Query("SELECT r FROM Room r WHERE r.category.id = :categoryId AND r.status = :status")
+        public List<Room> getByCategoryAndStatus(Integer categoryId, boolean status, Pageable pageable);
 
         public List<Room> findByHost(User host);
 

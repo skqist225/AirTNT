@@ -82,10 +82,7 @@ public class RoomController {
 	@GetMapping(value = "wishlists")
 	public String wishlists(@AuthenticationPrincipal UserDetails userDetails, Model model) {
 		User user = userService.getByEmail(userDetails.getUsername());
-
 		model.addAttribute("wishlists", user.getRooms());
-
 		return new String("room/wishlists");
 	}
-
 }

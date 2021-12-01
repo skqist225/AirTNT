@@ -89,31 +89,3 @@ public class HostingController {
     }
 
 }
-
-// this.name = name;
-// this.images = images;
-// this.thumbnail = thumbnail;
-// this.rating = rating;
-// this.reviews = reviews;
-// this.country = country;
-// this.state = state;
-// this.city = city;
-// this.bedroomCount = bedroomCount;
-// this.bathroomCount = bathroomCount;
-// this.accomodatesCount = accomodatesCount;
-// this.bedCount = bedCount;
-// this.roomGroup = roomGroup;
-// this.roomType = roomType;
-// this.currency = currency;
-// this.category = category;
-// this.description = description;
-// this.amentities = amentities;
-// this.latitude = latitude;
-// this.longitude = longitude;
-// this.price = price;
-// this.privacyType = privacyType;
-// this.priceType = priceType;
-// this.minimumStay = minimumStay;
-// this.stayType = stayType;
-// this.host = host;
-// this.rules = rules;

@@ -18,9 +18,7 @@ test(uploadPhotos);
 
 async function test(uploadPhotos) {
     if (localStorage.getItem('room')) {
-        const { roomImages, userName2 } = JSON.parse(
-            localStorage.getItem('room')
-        );
+        const { roomImages, userName2 } = JSON.parse(localStorage.getItem('room'));
         if (roomImages && roomImages.length >= 5) {
             isUploaded = true;
             const formData = new FormData();
@@ -127,12 +125,7 @@ function doPreviewImage(files, subImagesContainer) {
         }
 
         for (let i = 1; i < files.length; i++) {
-            const promise = previewImage(
-                files[i],
-                subImagesContainer,
-                false,
-                i
-            );
+            const promise = previewImage(files[i], subImagesContainer, false, i);
             promise.done(function () {
                 photos.push(files[i]);
 
@@ -152,12 +145,7 @@ function doPreviewImageSecondTime(files, subImagesContainer) {
     const defer = $.Deferred();
     let count = 0;
 
-    var promise = previewImage(
-        files[0],
-        subImagesContainer,
-        false,
-        photos.length
-    );
+    var promise = previewImage(files[0], subImagesContainer, false, photos.length);
 
     promise.done(function () {
         photos.push(files[0]);
@@ -169,12 +157,7 @@ function doPreviewImageSecondTime(files, subImagesContainer) {
             let lastIndex = photos.length;
 
             for (let i = 1; i < files.length; i++) {
-                const promise = previewImage(
-                    files[i],
-                    subImagesContainer,
-                    false,
-                    lastIndex++
-                );
+                const promise = previewImage(files[i], subImagesContainer, false, lastIndex++);
 
                 promise.done(function () {
                     photos.push(files[i]);
@@ -244,11 +227,7 @@ function addEmptyImage(files, uploadPhotos, subImagesContainer) {
     const singleImageContainer = $('.singleImageContainer');
     if (singleImageContainer.length > 0) {
         singleImageContainer.each(function (e) {
-            if (
-                !$(this).children(
-                    `img[src="${baseURL}amentity_images/single_image.svg"]`
-                )
-            ) {
+            if (!$(this).children(`img[src="${baseURL}amentity_images/single_image.svg"]`)) {
                 $(this).removeClass('singleImageContainer');
                 $(this).unbind('click');
             } else {
@@ -376,28 +355,24 @@ function deleteImage(index) {
 let _currentFolderIndex = 0;
 async function uploadImagesToFolder() {
     if (photos.length < 5) {
-        alert('Vui lòng chọn ít nhất 5 hình ảnh.');
+        alertify.warning('Vui lòng chọn ít nhất 5 hình ảnh.');
         return;
     }
 
     const formData = new FormData();
-    formData.set('userName', userName);
     photos.forEach(photo => formData.append('photos', photo));
 
     const {
         data: { status, userName: userName2 },
-    } = await axios.post(
-        `${baseURL}become-a-host/upload-room-photos`,
-        formData,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        }
-    );
+    } = await axios.post(`${baseURL}become-a-host/upload-room-photos`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
 
     if (status === 'success') {
         isUploaded = true;
+        alertify.success('Tải ảnh lên thành công!');
 
         let room = {};
         if (!localStorage.getItem('room')) {
@@ -445,6 +420,6 @@ function nextPage() {
 
         window.location.href = `${baseURL}become-a-host/title`;
     } else {
-        alert('Vui lòng chọn đủ  5 ảnh');
+        alertify.error('Vui lòng chọn đủ  5 ảnh hoặc tải ảnh lên!');
     }
 }

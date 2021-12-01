@@ -1,6 +1,10 @@
 package com.airtnt.frontend.room;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -26,14 +30,12 @@ import com.airtnt.common.entity.State;
 import com.airtnt.common.entity.StayType;
 import com.airtnt.common.entity.User;
 import com.airtnt.frontend.calendar.CalendarClass;
-import com.airtnt.frontend.category.CategoryService;
 import com.airtnt.frontend.city.CityService;
 import com.airtnt.frontend.rule.RuleService;
 import com.airtnt.frontend.state.StateService;
 import com.airtnt.frontend.user.UserService;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.apache.tomcat.jni.File;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -47,9 +49,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RoomRestController {
-
-    @Autowired
-    private CategoryService categoryService;
 
     @Autowired
     private RoomService roomService;
@@ -66,60 +65,6 @@ public class RoomRestController {
     @Autowired
     private CityService cityService;
 
-    @PostMapping("/homes")
-    public String fetchRoomsByCategoryId(@RequestBody Map<String, Object> payLoad,
-            @AuthenticationPrincipal UserDetails userDetails) {
-        int id = Integer.parseInt(payLoad.get("catId").toString());
-        int page = Integer.parseInt(payLoad.get("page").toString());
-
-        User user = null;
-        List<Integer> roomIds = new ArrayList<>();
-        if (userDetails != null) {
-            user = userService.getByEmail(userDetails.getUsername());
-            for (Room r : user.getRooms()) {
-                roomIds.add(r.getId());
-            }
-        }
-
-        Category category = categoryService.getCategoryById(id);
-        JSONArray array = new JSONArray();
-
-        // Replicate room to test
-        List<Room> roomT = roomService.getRoomsByCategoryId(category, page);
-        if (roomT.size() > 0) {
-            try {
-                for (Room room : roomT) {
-                    RoomDTO roomDTO = new RoomDTO(room.getId(), room.getImages(), room.getName(), room.getPrice(),
-                            room.getPriceType(), room.getCurrency().getSymbol(), room.getHost().getEmail());
-
-                    array.put(new JSONObject().put("id", roomDTO.getId()).put("images", roomDTO.getImages())
-                            .put("name", roomDTO.getName()).put("price", roomDTO.getPrice())
-                            .put("priceType", roomDTO.getPriceType()).put("currencySymbol", roomDTO.getCurrencySymbol())
-                            .put("userName", roomDTO.getUserName()));
-                }
-            } catch (JSONException e) {
-
-            }
-
-            if (user != null) {
-                return new JSONObject().put("root", array).put("wishlists", roomIds).toString();
-            } else
-                return new JSONObject().put("root", array).toString();
-
-        } else {
-            return new JSONObject().put("root", new JSONArray()).toString();
-        }
-
-    }
-
-    @GetMapping("/homes/{roomId}")
-    public String getRoomImages(@PathVariable("roomId") int id) {
-        Room room = roomService.getRoomById(id);
-        Set<Image> roomImages = room.getImages();
-
-        return new JSONObject().put("images", roomImages).put("userName", room.getHost().getEmail()).toString();
-    }
-
     @GetMapping("/calendar/{selectedMonth}/{selectedYear}")
     public String getCalendayByYearAndMonth(@PathVariable("selectedYear") int selectedYear,
             @PathVariable("selectedMonth") int selectedMonth) {
@@ -132,7 +77,8 @@ public class RoomRestController {
     }
 
     @PostMapping(value = "/room/save")
-    public String roomSave(@ModelAttribute RoomPostDTO payload) {
+    public String roomSave(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute RoomPostDTO payload)
+            throws IOException {
         Set<Rule> rules = new HashSet<>();
         Set<Amentity> amentities = new HashSet<>();
         Set<Image> images = new HashSet<>();
@@ -181,6 +127,17 @@ public class RoomRestController {
                 .thumbnail(images.iterator().next().getImage()).street(payload.getStreet()).status(false).build();
 
         Room savedRoom = roomService.save(room);
+
+        String uploadDir = "../room_images/" + userDetails.getUsername() + "/" + savedRoom.getId();
+        String source = "../room_images/" + userDetails.getUsername() + "/";
+
+        Path sourcePath = Paths.get(source);
+        Path targetPath = Files.createDirectories(Paths.get(uploadDir));
+
+        for (String imageName : payload.getImages()) {
+            Files.move(sourcePath.resolve(imageName), targetPath.resolve(imageName),
+                    StandardCopyOption.REPLACE_EXISTING);
+        }
 
         return new JSONObject().put("status", "OK").put("roomId", savedRoom.getId()).toString();
     }

@@ -65,7 +65,7 @@ public class BookingService {
         return bookedDates;
     }
 
-    public List<Booking> getBookingsByRooms(List<Integer> rooms, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Booking> getBookingsByRooms(Integer[] rooms, LocalDateTime startDate, LocalDateTime endDate) {
         List<Booking> bookings = bookingRepository.getBookingsByRooms(rooms, startDate, endDate);
         return bookings;
     }

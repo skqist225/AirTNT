@@ -63,10 +63,6 @@ async function nextPage() {
         const city = room.place_name.toString().split(',')[placeNameLength - 3] || 'no-city';
         const street = room.place_name.toString().split(',')[placeNameLength - 4] || 'no-street';
 
-        if (country === 'Vietnam') {
-            country = 216;
-        }
-
         const fd = new FormData();
 
         let amentities = [];
@@ -78,7 +74,7 @@ async function nextPage() {
             name: room.roomTitle,
             amentities,
             images: room.roomImages,
-            country,
+            country: 216,
             state,
             city,
             street,
@@ -100,8 +96,6 @@ async function nextPage() {
             host: hostName,
             privacyType: room.privacyType,
         };
-
-        console.log(roomEntity);
 
         for (let key in roomEntity) {
             fd.append(key, roomEntity[key]);

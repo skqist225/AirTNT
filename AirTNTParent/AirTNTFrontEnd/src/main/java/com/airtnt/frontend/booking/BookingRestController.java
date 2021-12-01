@@ -29,7 +29,7 @@ public class BookingRestController {
     private UserService userService;
 
     @GetMapping(value = "/book/create-booking/{roomId}")
-    public String createBooking(@AuthenticationPrincipal UserDetails userDetails,
+    public BookingDTO createBooking(@AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("roomId") Integer roomId,
             @Param("checkin") String checkin,
             @Param("checkout") String checkout,
@@ -39,10 +39,9 @@ public class BookingRestController {
         User customer = userService.getByEmail(userDetails.getUsername());
         Booking booking = bookingService.createBooking(checkin, checkout, room, numberOfDays, siteFee, customer);
 
-        if (booking == null) {
-            return new String("failure");
-        }
+        BookingDTO bDTO = new BookingDTO(booking.getId(), booking.getBookingDate(),
+                booking.getRoom().getCurrency().getSymbol(), booking.getTotalFee(), 0);
 
-        return new String("success");
+        return bDTO;
     }
 }

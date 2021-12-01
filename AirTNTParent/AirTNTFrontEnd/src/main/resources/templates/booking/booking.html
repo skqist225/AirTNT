@@ -234,8 +234,10 @@
                     const { data } = await axios.get(
                         `${baseURL}book/create-booking/${roomId}?checkin=${checkinPlain}&checkout=${checkoutPlain}&numberOfDays=${numberOfNights}&siteFee=${siteFee}`
                     );
-                    console.log(data);
-                    if (data === 'success') {
+
+                    if (data !== null) {
+                        await axios.put('/airtnt/bookings', [data]);
+
                         const { error } = await stripe.confirmPayment({
                             elements,
                             confirmParams: {

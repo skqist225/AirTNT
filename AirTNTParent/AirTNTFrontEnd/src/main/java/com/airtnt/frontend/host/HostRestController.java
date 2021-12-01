@@ -25,6 +25,8 @@ import org.json.JSONObject;
 import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @RestController
 @RequestMapping("/become-a-host/")
@@ -34,16 +36,15 @@ public class HostRestController {
     private RoomService roomService;
 
     @PostMapping("upload-room-photos")
-    public String uploadRoomPhotos(@ModelAttribute PhotoDTO payload) throws IOException, URISyntaxException {
-        String userName = payload.getUsername();
-
+    public String uploadRoomPhotos(@AuthenticationPrincipal UserDetails userDetails, @ModelAttribute PhotoDTO payload)
+            throws IOException, URISyntaxException {
         String uploadDir = "";
 
         if (payload.getFolderno() != null) {
-            uploadDir = "../room_images/" + userName + "/" + payload.getFolderno();
+            uploadDir = "../room_images/" + userDetails.getUsername() + "/" + payload.getFolderno();
             FileUploadUtil.cleanDir(uploadDir);
         } else
-            uploadDir = "../room_images/" + userName;
+            uploadDir = "../room_images/" + userDetails.getUsername();
 
         for (MultipartFile multipartFile : payload.getPhotos()) {
             if (!multipartFile.isEmpty()) {
@@ -54,14 +55,15 @@ public class HostRestController {
 
         JSONObject object = new JSONObject();
         object.put("status", "success");
-        object.put("userName", userName);
+        object.put("userName", userDetails.getUsername());
 
         return object.toString();
     }
 
     @PostMapping("update/upload-room-photos")
-    public String updatedUploadRoomPhotos(@ModelAttribute PhotoDTO payload) throws IOException, URISyntaxException {
-        String userName = payload.getUsername();
+    public String updatedUploadRoomPhotos(@AuthenticationPrincipal UserDetails userDetails,
+            @ModelAttribute PhotoDTO payload) throws IOException, URISyntaxException {
+        String userName = userDetails.getUsername();
         String uploadDir = "../room_images/" + userName + "/" + payload.getFolderno();
         FileUploadUtil.cleanDir(uploadDir);
 
