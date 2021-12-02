@@ -2,7 +2,6 @@ package com.airtnt.frontend.review;
 
 import java.util.List;
 
-import com.airtnt.common.entity.Booking;
 import com.airtnt.common.entity.Review;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -92,6 +92,14 @@ public class RoomController {
 		return "room/room_details";
 	}
 
+	@GetMapping(value = "room/{roomId}/delete")
+	public String deleteRoom(@PathVariable("roomId") Integer roomId, Model model) {
+		roomService.deleteRoom(roomId);
+		model.addAttribute("deleteMessage", "Xóa thành công");
+
+		return "redirect:/hosting/listings/1";
+	}
+
 	@GetMapping(value = "wishlists")
 	public String wishlists(@AuthenticationPrincipal UserDetails userDetails, Model model) {
 		User user = userService.getByEmail(userDetails.getUsername());

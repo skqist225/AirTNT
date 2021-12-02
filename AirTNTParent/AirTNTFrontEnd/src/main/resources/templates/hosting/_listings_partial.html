@@ -56,7 +56,7 @@
     </div>
 </div>
 
-<div th:remove="tag" th:fragment="listingsTable">
+<div th:remove="tag" th:fragment="listingsTable(list)">
     <table id="table" th:if="${#lists.size(rooms) > 0}">
         <thead>
             <tr>
@@ -224,7 +224,7 @@
             </tr>
         </thead>
         <tbody>
-            <th:block th:each="room : ${rooms}">
+            <th:block th:each="room : ${list}">
                 <tr th:data-room-id="${room.id}">
                     <td>
                         <div style="padding-left: 8px">

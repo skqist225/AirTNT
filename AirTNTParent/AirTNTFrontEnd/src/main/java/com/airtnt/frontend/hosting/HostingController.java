@@ -84,6 +84,9 @@ public class HostingController {
         /*-----------------------------AMENTITIES------------------------------- */
         List<Amentity> amentities = amentityService.getAllAmentities();
         model.addAttribute("amentities", amentities);
+
+        model.addAttribute("includeMiddle", true);
+        model.addAttribute("excludeBecomeHostAndNavigationHeader", true);
         return new String("hosting/listings");
         /*-----------------------------AMENTITIES------------------------------- */
     }

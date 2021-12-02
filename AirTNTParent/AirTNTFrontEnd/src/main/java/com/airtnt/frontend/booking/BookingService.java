@@ -2,12 +2,12 @@ package com.airtnt.frontend.booking;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -16,10 +16,16 @@ import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookingService {
+
+    public final int MAX_BOOKING_PER_FETCH_BY_HOST = 10;
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -84,6 +90,35 @@ public class BookingService {
 
     public List<Booking> getBookingsByUser(Integer customerId, String query) {
         List<Booking> bookings = bookingRepository.getByCustomer(customerId, query);
+        return bookings;
+    }
+
+    public Page<Booking> getBookingsByRooms(Integer[] roomIds, int pageNumber, Map<String, String> filters) {
+
+        String sortField = filters.get("sortField");
+        String sortDir = filters.get("sortDir");
+        String query = filters.get("query");
+        Integer bookingId = -1;
+        if (query.matches("\\d+")) {
+            System.out.println(query);
+            bookingId = Integer.parseInt(query);
+        }
+        System.out.println(bookingId);
+
+        Sort sort = Sort.by(sortField);
+        if (sortField.equals("room-name")) {
+            sort = Sort.by("room.name");
+        }
+        if (sortField.equals("customer-fullName")) {
+            Sort sortByCustomerFirstName = Sort.by("customer.firstName");
+            Sort sortByCustomerLastName = Sort.by("customer.lastName");
+
+            sort = sortByCustomerFirstName.and(sortByCustomerLastName);
+        }
+
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+        Pageable pageable = PageRequest.of(pageNumber - 1, MAX_BOOKING_PER_FETCH_BY_HOST, sort); // pase base 0
+        Page<Booking> bookings = bookingRepository.getBookingsByRooms(roomIds, query, pageable);
         return bookings;
     }
 

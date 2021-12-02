@@ -76,11 +76,11 @@ public class Room extends BaseEntity {
 	@JoinColumn(name = "country_id")
 	private Country country;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "state_id")
 	private State state;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "city_id")
 	private City city;
 
@@ -148,6 +148,9 @@ public class Room extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "host_id")
 	private User host;
+
+	@OneToMany(mappedBy = "room", cascade = CascadeType.REMOVE)
+	private List<Booking> bookings;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "rooms_rules", joinColumns = @JoinColumn(name = "room_id"), inverseJoinColumns = @JoinColumn(name = "rule_id"))

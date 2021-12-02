@@ -149,7 +149,7 @@ public class AccountSettings {
 
             if (city == null) {
                 System.out.println("city is not existed");
-                String cityCode = request.getParameter(cityName);
+                // String cityCode = request.getParameter(cityName);
                 city = cityService.addCity(cityName, state);
             }
             String aprtNoAndStreet = request.getParameter("address.aprtNoAndStreet");

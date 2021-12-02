@@ -29,7 +29,7 @@ public class SmsService {
 
         String msg = "Your OTP - " + number + " please verify this OTP in order to complete the rental process.";
 
-        Message message = Message.creator(new PhoneNumber(sms.getPhoneNumber()), new PhoneNumber(FROM_NUMBER), msg)
+        Message.creator(new PhoneNumber(sms.getPhoneNumber()), new PhoneNumber(FROM_NUMBER), msg)
                 .create();
         StoreOTP.setOtp(number);
     }

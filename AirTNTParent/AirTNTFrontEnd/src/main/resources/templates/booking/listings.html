@@ -1,136 +1,273 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Thanks for your order!</title>
-        <style>
-            *,
-            *::before,
-            *::after {
-                font-family: 'Roboto', sans-serif;
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quản lý mục cho thuê của bạn</title>
 
-            .rdt_booking_button {
-                cursor: pointer;
-                display: inline-block;
-                margin: 0px;
-                position: relative;
-                text-align: center;
-                text-decoration: none;
-                touch-action: manipulation;
-                font-size: 16px;
-                line-height: 20px;
-                font-weight: 600;
-                border-radius: 8px;
-                outline: none;
-                padding: 14px 24px;
-                transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
-                    -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
-                -webkit-tap-highlight-color: transparent;
-                border: none;
-                background: linear-gradient(
-                    to right,
-                    rgb(230, 30, 77) 0%,
-                    rgb(227, 28, 95) 50%,
-                    rgb(215, 4, 102) 100%
-                );
-                color: rgb(255, 255, 255);
-                width: 100%;
-            }
+        <link
+            rel="stylesheet"
+            type="text/css"
+            th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+        />
 
-            .success-booking__preview-order-btn {
-                cursor: pointer;
-                display: inline-block;
-                margin: 0px;
-                position: relative;
-                text-align: center;
-                text-decoration: none;
-                touch-action: manipulation;
-                font-size: 16px;
-                line-height: 20px;
-                font-weight: 600;
-                border-radius: 8px;
-                outline: none;
-                padding: 14px 24px;
-                transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
-                    -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
-                -webkit-tap-highlight-color: transparent;
-                border: none;
-                background: rgb(211, 211, 211);
-                color: #222;
-                width: 100%;
-            }
-
-            .rdt_booking_button:hover,
-            .success-booking__preview-order-btn:hover {
-                filter: contrast(115%);
-            }
-        </style>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+            rel="stylesheet"
+        />
+        <div th:replace="header :: css"></div>
+        <link rel="stylesheet" th:href="@{/css/hosting/listings.css}" />
     </head>
+
     <body>
-        <section style="width: 1200px; max-width: 90%; margin: 0 auto; width: 100%; height: 100vh">
-            <div
-                style="
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    height: 80%;
-                "
-            >
-                <div
-                    style="
-                        border-radius: 16px;
-                        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-                            rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        padding: 24px;
-                        width: 1000px;
-                    "
-                >
+        <div th:replace="header :: content"></div>
+
+        <main>
+            <div class="listings__container">
+                <div class="listings__header flex">
+                    <div class="listings__header-rooms-length">
+                        [[${totalBookings}]] đơn đặt phòng
+                    </div>
                     <div>
-                        <img
-                            th:src="@{/images/confirmation.png}"
-                            alt=""
-                            width="50px"
-                            height="50px"
-                            style="object-fit: cover"
-                        />
-                    </div>
-                    <div style="font-size: 32px; font-weight: 600; color: #28a745">
-                        Đặt phòng thành công
-                    </div>
-                    <div style="font-size: 16px; margin-top: 20px; width: 70%; text-align: center">
-                        Cảm ơn [[${username}]] đã sử dụng dịch vụ đặt phòng của <span>Airtnt.</span>
-                    </div>
-                    <div style="margin-top: 30px; display: flex; align-items: center; width: 50%">
-                        <button
-                            class="rdt_booking_button"
-                            style="margin-right: 20px"
-                            onclick="backToHomePage();"
-                        >
+                        <button class="listings__create-new-room" onclick="createNewRoom();">
                             <span>
-                                <img src="" alt="" />
+                                <img
+                                    th:src="@{/svg/plus.svg}"
+                                    alt=""
+                                    width="16px"
+                                    height="16px"
+                                    style="object-fit: cover"
+                                />
                             </span>
-                            <span>Tiếp tục đặt phòng</span>
-                        </button>
-                        <button class="success-booking__preview-order-btn">
-                            <span>
-                                <img src="" alt="" />
-                            </span>
-                            <span onclick="viewBookedListings();">Xem phòng đã đặt</span>
+                            <div style="margin-left: 10px">Tạo mục cho thuê</div>
                         </button>
                     </div>
                 </div>
+                <div class="listings__filter-container">
+                    <div class="listings__search-room">
+                        <div
+                            class="listings__search-icon-container"
+                            onclick="filterBookingByInput();"
+                        >
+                            <img th:src="@{/svg/search.svg}" alt="" width="12px" height="12px" />
+                        </div>
+                        <div style="flex: 1">
+                            <input
+                                type="text"
+                                placeholder="Tìm kiếm đơn đặt phòng"
+                                id="listings__search-input"
+                            />
+                        </div>
+                    </div>
+                    <div class="listings__filter">
+                        <button
+                            class="listings__filter-option"
+                            data-dropdown="listings__filter-roomAndBedRoom"
+                        >
+                            <span> Phòng và phòng ngủ</span>
+                            <div class="listings__filter-img-container">
+                                <img
+                                    th:src="@{/svg/dropdown.svg}"
+                                    alt=""
+                                    width="12px"
+                                    height="12px"
+                                />
+                            </div>
+                        </button>
+                        <div id="listings__filter-roomAndBedRoom">
+                            <div class="listings__filter-wrapper">
+                                <div class="filter-box">
+                                    <div class="flex listings__filter-roomAndBedRoom-row">
+                                        <div>Phòng ngủ</div>
+                                        <div
+                                            th:replace="hosting/_listings_partial :: incAndDecBtn('listings__bed-room-count', 'roomAndBedRoom')"
+                                        ></div>
+                                    </div>
+                                    <div class="flex listings__filter-roomAndBedRoom-row">
+                                        <div>Giường</div>
+                                        <div
+                                            th:replace="hosting/_listings_partial :: incAndDecBtn('listings__bed-count', 'roomAndBedRoom')"
+                                        ></div>
+                                    </div>
+                                    <div class="flex listings__filter-roomAndBedRoom-row">
+                                        <div>Phòng tắm</div>
+                                        <div
+                                            th:replace="hosting/_listings_partial :: incAndDecBtn('listings__bath-room-count', 'roomAndBedRoom')"
+                                        ></div>
+                                    </div>
+                                </div>
+                                <div
+                                    th:replace="hosting/_listings_partial :: filterFooter('roomAndBedRoom')"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listings__filter">
+                        <button
+                            class="listings__filter-option"
+                            data-dropdown="listings__filter-amentities"
+                        >
+                            <span>Tiện nghi</span>
+                            <div class="listings__filter-img-container">
+                                <img
+                                    th:src="@{/svg/dropdown.svg}"
+                                    alt=""
+                                    width="12px"
+                                    height="12px"
+                                />
+                            </div>
+                        </button>
+                        <div id="listings__filter-amentities">
+                            <div class="grid-2 filter-box" style="height: 80%">
+                                <th:block th:each="amentity : ${amentities}">
+                                    <div
+                                        class="listings__filter-amentities-row"
+                                        style="display: flex; align-items: center"
+                                    >
+                                        <div class="flex-2">
+                                            <input
+                                                type="checkbox"
+                                                width="20px"
+                                                height="20px"
+                                                th:value="${amentity.id}"
+                                                class="amentitySelected"
+                                            />
+                                        </div>
+                                        <div
+                                            style="font-size: 14px; margin-left: 8px; height: 35px"
+                                            class="flex-2"
+                                        >
+                                            [[${amentity.name}]]
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </div>
+                            <div
+                                th:replace="hosting/_listings_partial :: filterFooter('amentities')"
+                            ></div>
+                        </div>
+                    </div>
+                    <div class="listings__filter">
+                        <button
+                            class="listings__filter-option"
+                            data-dropdown="listings__filter-status"
+                        >
+                            <span>Tình trạng nhà/phòng cho thuê</span>
+                            <div class="listings__filter-img-container">
+                                <img
+                                    th:src="@{/svg/dropdown.svg}"
+                                    alt=""
+                                    width="12px"
+                                    height="12px"
+                                />
+                            </div>
+                        </button>
+                        <div id="listings__filter-status">
+                            <div class="listings__filter-wrapper">
+                                <div style="padding: 24px; flex: 1">
+                                    <div class="normal-flex listings__filter-status-row">
+                                        <input
+                                            type="checkbox"
+                                            class="statusSelected"
+                                            value="ACTIVE"
+                                        />
+                                        <div>Đã đăng</div>
+                                    </div>
+                                    <div class="normal-flex listings__filter-status-row">
+                                        <input
+                                            type="checkbox"
+                                            class="statusSelected"
+                                            value="UNLISTED"
+                                        />
+                                        <div>Đã hủy đăng</div>
+                                    </div>
+                                    <!-- <div class="normal-flex listings__filter-status-row">
+                                        <input type="checkbox" class="statusSelected" />
+                                        <div>Đang tiến hành</div>
+                                    </div> -->
+                                </div>
+                                <div
+                                    th:replace="hosting/_listings_partial :: filterFooter('status')"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listings__filter">
+                        <button
+                            class="listings__filter-option"
+                            data-dropdown="listings__filter-others"
+                        >
+                            <span>Các bộ lọc khác</span>
+                            <div class="listings__filter-img-container">
+                                <img
+                                    th:src="@{/svg/dropdown.svg}"
+                                    alt=""
+                                    width="12px"
+                                    height="12px"
+                                />
+                            </div>
+                        </button>
+                        <div id="listings__filter-others">
+                            <div class="listings__filter-wrapper">
+                                <div class="filter-box" style="overflow: hidden">
+                                    <div class="normal-flex listings__filter-others-row">
+                                        <input
+                                            type="checkbox"
+                                            id="listings__filter-others__first-option"
+                                        />
+                                        <div>Chế độ Đặt ngay đang tắt</div>
+                                    </div>
+                                    <div class="normal-flex listings__filter-others-row">
+                                        <input
+                                            type="checkbox"
+                                            id="listings__filter-others__second-option"
+                                        />
+                                        <div>Yêu cầu cập nhật mục cho thuê</div>
+                                    </div>
+                                </div>
+                                <div
+                                    th:replace="hosting/_listings_partial :: filterFooter('others')"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="listings__filter">
+                        <button
+                            class="listings__filter-option deleteAllFilterOption"
+                            data-dropdown="listings__filter-others"
+                        >
+                            <span>Xóa toàn bộ bộ lọc</span>
+                        </button>
+                    </div>
+                </div>
+                <div style="flex: 1">
+                    <div
+                        th:replace="booking/_booking_listings_partial :: listingsTable(${bookings})"
+                    ></div>
+                </div>
+                <div class="pagination">
+                    <a data-page="prev">&laquo;</a>
+                    <a th:href="@{/book/listings/1}" data-page="1" class="active">1</a>
+                    <a th:href="@{/book/listings/2}" data-page="2">2</a>
+                    <a th:href="@{/book/listings/3}" data-page="3">3</a>
+                    <a th:href="@{/book/listings/4}" data-page="4">4</a>
+                    <a th:href="@{/book/listings/5}" data-page="5">5</a>
+                    <a th:href="@{/book/listings/6}" data-page="6">6</a>
+                    <a data-page="next">&raquo;</a>
+                </div>
             </div>
-        </section>
+        </main>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <div th:replace="header :: javascript"></div>
         <script th:inline="javascript">
             /*<![CDATA[*/
             const baseURL = /*[[@{/}]]*/ 'default';
@@ -138,17 +275,49 @@
         </script>
         <script>
             jQuery(document).ready(function () {
-                async function createBookingd() {
-                    await axios.post();
-                }
+                let pageNumber = 1;
+                const currentUrl = window.location.href;
+                if (currentUrl.toString().includes('?')) {
+                    pageNumber = currentUrl.split('?')[0].split('/').pop();
+                } else pageNumber = window.location.href.split('/').pop();
+                highlightCurrentPageNumber(pageNumber);
+
+                let url = `${baseURL}book/listings/${pageNumber}`;
+
+                $('.listings__table-header').each(function () {
+                    $(this).click(function () {
+                        const params = new URLSearchParams(window.location.search);
+                        const sortField = $(this).data('sort-field');
+                        const sortDir = params.get('sort_dir') === 'asc' ? 'desc' : 'asc';
+
+                        url += `?sort_field=${sortField}&sort_dir=${sortDir}`;
+                        window.location.href = url;
+                    });
+                });
             });
 
-            function backToHomePage() {
-                window.location.href = `${baseURL}`;
+            function highlightCurrentPageNumber(pageNumber) {
+                $('.pagination').children().filter('.active').removeClass('active');
+                $('.pagination')
+                    .children()
+                    .each(function () {
+                        const pageNum = $(this).data('page');
+                        if (pageNum.toString() === pageNumber.toString()) {
+                            $(this).addClass('active');
+                            return false;
+                        }
+                    });
             }
 
-            function viewBookedListings() {
-                window.location.href = `${baseURL}book/listings`;
+            function filterBookingByInput() {
+                const query = $('#listings__search-input').val().toString().trim();
+                let url = window.location.href;
+                url += url.includes('?') ? '&' : '?';
+                const queryParam = new URLSearchParams(window.location.search).get('query');
+                console.log(queryParam);
+
+                if (!queryParam) url += `query=${query}`;
+                else window.location.href = url;
             }
         </script>
     </body>

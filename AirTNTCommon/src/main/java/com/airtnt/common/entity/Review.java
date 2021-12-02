@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,7 +19,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = { "room", "booking", "reviewByUser" })
+@ToString(exclude = { "booking" })
 @Entity
 @Table(name = "reviews")
 public class Review extends BaseEntity {

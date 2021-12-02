@@ -1,5 +1,6 @@
 package com.airtnt.frontend.room;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +32,8 @@ import com.airtnt.common.entity.RoomPrivacy;
 import com.airtnt.common.entity.RoomType;
 import com.airtnt.common.entity.State;
 import com.airtnt.common.entity.User;
+import com.airtnt.frontend.FileUploadUtil;
+import com.airtnt.frontend.user.UserRepository;
 
 @Service
 @Transactional
@@ -40,6 +43,9 @@ public class RoomService {
 
 	@Autowired
 	private RoomRepository roomRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	public Room save(Room room) {
 		return roomRepository.save(room);
@@ -157,6 +163,23 @@ public class RoomService {
 
 	public int completeRentalProcess(Integer roomId) {
 		return updateRoomStatus(roomId);
+	}
+
+	public void deleteRoom(Integer roomId) {
+		Room room = roomRepository.getById(roomId);
+		room.getAmentities().clear();
+		room.getImages().clear();
+
+		User host = userRepository.findById(room.getHost().getId()).get();
+		host.removeFromWishLists(room);
+
+		String uploadPath = "../room_images/" + room.getHost().getEmail() + "/" + room.getId();
+		try {
+			roomRepository.delete(room);
+			FileUploadUtil.removeDir(uploadPath);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public String updateField(Integer roomId, String fieldName, Map<String, String> values) {

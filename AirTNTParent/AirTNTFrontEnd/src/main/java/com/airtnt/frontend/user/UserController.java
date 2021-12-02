@@ -71,6 +71,10 @@ public class UserController {
     @GetMapping(value = "bookings")
     public String userBookings(@AuthenticationPrincipal UserDetails userDetails,
             @RequestParam(value = "query", required = false, defaultValue = "") String query, Model model) {
+        if (userDetails == null) {
+            return "redirect:/login";
+        }
+
         User customer = userService.getByEmail(userDetails.getUsername());
 
         List<Booking> bookings = bookingService.getBookingsByUser(customer.getId(), query);
@@ -85,6 +89,8 @@ public class UserController {
         }
 
         model.addAttribute("bookings", bookings);
+        model.addAttribute("includeMiddle", true);
+        model.addAttribute("excludeBecomeHostAndNavigationHeader", true);
         return new String("user/bookings");
     }
 

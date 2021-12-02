@@ -363,16 +363,17 @@ async function updateField(fieldName, dataInput) {
                 request = 2;
             }
 
-            const { data } = await axios.post(postURL, {
-                status: request,
-            });
+            if (request === 2) {
+                window.location.href = `${baseURL}room/${roomId}/delete`;
+            } else {
+                const { data } = await axios.post(postURL, {
+                    status: request,
+                });
 
-            if (data === 'Delete successfully') {
-                alertify.success(data);
-                window.location.href = `${baseURL}/hosting/listings/1`;
-            } else if (data === 'OK') {
-                status = request * 1 === 1 ? true : false;
-                alertify.success('Cập nhật thông tin phòng thành công');
+                if (data === 'OK') {
+                    status = request * 1 === 1 ? true : false;
+                    alertify.success('Cập nhật thông tin phòng thành công');
+                }
             }
 
             break;

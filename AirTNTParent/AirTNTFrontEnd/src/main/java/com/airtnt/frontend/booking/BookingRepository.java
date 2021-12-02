@@ -7,13 +7,14 @@ import java.util.List;
 import com.airtnt.common.entity.Booking;
 import com.airtnt.common.entity.Room;
 
-import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookingRepository extends CrudRepository<Booking, Integer> {
+public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     public Booking findByCheckinDateAndCheckoutDate(Date checkinDate, Date checkoutDate);
 
@@ -27,5 +28,8 @@ public interface BookingRepository extends CrudRepository<Booking, Integer> {
 
     @Query("SELECT b FROM Booking b WHERE b.room.id IN (:roomIds)")
     public List<Booking> getBookingsByRooms(Integer[] roomIds);
+
+    @Query("SELECT b FROM Booking b WHERE b.room.id IN (:roomIds) AND b.room.name LIKE %:query%")
+    public Page<Booking> getBookingsByRooms(Integer[] roomIds, String query, Pageable pageable);
 
 }

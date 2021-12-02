@@ -96,6 +96,8 @@ public class ProgressController {
         model.addAttribute("numberOfBookingsInMonth", numberOfBookingsInMonth);
         model.addAttribute("totalFee", totalFee);
         model.addAttribute("currencySymbol", "đ");
+        model.addAttribute("includeMiddle", true);
+        model.addAttribute("excludeBecomeHostAndNavigationHeader", true);
         return new String("progress/earnings");
     }
 
@@ -123,6 +125,8 @@ public class ProgressController {
         }
         model.addAttribute("reviews", reviews);
         model.addAttribute("finalRatings", finalRatings / reviews.size());
+        model.addAttribute("includeMiddle", true);
+        model.addAttribute("excludeBecomeHostAndNavigationHeader", true);
 
         return new String("progress/reviews");
     }
