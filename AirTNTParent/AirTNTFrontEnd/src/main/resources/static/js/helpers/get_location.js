@@ -56,7 +56,7 @@ function getRoomlocation() {
             className: 'my-class',
         })
             .setLngLat([userLng, userLat])
-            .setHTML(`<h1>${username}</h1>`)
+            .setHTML(`<h3 style="margin:0;">${username}</h3>`)
             .setMaxWidth('300px')
             .addTo(map);
     }

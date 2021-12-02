@@ -1,3 +1,69 @@
+const active = 'active';
+let haveStartDate = false;
+let haveEndDate = false;
+let startDate = '';
+let endDate = '';
+
+$(document).ready(async function () {
+    getRoomlocation();
+    $('#roomPriceType').text(roomPriceType === 'PER_NIGHT' ? ' / đêm' : ' / tuần');
+    const date = new Date();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    const closeShowImgBtn = $('#closeShowImgBtn');
+    closeShowImgBtn.click(function () {
+        toggleHiddenImages();
+    });
+
+    const firstMonthAndYear = $('.firstMonthAndYear').first();
+    const secondMonthAndYear = $('.secondMonthAndYear').first();
+    const getTheNextTwoMonth = $('.getTheNextTwoMonth').first();
+
+    await fetchTheNextCoupleOfMonth(firstMonthAndYear, secondMonthAndYear, month, year);
+
+    getTheNextTwoMonth.on('click', async function () {
+        const currentFirstMonthInCalendar = secondMonthAndYear.text().split(' ')[1];
+        const currentYearInCalendar = secondMonthAndYear.text().split(' ')[3];
+
+        await fetchTheNextCoupleOfMonth(
+            firstMonthAndYear,
+            secondMonthAndYear,
+            currentFirstMonthInCalendar * 1,
+            currentYearInCalendar * 1
+        );
+    });
+
+    $('.getThePrevTwoMonth').click(async function () {
+        const currentFirstMonthInCalendar = secondMonthAndYear.text().split(' ')[1];
+        const currentYearInCalendar = secondMonthAndYear.text().split(' ')[3];
+
+        await fetchThePrevCoupleOfMonth(
+            firstMonthAndYear,
+            secondMonthAndYear,
+            currentFirstMonthInCalendar * 1,
+            currentYearInCalendar * 1
+        );
+    });
+
+    let isClicked = false;
+    const navMenu = $('.loginAndLogoutHidden').first();
+    $('.account__button')
+        .first()
+        .click(function () {
+            if (!isClicked) {
+                navMenu.addClass('active');
+                isClicked = true;
+            } else {
+                navMenu.removeClass('active');
+                isClicked = false;
+            }
+        });
+
+    addClickEventForLoveButton();
+    updateRatingUI();
+});
+
 function displayStartDateAndEndDate(startDateArgs, endDateArgs) {
     $('#fromDayToDayContainer').css('display', 'block');
     $('#beforeEndDateContainer').css('display', 'none');

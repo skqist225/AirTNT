@@ -44,6 +44,11 @@ public class ProgressController {
     @GetMapping(value = "earnings")
     public String earnings(@AuthenticationPrincipal UserDetails userDetails, @Param("year") Integer year,
             Model model) throws ParseException {
+        int currentYear = LocalDateTime.now().getYear();
+        if (year == null) {
+            return "redirect:/progress/earnings?year=" + currentYear;
+        }
+
         User host = userService.getByEmail(userDetails.getUsername());
         List<Room> rooms = roomService.getRoomsByHostId(host);
         Integer[] roomIds = new Integer[rooms.size()];

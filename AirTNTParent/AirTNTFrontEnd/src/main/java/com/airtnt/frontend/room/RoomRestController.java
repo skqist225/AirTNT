@@ -35,7 +35,6 @@ import com.airtnt.frontend.rule.RuleService;
 import com.airtnt.frontend.state.StateService;
 import com.airtnt.frontend.user.UserService;
 
-import org.apache.tomcat.jni.File;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -72,7 +71,6 @@ public class RoomRestController {
         String strDaysInMonth = daysInMonth.stream().map(Object::toString).collect(Collectors.joining(" "));
         GregorianCalendar gCal = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
         int startInWeek = gCal.get(Calendar.DAY_OF_WEEK); // ngày thứ mấy trong tuần đó
-
         return new JSONObject().put("daysInMonth", strDaysInMonth).put("startInWeek", startInWeek).toString();
     }
 
@@ -128,12 +126,11 @@ public class RoomRestController {
 
         Room savedRoom = roomService.save(room);
 
+        /* MOVE IMAGE TO FOLDER */
         String uploadDir = "../room_images/" + userDetails.getUsername() + "/" + savedRoom.getId();
         String source = "../room_images/" + userDetails.getUsername() + "/";
-
         Path sourcePath = Paths.get(source);
         Path targetPath = Files.createDirectories(Paths.get(uploadDir));
-
         for (String imageName : payload.getImages()) {
             Files.move(sourcePath.resolve(imageName), targetPath.resolve(imageName),
                     StandardCopyOption.REPLACE_EXISTING);
@@ -148,13 +145,13 @@ public class RoomRestController {
         Room room = roomService.getRoomById(roomId);
         int isUpdated = userService.verifyPhoneNumber(room.getHost().getId());
         if (isUpdated == 1)
-            return new String("Verify phone successfully");
+            return "success";
         else
-            return new String("Verify phone fail");
+            return "failure";
     }
 
     @GetMapping(value = "add-to-wishlists/{roomId}")
-    public String getMethodName(@AuthenticationPrincipal UserDetails userDetails,
+    public String addToWishLists(@AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("roomId") Integer roomId) {
         Room room = roomService.getRoomById(roomId);
         User user = userService.getByEmail(userDetails.getUsername());
@@ -164,8 +161,7 @@ public class RoomRestController {
 
         if (savedUser != null)
             return "success";
-
-        return new String("failure");
+        return "failure";
     }
 
     @GetMapping(value = "remove-from-wishlists/{roomId}")
@@ -179,7 +175,6 @@ public class RoomRestController {
 
         if (savedUser != null)
             return "success";
-
-        return new String("failure");
+        return "failure";
     }
 }

@@ -26,10 +26,7 @@
             rel="stylesheet"
         />
         <div th:replace="header :: css"></div>
-        <link
-            rel="stylesheet"
-            th:href="@{'/css/hosting/add_phone_number.css'}"
-        />
+        <link rel="stylesheet" th:href="@{'/css/hosting/add_phone_number.css'}" />
     </head>
 
     <body>
@@ -50,15 +47,12 @@
                                 min="10"
                                 autocomplete="nofill"
                             />
-                            <button class="add-pn__continue-btn">
-                                Tiếp tục
-                            </button>
+                            <button class="add-pn__continue-btn">Tiếp tục</button>
                         </div>
                     </div>
                     <div id="add-pn__after-info" style="display: none">
                         <h4 style="margin-bottom: 15px; text-align: center">
-                            Nhập mã xác nhận bao gồm 6 chữ số được gửi về điện
-                            thoại của bạn.
+                            Nhập mã xác nhận bao gồm 6 chữ số được gửi về điện thoại của bạn.
                         </h4>
                         <div style="display: flex; align-items: center">
                             <input
@@ -109,17 +103,12 @@
                             />
                         </div>
                         <div style="margin-top: 20px">
-                            <button class="add-pn__confirm-otp-btn">
-                                Xác nhận
-                            </button>
+                            <button class="add-pn__confirm-otp-btn">Xác nhận</button>
                         </div>
                     </div>
                 </div>
                 <div class="add-pn__last-container">
-                    <button
-                        class="add-pn__transparent-btn"
-                        onclick="backToVerifyPage();"
-                    >
+                    <button class="add-pn__transparent-btn" onclick="backToVerifyPage();">
                         Quay lại
                     </button>
                 </div>
@@ -127,10 +116,7 @@
         </main>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
         <script th:inline="javascript">
             /*<![CDATA[*/
@@ -146,31 +132,21 @@
                         let phoneNumber = $('#phoneNumber').val().toString();
 
                         if (isNaN(phoneNumber)) {
-                            alertify.error(
-                                'Vui lòng nhập đúng định dạng số điện thoại'
-                            );
+                            alertify.error('Vui lòng nhập đúng định dạng số điện thoại');
                             return;
                         } else if (phoneNumber[0] === '0') {
-                            phoneNumber = phoneNumber.substring(
-                                1,
-                                phoneNumber.length
-                            );
+                            phoneNumber = phoneNumber.substring(1, phoneNumber.length);
                         }
                         if (phoneNumber.length < 9 || phoneNumber.length > 10) {
-                            alertify.error(
-                                'Số điện thoại ít nhất 10 số hoặc 11 số'
-                            );
+                            alertify.error('Số điện thoại ít nhất 10 số hoặc 11 số');
                             return;
                         }
 
                         phoneNumber = `+84${phoneNumber}`;
 
-                        const { data } = await axios.post(
-                            `${baseURL}mobile-number`,
-                            {
-                                phoneNumber,
-                            }
-                        );
+                        const { data } = await axios.post(`${baseURL}mobile-number`, {
+                            phoneNumber,
+                        });
 
                         if (data === 'Sent successfully!') {
                             $('#add-pn__prev-info').css('display', 'none');
@@ -218,15 +194,13 @@
                                     roomId,
                                 }
                             );
-                            if (response === 'Verify phone successfully') {
+                            if (response === 'success') {
                                 window.location.href = `${baseURL}verify-listing/${roomId}`;
                             } else {
                                 alertify.error('Something went wrong');
                             }
                         } else {
-                            alertify.error(
-                                'Mã xác nhận không đúng. Vui lòng nhập lại!'
-                            );
+                            alertify.error('Mã xác nhận không đúng. Vui lòng nhập lại!');
                         }
                     });
             });

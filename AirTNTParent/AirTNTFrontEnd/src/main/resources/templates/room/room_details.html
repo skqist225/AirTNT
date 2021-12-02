@@ -54,7 +54,7 @@
                             <th:block th:each="image,iter : ${roomImages}">
                                 <div style="width: 100%; height: calc(470px / 2)">
                                     <img
-                                        th:src="@{${image.getImagePath(room.host.email, room.id)}}"
+                                        th:src="${image.getImagePath(room.host.email, room.id)}"
                                         class="image"
                                         style="width: 100%; height: 100%"
                                         th:class="${iter.even}? 'roundedBorder'"
@@ -639,12 +639,11 @@
         <div th:replace="_footer :: content"></div>
 
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
         <script type="text/javascript" th:src="@{/js/room/room_slider.js}"></script>
-
+        <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
         <script type="text/javascript" th:src="@{/js/helpers/format_number.js}"></script>
+        <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <div th:replace="header :: javascript"></div>
 
         <script th:inline="javascript">
@@ -667,73 +666,6 @@
             /*]]>*/
         </script>
         <script type="text/javascript" th:src="@{/js/helpers/get_location.js}"></script>
-        <script>
-            const active = 'active';
-            let haveStartDate = false;
-            let haveEndDate = false;
-            let startDate = '';
-            let endDate = '';
-
-            $(document).ready(async function () {
-                getRoomlocation();
-                $('#roomPriceType').text(roomPriceType === 'PER_NIGHT' ? ' / đêm' : ' / tuần');
-                const date = new Date();
-                const month = date.getMonth();
-                const year = date.getFullYear();
-
-                const closeShowImgBtn = $('#closeShowImgBtn');
-                closeShowImgBtn.click(function () {
-                    toggleHiddenImages();
-                });
-
-                const firstMonthAndYear = $('.firstMonthAndYear').first();
-                const secondMonthAndYear = $('.secondMonthAndYear').first();
-                const getTheNextTwoMonth = $('.getTheNextTwoMonth').first();
-
-                await fetchTheNextCoupleOfMonth(firstMonthAndYear, secondMonthAndYear, month, year);
-
-                getTheNextTwoMonth.on('click', async function () {
-                    const currentFirstMonthInCalendar = secondMonthAndYear.text().split(' ')[1];
-                    const currentYearInCalendar = secondMonthAndYear.text().split(' ')[3];
-
-                    await fetchTheNextCoupleOfMonth(
-                        firstMonthAndYear,
-                        secondMonthAndYear,
-                        currentFirstMonthInCalendar * 1,
-                        currentYearInCalendar * 1
-                    );
-                });
-
-                $('.getThePrevTwoMonth').click(async function () {
-                    const currentFirstMonthInCalendar = secondMonthAndYear.text().split(' ')[1];
-                    const currentYearInCalendar = secondMonthAndYear.text().split(' ')[3];
-
-                    await fetchThePrevCoupleOfMonth(
-                        firstMonthAndYear,
-                        secondMonthAndYear,
-                        currentFirstMonthInCalendar * 1,
-                        currentYearInCalendar * 1
-                    );
-                });
-
-                let isClicked = false;
-                const navMenu = $('.loginAndLogoutHidden').first();
-                $('.account__button')
-                    .first()
-                    .click(function () {
-                        if (!isClicked) {
-                            navMenu.addClass('active');
-                            isClicked = true;
-                        } else {
-                            navMenu.removeClass('active');
-                            isClicked = false;
-                        }
-                    });
-
-                addClickEventForLoveButton();
-                updateRatingUI();
-            });
-        </script>
         <script type="text/javascript" th:src="@{/js/room/room_details.js}"></script>
         <script type="text/javascript" th:src="@{/js/helpers/add_add_remove_fav_room.js}"></script>
     </body>

@@ -57,7 +57,7 @@
             <div th:each="image,itr : ${room.images}">
                 <div th:if="${(itr.index + 1) % 3 != 0 && (itr.index + 2) % 3 != 0}">
                     <img
-                        th:src="@{${image.getImagePath(room.host.email, room.id)}}"
+                        th:src="${image.getImagePath(room.host.email, room.id)}"
                         alt=""
                         width="746px"
                         th:class="${itr.index + 1}"
@@ -65,7 +65,7 @@
                 </div>
 
                 <img
-                    th:src="@{${image.getImagePath(room.host.email, room.id)}}"
+                    th:src="${image.getImagePath(room.host.email, room.id)}"
                     alt=""
                     width="370px"
                     height="247px"
