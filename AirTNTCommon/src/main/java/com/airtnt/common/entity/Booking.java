@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -26,7 +27,7 @@ public class Booking extends BaseEntity {
 
 	private LocalDateTime bookingDate;
 
-	private Date cancelDate;
+	private LocalDateTime cancelDate;
 
 	@Column(columnDefinition = "Decimal(20,2)", nullable = false)
 	private float pricePerDay;
@@ -47,15 +48,18 @@ public class Booking extends BaseEntity {
 	@Column(columnDefinition = "Decimal(20,2) default '0.00'")
 	private float totalFee;
 
-	private boolean isComplete;
+	private boolean isComplete; // 3 state: pending success cancelled
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "customer_id", nullable = false)
 	private User customer;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "room_id", nullable = false)
 	private Room room;
+
+	@OneToOne
+	private Review review;
 
 	@Transient
 	long lastUpdated;

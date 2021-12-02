@@ -17,7 +17,7 @@ import java.util.*;
 public class Room extends BaseEntity {
 
 	@Builder
-	public Room(int id, String name, Set<Image> images, String thumbnail, byte rating, List<Review> reviews,
+	public Room(int id, String name, Set<Image> images, String thumbnail, byte rating,
 			Country country, State state, City city, String street, int bedroomCount, int bathroomCount,
 			int accomodatesCount, int bedCount, RoomGroup roomGroup, RoomType roomType, Currency currency,
 			Category category, String description, Set<Amentity> amentities, float latitude, float longitude,
@@ -28,7 +28,6 @@ public class Room extends BaseEntity {
 		this.images = images;
 		this.thumbnail = thumbnail;
 		this.rating = rating;
-		this.reviews = reviews;
 		this.country = country;
 		this.state = state;
 		this.city = city;
@@ -72,9 +71,6 @@ public class Room extends BaseEntity {
 
 	@Column(columnDefinition = "smallint")
 	private byte rating;
-
-	@OneToMany(mappedBy = "room")
-	private List<Review> reviews = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "country_id")
@@ -159,7 +155,7 @@ public class Room extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "Room [name=" + name + ", images=" + images + ", rating=" + rating + ", reviews=" + reviews
+		return "Room [name=" + name + ", images=" + images + ", rating=" + rating
 				+ ", country=" + country + ", state=" + state + ", city=" + city + ", bedRoomCount=" + bedroomCount
 				+ ", bathRoomCount=" + bathroomCount + ", accomodatesCount=" + accomodatesCount + ", bedCount="
 				+ bedCount + ", category=" + category + ", description=" + description + ", amentities=" + amentities

@@ -2,6 +2,7 @@ package com.airtnt.frontend.review;
 
 import java.util.List;
 
+import com.airtnt.common.entity.Booking;
 import com.airtnt.common.entity.Review;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,11 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public List<Review> getReviewsByRoom(Integer[] roomIds, int numberOfStars) {
-        return reviewRepository.getReviewsByRoom(roomIds, numberOfStars);
+    public List<Review> getReviewsByBookings(Integer[] bookingIds) {
+        return reviewRepository.getReviewsByBookings(bookingIds);
+    }
+
+    public List<Review> getReviewsByBookings(Integer[] bookingIds, Integer numberOfStars) {
+        return reviewRepository.getReviewsByBookings(bookingIds, numberOfStars);
     }
 }

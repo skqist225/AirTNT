@@ -1,23 +1,35 @@
 package com.airtnt.frontend.user;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import com.airtnt.common.entity.Booking;
+import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
+import com.airtnt.frontend.booking.BookingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/user/")
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private BookingService bookingService;
 
     @GetMapping("register")
     public String register(ModelMap model) {
@@ -25,7 +37,7 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("sexError", null);
         model.addAttribute("birthdayError", null);
-        return "register";
+        return "user/register";
     }
 
     @PostMapping("register")
@@ -53,7 +65,27 @@ public class UserController {
             }
         }
 
-        return "index";
+        return "redirect:/?categoryId=1";
+    }
+
+    @GetMapping(value = "bookings")
+    public String userBookings(@AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(value = "query", required = false, defaultValue = "") String query, Model model) {
+        User customer = userService.getByEmail(userDetails.getUsername());
+
+        List<Booking> bookings = bookingService.getBookingsByUser(customer.getId(), query);
+        User user = null;
+        if (userDetails != null) {
+            user = userService.getByEmail(userDetails.getUsername());
+            Integer[] roomIds = new Integer[user.getRooms().size()];
+            int i = 0;
+            for (Room r : user.getRooms())
+                roomIds[i++] = r.getId();
+            model.addAttribute("wishlists", roomIds);
+        }
+
+        model.addAttribute("bookings", bookings);
+        return new String("user/bookings");
     }
 
 }

@@ -110,8 +110,14 @@ public class ProgressController {
         for (int i = 0; i < rooms.size(); i++) {
             roomIds[i] = rooms.get(i).getId();
         }
+
+        List<Booking> bookings = bookingService.getBookingsByRooms(roomIds);
+        Integer[] bookingIds = new Integer[bookings.size()];
+        for (int i = 0; i < bookings.size(); i++)
+            bookingIds[i] = bookings.get(i).getId();
+
         float finalRatings = 0;
-        List<Review> reviews = reviewService.getReviewsByRoom(roomIds, Integer.parseInt(numberOfStars));
+        List<Review> reviews = reviewService.getReviewsByBookings(bookingIds, Integer.parseInt(numberOfStars));
         for (Review r : reviews) {
             finalRatings += r.getFinalRating();
         }

@@ -23,7 +23,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.airtnt.common.entity.Amentity;
-import com.airtnt.common.entity.Category;
 import com.airtnt.common.entity.City;
 import com.airtnt.common.entity.Country;
 import com.airtnt.common.entity.Room;

@@ -87,11 +87,6 @@ public class User extends BaseEntity {
 	private String about;
 
 	@Builder.Default
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
-	private List<UserReview> userReviews = new ArrayList<>();
-
-	@Builder.Default
 	@ManyToMany
 	@JoinTable(name = "users_favorite_rooms", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "room_id"))
 	private Set<Room> rooms = new HashSet<>();

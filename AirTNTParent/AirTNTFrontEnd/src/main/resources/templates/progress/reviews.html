@@ -213,14 +213,14 @@
                                             "
                                         >
                                             <img
-                                                th:src="@{${review.reviewByUser.getAvatarPath()}}"
+                                                th:src="@{${review.booking.customer.avatarPath}}"
                                                 alt=""
                                                 style="width: 100%; height: 100%; object-fit: cover"
                                             />
                                         </div>
                                         <div style="margin-left: 12px; font-size: 16px">
                                             <div style="font-weight: 600">
-                                                [[${review.reviewByUser.fullName}]]
+                                                [[${review.booking.customer.fullName}]]
                                             </div>
                                             <div
                                                 th:text="${#dates.format(review.createdDate,

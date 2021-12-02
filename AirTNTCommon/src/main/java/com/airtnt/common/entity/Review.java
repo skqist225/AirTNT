@@ -5,6 +5,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -24,17 +25,9 @@ import lombok.ToString;
 @Table(name = "reviews")
 public class Review extends BaseEntity {
 
-	@ManyToOne
-	@JoinColumn(name = "room_id")
-	private Room room;
-
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "booking_id")
 	private Booking booking;
-
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User reviewByUser;
 
 	@Column(nullable = false, length = 1024)
 	private String comment;

@@ -60,7 +60,7 @@
                 border: none;
                 background: rgb(211, 211, 211);
                 color: #222;
-                width: 100%;
+                width: 222px;
             }
 
             .rdt_booking_button:hover,
@@ -118,12 +118,18 @@
                             </span>
                             <span>Tiếp tục đặt phòng</span>
                         </button>
-                        <button class="success-booking__preview-order-btn">
-                            <span>
-                                <img src="" alt="" />
-                            </span>
-                            <span onclick="viewBookedListings();">Xem phòng đã đặt</span>
-                        </button>
+                        <a
+                            th:href="@{/user/bookings}
+                        "
+                            style="text-decoration: none"
+                        >
+                            <button class="success-booking__preview-order-btn">
+                                <span>
+                                    <img src="" alt="" />
+                                </span>
+                                <span onclick="viewBookedListings();">Xem phòng đã đặt</span>
+                            </button></a
+                        >
                     </div>
                 </div>
             </div>

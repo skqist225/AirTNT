@@ -7,6 +7,7 @@ import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
 import com.airtnt.frontend.room.RoomService;
 import com.airtnt.frontend.user.UserService;
+import com.stripe.param.SourceCreateParams.Redirect;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/book/")
@@ -28,6 +30,9 @@ public class BookingController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BookingService bookingService;
 
     @Value("${stripe.pubkey}")
     private String stripePublicKey;
@@ -61,4 +66,17 @@ public class BookingController {
     public String listings(Model model) throws ParseException {
         return new String("booking/listings");
     }
+
+    @GetMapping(value = "/booking/{bookingId}/cancel")
+    public String getMethodName(@PathVariable("bookingId") Integer bookingId, RedirectAttributes redirectAttributes) {
+        Booking booking = bookingService.cancelBooking(bookingId);
+
+        if (booking != null) {
+            redirectAttributes.addFlashAttribute("cancelMessage", "Hủy đặt phòng thành công");
+        } else
+            redirectAttributes.addAttribute("cancelMessage", "Hủy đặt phòng thất bại");
+
+        return "redirect:/user/bookings";
+    }
+
 }

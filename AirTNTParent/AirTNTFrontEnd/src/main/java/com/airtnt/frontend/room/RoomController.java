@@ -12,12 +12,14 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.airtnt.common.entity.Booking;
 import com.airtnt.common.entity.Image;
 import com.airtnt.common.entity.Review;
 import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
 import com.airtnt.frontend.booking.BookedDate;
 import com.airtnt.frontend.booking.BookingService;
+import com.airtnt.frontend.review.ReviewService;
 import com.airtnt.frontend.user.UserService;
 
 @Controller
@@ -31,6 +33,9 @@ public class RoomController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private ReviewService reviewService;
 
 	@GetMapping("/rooms/{roomId}")
 	public String getRoomById(@PathVariable("roomId") Integer roomId, @AuthenticationPrincipal UserDetails userDetails,
@@ -54,6 +59,13 @@ public class RoomController {
 				secondToFive.add(images.get(i));
 		}
 
+		List<Booking> bookings = bookingService.getBookingsByRoom(room);
+		Integer[] bookingIds = new Integer[bookings.size()];
+		for (int i = 0; i < bookings.size(); i++)
+			bookingIds[i] = bookings.get(i).getId();
+
+		List<Review> reviews = reviewService.getReviewsByBookings(bookingIds);
+
 		List<Integer> bedCount = new ArrayList<>();
 		for (int i = 0; i < room.getBedCount(); i++) {
 			bedCount.add(1);
@@ -61,12 +73,12 @@ public class RoomController {
 
 		float avgRatings = 0;
 
-		for (Review r : room.getReviews()) {
+		for (Review r : reviews) {
 			avgRatings += r.getFinalRating();
 		}
 
-		if (room.getReviews().size() > 0)
-			avgRatings /= room.getReviews().size();
+		if (reviews.size() > 0)
+			avgRatings /= reviews.size();
 
 		// checking thumbnail here
 		model.addAttribute("thumbnail", room.renderThumbnailImage());
@@ -75,7 +87,8 @@ public class RoomController {
 		model.addAttribute("room", room);
 		model.addAttribute("bookedDates", bookedDates);
 		model.addAttribute("avgRatings", avgRatings);
-		model.addAttribute("numberOfReviews", room.getReviews().size());
+		model.addAttribute("reviews", reviews);
+		model.addAttribute("numberOfReviews", reviews.size());
 		return "room/room_details";
 	}
 

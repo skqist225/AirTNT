@@ -1,0 +1,114 @@
+main {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+}
+
+#user-bookings__container {
+    width: 1200px;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 80px;
+}
+
+.user-bookings__room-name {
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 16px;
+    line-height: 22px;
+    max-height: 48px;
+}
+
+.user-bookings__booking-body {
+    border-top: 1px solid rgb(211, 211, 211);
+    border-bottom: 1px solid rgb(211, 211, 211);
+    height: 130px;
+}
+
+.user-bookings__booking-footer {
+    padding: 0 24px;
+}
+
+.user-bookings__add-to-fav-btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 4px;
+    /* border: 1px solid rgb(255, 56, 92); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-bookings__add-to-fav-btn:hover {
+    background-color: rgb(255, 56, 92);
+    color: #fff;
+}
+
+.user-bookings__customer-name {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+.user-bookings__booking-box {
+    max-width: 993px;
+    height: 322px;
+    border: 1px solid rgb(211, 211, 211);
+
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.user-bookings__booking-box:hover {
+    border: 1px solid #222;
+    transition: all 0.1s ease-out;
+}
+
+.box-padding {
+    padding: 24px 12px 12px;
+}
+
+.user-bookings__currency-symbol {
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+input {
+    outline: none;
+    border: none;
+    background: #eaeaea;
+}
+
+#user-bookings__search-container {
+    border: 1px solid #222;
+    border-radius: 4px;
+    height: 43px;
+    background: #eaeaea;
+    box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
+    padding: 12px;
+    margin: 12px 0;
+}
+
+.transparent__btn {
+    cursor: pointer;
+    text-decoration: underline;
+    background: none;
+    outline: none;
+    border: none;
+}
+
+.booking-status {
+    color: rgba(14, 98, 69, 1);
+    font-size: 14px;
+}

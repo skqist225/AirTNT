@@ -12,12 +12,20 @@ function addClickEventForLoveButton() {
             let errorMessage = '';
 
             if (children.hasClass('like')) {
-                children.removeClass('like');
+                $('.room__likeBtn').each(function () {
+                    if ($(this).data('room-id') === roomId)
+                        $(this).children('svg').removeClass('like');
+                });
+
                 getURL = `${baseURL}remove-from-wishlists/${roomId}`;
                 successMessage = 'Gỡ bỏ danh sách yêu thích thành công';
                 errorMessage = 'Gỡ bỏ danh sách yêu thích thất bại';
             } else {
-                children.addClass('like');
+                $('.room__likeBtn').each(function () {
+                    if ($(this).data('room-id') === roomId)
+                        $(this).children('svg').addClass('like');
+                });
+
                 getURL = `${baseURL}add-to-wishlists/${roomId}`;
                 successMessage = 'Thêm vào danh sách yêu thích thành công';
                 errorMessage = 'Thêm vào danh sách yêu thích thất bại';
