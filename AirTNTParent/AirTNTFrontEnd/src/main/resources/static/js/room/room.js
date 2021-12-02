@@ -24,6 +24,7 @@ $(document).ready(async function () {
             window.location.href = `${baseURL}?categoryId=${$(this).data('category-id')}`;
         });
     });
+    addClickEventForLoveButton();
 });
 
 function setActiveTab(catContainer, self) {

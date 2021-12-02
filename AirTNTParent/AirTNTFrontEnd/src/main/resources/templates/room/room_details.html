@@ -291,7 +291,17 @@
                                         >[[${room.currency.symbol}]][[${#numbers.formatDecimal(room.price,3,
                                         'POINT',0, 'COMMA')}]]</span
                                     >
-                                    <span style="font-size: 16px" id="roomPriceType"> </span>
+                                    <span
+                                        style="font-size: 16px"
+                                        th:if="${room.priceType.equals(T(com.airtnt.common.entity.PriceType).PER_NIGHT)}"
+                                    >
+                                        / đêm</span
+                                    ><span
+                                        style="font-size: 16px"
+                                        th:if="${room.priceType.equals(T(com.airtnt.common.entity.PriceType).PER_WEEK)}"
+                                    >
+                                        / tuần</span
+                                    >
                                 </div>
                                 <div
                                     style="
@@ -649,7 +659,6 @@
         <script th:inline="javascript">
             /*<![CDATA[*/
             const roomPrice = /*[[${room.price}]]*/ 0;
-            const roomPriceType = /*[[${room.priceType}]]*/ 'đêm';
             const symbol = /*[[${room.currency.symbol}]]*/ 'đ';
             const baseURL = /*[[@{/}]]*/ 'default';
             const roomId = /*[[${room.id}]]*/ 0;

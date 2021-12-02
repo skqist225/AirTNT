@@ -37,7 +37,7 @@ import com.airtnt.common.entity.User;
 @Transactional
 public class RoomService {
 	public static final int MAX_ROOM_PER_FETCH = 20;
-	public static final int MAX_ROOM_PER_FETCH_BY_HOST = 9;
+	public static final int MAX_ROOM_PER_FETCH_BY_HOST = 8;
 
 	@Autowired
 	private RoomRepository roomRepository;

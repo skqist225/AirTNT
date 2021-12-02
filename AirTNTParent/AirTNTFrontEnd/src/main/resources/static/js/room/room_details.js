@@ -6,7 +6,6 @@ let endDate = '';
 
 $(document).ready(async function () {
     getRoomlocation();
-    $('#roomPriceType').text(roomPriceType === 'PER_NIGHT' ? ' / đêm' : ' / tuần');
     const date = new Date();
     const month = date.getMonth();
     const year = date.getFullYear();

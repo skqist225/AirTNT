@@ -159,8 +159,14 @@
                                     <div class="room__price">
                                         [[${room.currency.symbol}]]
                                         [[${#numbers.formatDecimal(room.price,3, 'POINT',0,
-                                        'COMMA')}]] / [[${room.priceType == 'PER_NIGHT' ? 'đêm' :
-                                        'tuần'}]]
+                                        'COMMA')}]] /
+                                        <span
+                                            th:if="${room.priceType.equals(T(com.airtnt.common.entity.PriceType).PER_NIGHT)}"
+                                            >đêm</span
+                                        ><span
+                                            th:if="${room.priceType.equals(T(com.airtnt.common.entity.PriceType).PER_WEEK)}"
+                                            >tuần</span
+                                        >
                                     </div>
                                 </div>
                             </a>
