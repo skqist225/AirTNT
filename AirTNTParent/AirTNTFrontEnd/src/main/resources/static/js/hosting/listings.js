@@ -214,6 +214,13 @@ jQuery(document).ready(function () {
     $('.deleteAllFilterOption').click(function () {
         window.location.href = `${baseURL}hosting/listings/1`;
     });
+
+    $('.listings__link').each(function () {
+        $(this).attr(
+            'href',
+            `${baseURL}book/listings/${$(this).data('page')}${window.location.search}`
+        );
+    });
 });
 
 function highlightCurrentPageNumber(pageNumber) {

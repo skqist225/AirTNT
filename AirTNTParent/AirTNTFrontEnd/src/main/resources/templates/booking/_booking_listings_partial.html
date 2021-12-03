@@ -193,64 +193,10 @@
                     </div>
                 </th>
                 <th>
-                    <div style="position: relative">
-                        <div
-                            style="cursor: pointer"
-                            class="listings__filter-option"
-                            data-dropdown="listings__setting-column-display"
-                        >
-                            <img th:src="@{/svg/setting.svg}" alt="" width="20px" height="20px" />
-                        </div>
-                        <div id="listings__setting-column-display" class="filter-box">
-                            <div class="listings__setting-column-display-header">Tùy chỉnh cột</div>
-                            <div style="flex: 1; height: 80%">
-                                <div class="normal-flex listings__setting-column-display-row">
-                                    <input
-                                        type="checkbox"
-                                        checked="true"
-                                        class="columnDisplay"
-                                        value="COMMONNAME"
-                                    />
-                                    <div style="font-size: 14px">TÊN THƯỜNG GỌI</div>
-                                </div>
-                                <div class="normal-flex listings__setting-column-display-row">
-                                    <input
-                                        type="checkbox"
-                                        checked="true"
-                                        class="columnDisplay"
-                                        value="BEDROOM"
-                                    />
-                                    <div style="font-size: 14px">PHÒNG NGỦ</div>
-                                </div>
-                                <div class="normal-flex listings__setting-column-display-row">
-                                    <input
-                                        type="checkbox"
-                                        checked="true"
-                                        class="columnDisplay"
-                                        value="BED"
-                                    />
-                                    <div style="font-size: 14px">GIƯỜNG</div>
-                                </div>
-                                <div class="normal-flex listings__setting-column-display-row">
-                                    <input
-                                        type="checkbox"
-                                        checked="true"
-                                        class="columnDisplay"
-                                        value="BATHROOM"
-                                    />
-                                    <div style="font-size: 14px">PHÒNG TẮM</div>
-                                </div>
-                                <div class="normal-flex listings__setting-column-display-row">
-                                    <input
-                                        type="checkbox"
-                                        checked="true"
-                                        class="columnDisplay"
-                                        value="LASTMODIFIED"
-                                    />
-                                    <div style="font-size: 14px">SỬA ĐỔI LẦN CUỐI</div>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <button class="listings__table-header" data-sort-field="refundPaid">
+                            <div>THAO TÁC</div>
+                        </button>
                     </div>
                 </th>
             </tr>
@@ -288,6 +234,7 @@
                                         padding: 1px 6px;
                                         border-radius: 4px;
                                         background-color: rgb(203 244 201);
+                                        width: 90px;
                                     "
                                     th:if="${booking.isComplete == true} and ${booking.isRefund == false}"
                                 >
@@ -311,7 +258,9 @@
                                             ></path>
                                         </svg>
                                     </span>
-                                    <span class="booking-status"> Hoàn tất </span>
+                                    <span class="booking-status" style="font-size: 14px">
+                                        Hoàn tất
+                                    </span>
                                 </div>
                                 <div
                                     style="
@@ -342,7 +291,9 @@
                                             ></path>
                                         </svg>
                                     </span>
-                                    <span class="booking-status">Chờ phê duyệt</span>
+                                    <span class="booking-status" style="font-size: 14px"
+                                        >Phê duyệt</span
+                                    >
                                 </div>
                                 <div
                                     th:if="${booking.isRefund == true}"
@@ -350,9 +301,18 @@
                                         background-color: rgb(227 232 238);
                                         padding: 1px 6px;
                                         border-radius: 4px;
+                                        width: 90px;
+                                        display: flex;
+                                        align-items: center;
                                     "
                                 >
-                                    <span style="color: rgba(14, 98, 69, 1)">
+                                    <span
+                                        style="
+                                            color: rgba(14, 98, 69, 1);
+                                            display: inline-block;
+                                            margin-right: 5px;
+                                        "
+                                    >
                                         <svg
                                             aria-hidden="true"
                                             class="
@@ -372,10 +332,7 @@
                                             ></path>
                                         </svg>
                                     </span>
-                                    <span
-                                        class="booking-status"
-                                        style="color: rgba(14, 98, 69, 1); font-size: 14px"
-                                    >
+                                    <span class="booking-status" style="font-size: 14px">
                                         Đã hủy
                                     </span>
                                 </div>
@@ -439,7 +396,23 @@
                             3, 'POINT', 0, 'COMMA')}]]</span
                         >
                     </td>
-                    <td></td>
+                    <td>
+                        <button
+                            class="listings__complete-room-making listings__td-text"
+                            th:if="${booking.isComplete == false} and ${booking.isRefund == false}"
+                            th:data-booking-id="${booking.id}"
+                            onclick="approveBooking($(this));"
+                        >
+                            Phê duyệt
+                        </button>
+                        <button
+                            class="listings__complete-room-making listings__td-text"
+                            th:if="${booking.isComplete == true} and ${booking.isRefund == false}"
+                            onclick=""
+                        >
+                            Xem đơn đặt phòng
+                        </button>
+                    </td>
                 </tr>
             </th:block>
         </tbody>

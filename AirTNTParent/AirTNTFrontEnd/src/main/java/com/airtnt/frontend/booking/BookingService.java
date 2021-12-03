@@ -2,6 +2,7 @@ package com.airtnt.frontend.booking;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,7 @@ import com.airtnt.common.entity.Booking;
 import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +31,10 @@ public class BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    public Booking getBookingById(Integer bookingId) {
+        return bookingRepository.findById(bookingId).get();
+    }
 
     public Booking createBooking(String checkin, String checkout, Room room, int numberOfDays, float siteFee,
             User customer) throws ParseException {
@@ -93,17 +99,37 @@ public class BookingService {
         return bookings;
     }
 
-    public Page<Booking> getBookingsByRooms(Integer[] roomIds, int pageNumber, Map<String, String> filters) {
-
+    public Page<Booking> getBookingsByRooms(Integer[] roomIds, int pageNumber, Map<String, String> filters)
+            throws ParseException {
         String sortField = filters.get("sortField");
         String sortDir = filters.get("sortDir");
         String query = filters.get("query");
+
+        LocalDateTime bookingDate = LocalDateTime.now();
+        LocalDateTime bookingDate2 = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
+        String bookingDateStr = filters.get("bookingDate");
+        if (!bookingDateStr.isEmpty()) {
+            String[] bookingDateLst = bookingDateStr.split("-");
+            int year = Integer.parseInt(bookingDateLst[0]);
+            int month = Integer.parseInt(bookingDateLst[1]);
+            int day = Integer.parseInt(bookingDateLst[2]);
+
+            bookingDate = LocalDateTime.of(year, month, day, 23, 0, 0);
+            bookingDate2 = LocalDateTime.of(year, month, day, 0, 0, 0);
+        }
+
         Integer bookingId = -1;
-        if (query.matches("\\d+")) {
-            System.out.println(query);
+        if (NumberUtils.isNumber(query)) {
             bookingId = Integer.parseInt(query);
         }
-        System.out.println(bookingId);
+        // Default case: get all bookings with 3 stage
+        List<Boolean> isCompleteLst = new ArrayList<>();
+        isCompleteLst.add(true);
+        isCompleteLst.add(false);
+        List<Boolean> isCancelledLst = new ArrayList<>();
+        isCancelledLst.add(true);
+        isCancelledLst.add(false);
+        // End of default case
 
         Sort sort = Sort.by(sortField);
         if (sortField.equals("room-name")) {
@@ -112,23 +138,68 @@ public class BookingService {
         if (sortField.equals("customer-fullName")) {
             Sort sortByCustomerFirstName = Sort.by("customer.firstName");
             Sort sortByCustomerLastName = Sort.by("customer.lastName");
-
             sort = sortByCustomerFirstName.and(sortByCustomerLastName);
         }
 
         sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
         Pageable pageable = PageRequest.of(pageNumber - 1, MAX_BOOKING_PER_FETCH_BY_HOST, sort); // pase base 0
-        Page<Booking> bookings = bookingRepository.getBookingsByRooms(roomIds, query, pageable);
-        return bookings;
+
+        String isCompleteStr = filters.get("isComplete");
+        if (!isCompleteStr.isEmpty()) {
+
+            if (isCompleteStr.contains("1") && isCompleteStr.contains("0") && isCompleteStr.contains("2")) {
+
+            } else if (isCompleteStr.contains("1") && isCompleteStr.contains("0")) {
+                isCancelledLst.remove(true);
+            } else if (isCompleteStr.contains("0") && isCompleteStr.contains("2")) {
+                isCompleteLst.remove(true);
+            } else if (isCompleteStr.contains("1") && isCompleteStr.contains("2")) {
+                return bookingRepository.getBookingsByRooms(roomIds, query, true, true, pageable);
+            } else {
+                String[] isComplete = isCompleteStr.split(" ");
+
+                for (int i = 0; i < isComplete.length; i++) {
+                    if (isComplete[i].equals("1")) {
+                        isCompleteLst.remove(false);
+                        isCancelledLst.remove(true);
+                    }
+                    if (isComplete[i].equals("0")) {
+                        isCompleteLst.remove(true);
+                        isCancelledLst.remove(true);
+                    }
+                    if (isComplete[i].equals("2")) {
+                        if (!isCancelledLst.contains(true))
+                            isCancelledLst.add(true);
+                        isCancelledLst.remove(false);
+                    }
+                }
+            }
+        }
+
+        String bookingDateYear = filters.get("bookingDateYear");
+        String bookingDateMonth = filters.get("bookingDateMonth");
+        Float totalFee = Float.parseFloat(filters.get("totalFee"));
+
+        if (!bookingDateMonth.isEmpty() && !bookingDateYear.isEmpty()) {
+            return bookingRepository.getBookingsByRooms(roomIds, query, isCompleteLst, isCancelledLst,
+                    Integer.parseInt(bookingDateYear), Integer.parseInt(bookingDateMonth), pageable);
+        }
+
+        if (bookingId != -1)
+            return bookingRepository.getBookingsByRooms(roomIds, bookingId, pageable);
+        else
+            return bookingRepository.getBookingsByRooms(roomIds, query, isCompleteLst, isCancelledLst,
+                    bookingDate, bookingDate2, totalFee, pageable);
     }
 
     @Transactional
     public Booking cancelBooking(Integer bookingId) {
         LocalDateTime cancelDate = LocalDateTime.now();
-        Booking cancelledBooking = bookingRepository.findById(bookingId).get();
+        Booking cancelledBooking = getBookingById(bookingId);
 
         cancelledBooking.setCancelDate(cancelDate);
         cancelledBooking.setRefund(true);
+        cancelledBooking.setComplete(false);
         if (cancelledBooking.isComplete())
             cancelledBooking.setRefundPaid(cancelledBooking.getTotalFee() - cancelledBooking.getSiteFee());
         else
@@ -138,4 +209,11 @@ public class BookingService {
 
         return updatedRecord;
     }
+
+    @Transactional
+    public Booking approveBooking(Booking booking) {
+        booking.setComplete(true);
+        return bookingRepository.save(booking);
+    }
+
 }

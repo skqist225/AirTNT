@@ -35,7 +35,7 @@
                     <div class="listings__header-rooms-length">
                         [[${totalBookings}]] đơn đặt phòng
                     </div>
-                    <div>
+                    <!-- <div>
                         <button class="listings__create-new-room" onclick="createNewRoom();">
                             <span>
                                 <img
@@ -48,7 +48,7 @@
                             </span>
                             <div style="margin-left: 10px">Tạo mục cho thuê</div>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="listings__filter-container">
                     <div class="listings__search-room">
@@ -61,7 +61,7 @@
                         <div style="flex: 1">
                             <input
                                 type="text"
-                                placeholder="Tìm kiếm đơn đặt phòng"
+                                placeholder="Tìm kiếm lịch đặt phòng theo mã, tên phòng"
                                 id="listings__search-input"
                             />
                         </div>
@@ -71,7 +71,7 @@
                             class="listings__filter-option"
                             data-dropdown="listings__filter-roomAndBedRoom"
                         >
-                            <span> Phòng và phòng ngủ</span>
+                            <span>Ngày đặt phòng</span>
                             <div class="listings__filter-img-container">
                                 <img
                                     th:src="@{/svg/dropdown.svg}"
@@ -84,27 +84,19 @@
                         <div id="listings__filter-roomAndBedRoom">
                             <div class="listings__filter-wrapper">
                                 <div class="filter-box">
-                                    <div class="flex listings__filter-roomAndBedRoom-row">
-                                        <div>Phòng ngủ</div>
-                                        <div
-                                            th:replace="hosting/_listings_partial :: incAndDecBtn('listings__bed-room-count', 'roomAndBedRoom')"
-                                        ></div>
-                                    </div>
-                                    <div class="flex listings__filter-roomAndBedRoom-row">
-                                        <div>Giường</div>
-                                        <div
-                                            th:replace="hosting/_listings_partial :: incAndDecBtn('listings__bed-count', 'roomAndBedRoom')"
-                                        ></div>
-                                    </div>
-                                    <div class="flex listings__filter-roomAndBedRoom-row">
-                                        <div>Phòng tắm</div>
-                                        <div
-                                            th:replace="hosting/_listings_partial :: incAndDecBtn('listings__bath-room-count', 'roomAndBedRoom')"
-                                        ></div>
+                                    <div
+                                        class="normal-flex listings__filter-status-row"
+                                        style="height: 100%"
+                                    >
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            id="bookingDateInput"
+                                        />
                                     </div>
                                 </div>
                                 <div
-                                    th:replace="hosting/_listings_partial :: filterFooter('roomAndBedRoom')"
+                                    th:replace="hosting/_listings_partial :: filterFooter('bookingDate')"
                                 ></div>
                             </div>
                         </div>
@@ -114,7 +106,7 @@
                             class="listings__filter-option"
                             data-dropdown="listings__filter-amentities"
                         >
-                            <span>Tiện nghi</span>
+                            <span>Tìm kiếm theo tháng/năm</span>
                             <div class="listings__filter-img-container">
                                 <img
                                     th:src="@{/svg/dropdown.svg}"
@@ -124,33 +116,38 @@
                                 />
                             </div>
                         </button>
-                        <div id="listings__filter-amentities">
-                            <div class="grid-2 filter-box" style="height: 80%">
-                                <th:block th:each="amentity : ${amentities}">
-                                    <div
-                                        class="listings__filter-amentities-row"
-                                        style="display: flex; align-items: center"
-                                    >
-                                        <div class="flex-2">
-                                            <input
-                                                type="checkbox"
-                                                width="20px"
-                                                height="20px"
-                                                th:value="${amentity.id}"
-                                                class="amentitySelected"
-                                            />
-                                        </div>
-                                        <div
-                                            style="font-size: 14px; margin-left: 8px; height: 35px"
-                                            class="flex-2"
-                                        >
-                                            [[${amentity.name}]]
-                                        </div>
-                                    </div>
-                                </th:block>
+                        <div
+                            id="listings__filter-amentities"
+                            style="height: 400px; overflow: hidden"
+                        >
+                            <div class="filter-box" style="height: 80%">
+                                <div>
+                                    <label for="" class="form-label">Tháng: </label>
+                                    <input
+                                        type="text"
+                                        placeholder="Tháng"
+                                        class="form-control mb-5"
+                                        id="bookingDateMonthInput"
+                                        pattern="^[1-12]{1,2}$"
+                                        minlength="1"
+                                        maxlength="2"
+                                    />
+                                </div>
+                                <div>
+                                    <label for="" class="form-label">Năm: </label>
+                                    <input
+                                        type="text"
+                                        placeholder="Năm"
+                                        class="form-control"
+                                        id="bookingDateYearInput"
+                                        pattern="^[0-9]+"
+                                        minlength="4"
+                                        maxlength="4"
+                                    />
+                                </div>
                             </div>
                             <div
-                                th:replace="hosting/_listings_partial :: filterFooter('amentities')"
+                                th:replace="hosting/_listings_partial :: filterFooter('bookingDateByMonthAndYear')"
                             ></div>
                         </div>
                     </div>
@@ -159,7 +156,7 @@
                             class="listings__filter-option"
                             data-dropdown="listings__filter-status"
                         >
-                            <span>Tình trạng nhà/phòng cho thuê</span>
+                            <span>Trạng thái lịch đặt phòng</span>
                             <div class="listings__filter-img-container">
                                 <img
                                     th:src="@{/svg/dropdown.svg}"
@@ -175,26 +172,30 @@
                                     <div class="normal-flex listings__filter-status-row">
                                         <input
                                             type="checkbox"
-                                            class="statusSelected"
-                                            value="ACTIVE"
+                                            class="isCompleteSelected"
+                                            value="1"
                                         />
-                                        <div>Đã đăng</div>
+                                        <div>Hoàn tất</div>
                                     </div>
                                     <div class="normal-flex listings__filter-status-row">
                                         <input
                                             type="checkbox"
-                                            class="statusSelected"
-                                            value="UNLISTED"
+                                            class="isCompleteSelected"
+                                            value="0"
                                         />
-                                        <div>Đã hủy đăng</div>
+                                        <div>Phê duyệt</div>
                                     </div>
-                                    <!-- <div class="normal-flex listings__filter-status-row">
-                                        <input type="checkbox" class="statusSelected" />
-                                        <div>Đang tiến hành</div>
-                                    </div> -->
+                                    <div class="normal-flex listings__filter-status-row">
+                                        <input
+                                            type="checkbox"
+                                            class="isCompleteSelected"
+                                            value="2"
+                                        />
+                                        <div>Đã hủy</div>
+                                    </div>
                                 </div>
                                 <div
-                                    th:replace="hosting/_listings_partial :: filterFooter('status')"
+                                    th:replace="hosting/_listings_partial :: filterFooter('isComplete')"
                                 ></div>
                             </div>
                         </div>
@@ -204,7 +205,7 @@
                             class="listings__filter-option"
                             data-dropdown="listings__filter-others"
                         >
-                            <span>Các bộ lọc khác</span>
+                            <span>Tổng phí</span>
                             <div class="listings__filter-img-container">
                                 <img
                                     th:src="@{/svg/dropdown.svg}"
@@ -219,21 +220,26 @@
                                 <div class="filter-box" style="overflow: hidden">
                                     <div class="normal-flex listings__filter-others-row">
                                         <input
-                                            type="checkbox"
-                                            id="listings__filter-others__first-option"
+                                            type="range"
+                                            class="form-range form-control"
+                                            id="totalFeeRangeInput"
+                                            min="0"
+                                            onchange="updateTextInput(this.value);"
+                                            step="1000000"
+                                            style="width: 100%"
                                         />
-                                        <div>Chế độ Đặt ngay đang tắt</div>
                                     </div>
                                     <div class="normal-flex listings__filter-others-row">
                                         <input
-                                            type="checkbox"
-                                            id="listings__filter-others__second-option"
+                                            type="text"
+                                            id="textInput"
+                                            value=""
+                                            class="form-control"
                                         />
-                                        <div>Yêu cầu cập nhật mục cho thuê</div>
                                     </div>
                                 </div>
                                 <div
-                                    th:replace="hosting/_listings_partial :: filterFooter('others')"
+                                    th:replace="hosting/_listings_partial :: filterFooter('totalFee')"
                                 ></div>
                             </div>
                         </div>
@@ -254,12 +260,12 @@
                 </div>
                 <div class="pagination">
                     <a data-page="prev">&laquo;</a>
-                    <a th:href="@{/book/listings/1}" data-page="1" class="active">1</a>
-                    <a th:href="@{/book/listings/2}" data-page="2">2</a>
-                    <a th:href="@{/book/listings/3}" data-page="3">3</a>
-                    <a th:href="@{/book/listings/4}" data-page="4">4</a>
-                    <a th:href="@{/book/listings/5}" data-page="5">5</a>
-                    <a th:href="@{/book/listings/6}" data-page="6">6</a>
+                    <a data-page="1" class="active listings__link">1</a>
+                    <a data-page="2" class="listings__link">2</a>
+                    <a data-page="3" class="listings__link">3</a>
+                    <a data-page="4" class="listings__link">4</a>
+                    <a data-page="5" class="listings__link">5</a>
+                    <a data-page="6" class="listings__link">6</a>
                     <a data-page="next">&raquo;</a>
                 </div>
             </div>
@@ -267,6 +273,7 @@
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/js/helpers/format_number.js}"></script>
         <div th:replace="header :: javascript"></div>
         <script th:inline="javascript">
             /*<![CDATA[*/
@@ -274,14 +281,14 @@
             /*]]>*/
         </script>
         <script>
+            let pageNumber = 1;
+            const currentUrl = window.location.href;
+            if (currentUrl.toString().includes('?')) {
+                pageNumber = currentUrl.split('?')[0].split('/').pop();
+            } else pageNumber = window.location.href.split('/').pop();
             jQuery(document).ready(function () {
-                let pageNumber = 1;
-                const currentUrl = window.location.href;
-                if (currentUrl.toString().includes('?')) {
-                    pageNumber = currentUrl.split('?')[0].split('/').pop();
-                } else pageNumber = window.location.href.split('/').pop();
+                $('#totalFeeRangeInput').attr('max', 100_000_000);
                 highlightCurrentPageNumber(pageNumber);
-
                 let url = `${baseURL}book/listings/${pageNumber}`;
 
                 $('.listings__table-header').each(function () {
@@ -293,6 +300,80 @@
                         url += `?sort_field=${sortField}&sort_dir=${sortDir}`;
                         window.location.href = url;
                     });
+                });
+
+                $('.listings__filter-option').each(function () {
+                    $(this).click(function () {
+                        const self = $(this);
+                        $('.listings__filter-option').each(function () {
+                            if (!$(this).is(self))
+                                $(this).siblings().filter('.active').removeClass('active');
+                        });
+
+                        const id = $(this).data('dropdown');
+                        const filterBox = $('#' + id);
+                        if (filterBox.hasClass('active')) filterBox.removeClass('active');
+                        else filterBox.addClass('active');
+                    });
+                });
+
+                $('.applyBtn').each(function () {
+                    $(this).click(function () {
+                        let redirectURL = `${baseURL}book/listings/${pageNumber}`;
+                        const dataModify = $(this).data('modify');
+
+                        switch (dataModify) {
+                            case 'isComplete': {
+                                const selectedStatus = $(
+                                    'input[class="isCompleteSelected"]:checked'
+                                );
+                                let statuses = [];
+                                selectedStatus.each(function () {
+                                    statuses.push($(this).val());
+                                });
+                                redirectURL += `?isComplete=${statuses.join(' ')}`;
+
+                                break;
+                            }
+                            case 'bookingDate': {
+                                const bookingDateInput = $('#bookingDateInput').val();
+                                if (bookingDateInput)
+                                    redirectURL += `?bookingDate=${bookingDateInput}`;
+
+                                break;
+                            }
+                            case 'bookingDateByMonthAndYear': {
+                                const month = $('#bookingDateMonthInput').val();
+                                const year = $('#bookingDateYearInput').val();
+
+                                if (!isNaN(month) && !isNaN(year)) {
+                                    redirectURL += `?booking_date_month=${month}&booking_date_year=${year}`;
+                                } else {
+                                    alert('Tháng hoặc năm không hợp lệ!');
+                                }
+                                break;
+                            }
+                            case 'totalFee': {
+                                redirectURL += `?totalFee=${$('#textInput')
+                                    .val()
+                                    .replace(/\./g, '')}`;
+                                break;
+                            }
+                        }
+
+                        window.location.href = redirectURL;
+                    });
+                });
+
+                $('.deleteAllFilterOption').click(function () {
+                    window.location.href = `${baseURL}book/listings/1`;
+                });
+
+                $('.listings__link').each(function () {
+                    $(this).attr(
+                        'href',
+                        `${baseURL}book/listings/${$(this).data('page')}${window.location.search}`
+                    );
                 });
             });
 
@@ -312,12 +393,45 @@
             function filterBookingByInput() {
                 const query = $('#listings__search-input').val().toString().trim();
                 let url = window.location.href;
-                url += url.includes('?') ? '&' : '?';
-                const queryParam = new URLSearchParams(window.location.search).get('query');
-                console.log(queryParam);
+                const paramsMap = new Map();
+                if (url.includes('?')) {
+                    let params = new URLSearchParams(window.location.search);
 
-                if (!queryParam) url += `query=${query}`;
-                else window.location.href = url;
+                    if (params.get('query')) {
+                        for (const key of params.keys()) {
+                            paramsMap.set(key, params.get(key));
+                        }
+                        let newURL = `${baseURL}book/listings/${pageNumber}?`;
+                        const mapLen = getMapSize(paramsMap);
+
+                        let count = 0;
+                        for (const [key, value] of paramsMap.entries()) {
+                            if (key === 'query') newURL += `query=${query}`;
+                            else newURL += `${key}=${value}`;
+                            if (count <= mapLen - 2) newURL += '&';
+                            count++;
+                        }
+                        window.location.href = newURL;
+                        return;
+                    } else url += `&query=${query}`;
+                } else url += `?query=${query}`;
+
+                window.location.href = url;
+            }
+            function updateTextInput(val) {
+                document.getElementById('textInput').value = seperateNumber(val);
+            }
+
+            function getMapSize(map) {
+                let len = 0;
+                for (let key of map.keys()) {
+                    len++;
+                }
+
+                return len;
+            }
+            function approveBooking(self) {
+                window.location.href = `${baseURL}book/booking/${self.data('booking-id')}/approved`;
             }
         </script>
     </body>

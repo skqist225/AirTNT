@@ -69,14 +69,14 @@ public class BookingController {
     @GetMapping(value = "listings/{pageNumber}")
     public String listings(@AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("pageNumber") Integer pageNumber,
-            @RequestParam(name = "BATHROOMS", required = false, defaultValue = "0") String bathRoomsCount,
-            @RequestParam(name = "BEDROOMS", required = false, defaultValue = "0") String bedRoomsCount,
-            @RequestParam(name = "BEDS", required = false, defaultValue = "0") String bedsCount,
+            @RequestParam(name = "booking_date_month", required = false, defaultValue = "") String bookingDateMonth,
+            @RequestParam(name = "booking_date_year", required = false, defaultValue = "") String bookingDateYear,
+            @RequestParam(name = "totalFee", required = false, defaultValue = "0") String totalFee,
             @RequestParam(name = "query", required = false, defaultValue = "") String query,
             @RequestParam(name = "sort_dir", required = false, defaultValue = "asc") String sortDir,
             @RequestParam(name = "sort_field", required = false, defaultValue = "id") String sortField,
-            @RequestParam(name = "AMENITY_IDS", required = false, defaultValue = "") String amentitiesFilter,
-            @RequestParam(name = "STATUSES", required = false, defaultValue = "ACTIVE UNLISTED") String status,
+            @RequestParam(name = "bookingDate", required = false, defaultValue = "") String bookingDate,
+            @RequestParam(name = "isComplete", required = false, defaultValue = "") String isComplete,
             Model model) throws ParseException {
         if (userDetails == null) {
             return "redirect:/login";
@@ -88,15 +88,18 @@ public class BookingController {
         for (int i = 0; i < rooms.size(); i++) {
             roomIds[i] = rooms.get(i).getId();
         }
-
         Map<String, String> filters = new HashMap<>();
         filters.put("sortField", sortField);
         filters.put("sortDir", sortDir);
         filters.put("query", query);
+        filters.put("isComplete", isComplete);
+        filters.put("bookingDate", bookingDate);
+        filters.put("bookingDateMonth", bookingDateMonth);
+        filters.put("bookingDateYear", bookingDateYear);
+        filters.put("totalFee", totalFee);
 
         Page<Booking> bookings = bookingService.getBookingsByRooms(roomIds, pageNumber, filters);
         model.addAttribute("bookings", bookings);
-
         model.addAttribute("includeMiddle", true);
         model.addAttribute("excludeBecomeHostAndNavigationHeader", true);
         model.addAttribute("totalBookings", bookings.getTotalElements());
@@ -105,15 +108,40 @@ public class BookingController {
     }
 
     @GetMapping(value = "/booking/{bookingId}/cancel")
-    public String getMethodName(@PathVariable("bookingId") Integer bookingId, RedirectAttributes redirectAttributes) {
-        Booking booking = bookingService.cancelBooking(bookingId);
+    public String getMethodName(@PathVariable("bookingId") Integer bookingId,
+            @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
+        if (userDetails == null) {
+            return "redirect:/login";
+        }
 
+        Booking booking = bookingService.cancelBooking(bookingId);
         if (booking != null)
             redirectAttributes.addFlashAttribute("cancelMessage", "Hủy đặt phòng thành công");
         else
             redirectAttributes.addAttribute("cancelMessage", "Hủy đặt phòng thất bại");
 
         return "redirect:/user/bookings";
+    }
+
+    @GetMapping(value = "/booking/{bookingId}/approved")
+    public String approveBooking(@PathVariable("bookingId") Integer bookingId,
+            @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
+        if (userDetails == null) {
+            return "redirect:/login";
+        }
+        User requestedUser = userService.getByEmail(userDetails.getUsername());
+        Booking booking = bookingService.getBookingById(bookingId);
+        User host = booking.getRoom().getHost();
+        if (!host.getId().equals(requestedUser.getId())) {
+            return "redirect:/";
+        }
+
+        if (bookingService.approveBooking(booking) != null)
+            redirectAttributes.addFlashAttribute("approveMessage", "Duyệt lịch đặt phòng thành công");
+        else
+            redirectAttributes.addAttribute("approveMessage", "Duyệt lịch đặt phòng thất bại");
+
+        return "redirect:/book/listings/1";
     }
 
 }

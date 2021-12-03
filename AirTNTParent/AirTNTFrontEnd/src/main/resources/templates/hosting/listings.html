@@ -185,10 +185,6 @@
                                         />
                                         <div>Đã hủy đăng</div>
                                     </div>
-                                    <!-- <div class="normal-flex listings__filter-status-row">
-                                        <input type="checkbox" class="statusSelected" />
-                                        <div>Đang tiến hành</div>
-                                    </div> -->
                                 </div>
                                 <div
                                     th:replace="hosting/_listings_partial :: filterFooter('status')"
@@ -249,12 +245,12 @@
                 </div>
                 <div class="pagination">
                     <a data-page="prev">&laquo;</a>
-                    <a th:href="@{/hosting/listings/1}" data-page="1" class="active">1</a>
-                    <a th:href="@{/hosting/listings/2}" data-page="2">2</a>
-                    <a th:href="@{/hosting/listings/3}" data-page="3">3</a>
-                    <a th:href="@{/hosting/listings/4}" data-page="4">4</a>
-                    <a th:href="@{/hosting/listings/5}" data-page="5">5</a>
-                    <a th:href="@{/hosting/listings/6}" data-page="6">6</a>
+                    <a data-page="1" class="active listings__link">1</a>
+                    <a data-page="2" class="listings__link">2</a>
+                    <a data-page="3" class="listings__link">3</a>
+                    <a data-page="4" class="listings__link">4</a>
+                    <a data-page="5" class="listings__link">5</a>
+                    <a data-page="6" class="listings__link">6</a>
                     <a data-page="next">&raquo;</a>
                 </div>
             </div>
