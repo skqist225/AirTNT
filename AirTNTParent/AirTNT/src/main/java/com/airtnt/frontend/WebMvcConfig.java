@@ -30,7 +30,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		exposeDirectory("../images", registry);
 		exposeDirectory("../room_images", registry);
 		exposeDirectory("../room_types", registry);
-		exposeDirectory("../user-photos", registry);
+		exposeDirectory("../user-images", registry);
 		exposeDirectory("../rule_images", registry);
 		exposeDirectory("../svg", registry);
 	}
