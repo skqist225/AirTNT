@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.airtnt.common.entity.City;
 import com.airtnt.common.entity.State;
+import com.airtnt.frontend.city.CityRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;

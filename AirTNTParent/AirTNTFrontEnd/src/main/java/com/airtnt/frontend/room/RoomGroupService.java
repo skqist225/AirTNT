@@ -1,4 +1,4 @@
-package com.airtnt.frontend.room_group;
+package com.airtnt.frontend.room;
 
 import java.util.ArrayList;
 import java.util.Iterator;

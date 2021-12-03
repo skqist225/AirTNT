@@ -10,8 +10,8 @@ import com.airtnt.common.entity.User;
 import com.airtnt.frontend.amentity.AmentityService;
 import com.airtnt.frontend.country.CountryService;
 import com.airtnt.frontend.privacy.PrivacyTypeService;
-import com.airtnt.frontend.room_group.RoomGroupService;
-import com.airtnt.frontend.room_type.RoomTypeService;
+import com.airtnt.frontend.room.RoomGroupService;
+import com.airtnt.frontend.room.RoomTypeService;
 import com.airtnt.frontend.user.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;

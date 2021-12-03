@@ -9,9 +9,9 @@ import com.airtnt.common.entity.Room;
 import com.airtnt.frontend.amentity.AmentityService;
 import com.airtnt.frontend.country.CountryService;
 import com.airtnt.frontend.privacy.PrivacyTypeService;
+import com.airtnt.frontend.room.RoomGroupService;
 import com.airtnt.frontend.room.RoomService;
-import com.airtnt.frontend.room_group.RoomGroupService;
-import com.airtnt.frontend.room_type.RoomTypeService;
+import com.airtnt.frontend.room.RoomTypeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.airtnt.common.entity.Country;
 import com.airtnt.common.entity.State;
+import com.airtnt.frontend.state.StateRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

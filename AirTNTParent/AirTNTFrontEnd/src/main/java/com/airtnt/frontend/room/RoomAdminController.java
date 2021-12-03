@@ -15,7 +15,7 @@ import com.airtnt.frontend.amentity.AmentityService;
 import com.airtnt.frontend.category.CategoryService;
 import com.airtnt.frontend.currency.CurrencyRepository;
 import com.airtnt.frontend.rule.RuleService;
-import com.airtnt.frontend.user.admin.UserService;
+import com.airtnt.frontend.user.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
