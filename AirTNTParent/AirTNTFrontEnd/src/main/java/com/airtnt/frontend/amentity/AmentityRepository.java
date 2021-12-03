@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AmentityRepository extends CrudRepository<Amentity, Integer> {
+    public Amentity findByName(String name);
+
     public List<Amentity> findByProminent(boolean isProminent);
 
     public List<Amentity> findByFavorite(boolean isFavorite);

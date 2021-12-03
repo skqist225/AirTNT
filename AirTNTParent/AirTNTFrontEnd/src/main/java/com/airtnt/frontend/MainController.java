@@ -31,6 +31,11 @@ public class MainController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/admin")
+    public String viewHomePage() {
+        return "admin/index";
+    }
+
     @GetMapping("/")
     public String index(@Param("categoryId") Integer categoryId,
             @AuthenticationPrincipal UserDetails userDetails,

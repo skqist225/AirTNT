@@ -37,6 +37,7 @@ import com.airtnt.frontend.user.UserService;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +64,11 @@ public class RoomRestController {
 
     @Autowired
     private CityService cityService;
+
+    @PostMapping("/rooms/checkName")
+    public String checkName(@Param("id") Integer id, @Param("name") String name) {
+        return roomService.isNameUnique(id, name) ? "OK" : "Duplicated";
+    }
 
     @GetMapping("/calendar/{selectedMonth}/{selectedYear}")
     public String getCalendayByYearAndMonth(@PathVariable("selectedYear") int selectedYear,

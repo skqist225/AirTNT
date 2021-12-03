@@ -28,4 +28,28 @@ public class CategoryService {
         return categories;
     }
 
+    public List<Category> listAll() {
+        return (List<Category>) categoryRepository.findAll();
+    }
+
+    public Category findById(Integer id) {
+        return categoryRepository.findById(id).get();
+    }
+
+    public Category save(Category category) {
+        if (category.getId() != null) {
+            Category categoryDB = categoryRepository.findById(category.getId()).get();
+            categoryDB.setName(category.getName());
+            categoryDB.setStatus(category.isStatus());
+            if (category.getIcon() != null)
+                categoryDB.setIcon(category.getIcon());
+            return categoryRepository.save(categoryDB);
+        }
+        return categoryRepository.save(category);
+    }
+
+    public void deleteById(Integer id) {
+        categoryRepository.deleteById(id);
+    }
+
 }

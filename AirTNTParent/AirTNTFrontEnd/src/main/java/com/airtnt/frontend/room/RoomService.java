@@ -1,10 +1,10 @@
 package com.airtnt.frontend.room;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.airtnt.common.Exception.RoomNotFoundException;
 import com.airtnt.common.entity.Amentity;
 import com.airtnt.common.entity.City;
 import com.airtnt.common.entity.Country;
@@ -40,6 +41,7 @@ import com.airtnt.frontend.user.UserRepository;
 public class RoomService {
 	public static final int MAX_ROOM_PER_FETCH = 20;
 	public static final int MAX_ROOM_PER_FETCH_BY_HOST = 8;
+	public static final int ROOMS_PER_PAGE = 10;
 
 	@Autowired
 	private RoomRepository roomRepository;
@@ -275,6 +277,61 @@ public class RoomService {
 
 		Room savedRoom = roomRepository.save(room);
 		return savedRoom != null ? "OK" : "ERROR";
+	}
+
+	public Room getById(int id) throws RoomNotFoundException {
+		try {
+			return roomRepository.getById(id);
+		} catch (NoSuchElementException ex) {
+			throw new RoomNotFoundException("could not find room with id: " + id);
+		}
+	}
+
+	public Page<Room> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
+		Sort sort = Sort.by(sortField);
+
+		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+
+		Pageable pageable = PageRequest.of(pageNum - 1, ROOMS_PER_PAGE, sort);
+
+		if (keyword != null) {
+			return roomRepository.findAll(keyword, pageable);
+		}
+
+		return roomRepository.findAll(pageable);
+	}
+
+	public boolean isNameUnique(Integer id, String name) {
+		Room room = roomRepository.findByName(name);
+
+		if (room == null)
+			return true;
+
+		boolean isCreatingNew = (id == null);
+
+		if (isCreatingNew) {
+			if (room != null)
+				return false;
+		} else {
+			if (room.getId() != id) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public void updateRoomEnabledStatus(Integer id, Boolean status) {
+		roomRepository.updateStatus(id, status);
+	}
+
+	public void deleteRoomAdmin(Integer id) throws RoomNotFoundException {
+		Long countById = roomRepository.countById(id);
+		if ((countById == null || countById == 0)) {
+			throw new RoomNotFoundException("Could not find any room with ID " + id);
+		}
+
+		roomRepository.deleteById(id);
 	}
 
 }

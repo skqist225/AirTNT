@@ -34,4 +34,15 @@ public interface RoomRepository extends JpaRepository<Room, Integer>, JpaSpecifi
         @Query("SELECT r FROM Room r WHERE r.name LIKE %?1%")
         public Page<Room> findAll(String keyword, Pageable pageable);
 
+        public Room findByName(String name);
+
+        public Long countById(Integer id);
+
+        @Query("SELECT u FROM Room u WHERE CONCAT(u.id, '', u.name, ' ', u.description, ' ', u.category) LIKE %?1%")
+        public Page<Room> findAllAdmin(String keyword, Pageable pageable);
+
+        @Query("UPDATE Room u SET u.status = ?2 WHERE u.id = ?1")
+        @Modifying
+        public void updateStatus(Integer id, boolean status);
+
 }

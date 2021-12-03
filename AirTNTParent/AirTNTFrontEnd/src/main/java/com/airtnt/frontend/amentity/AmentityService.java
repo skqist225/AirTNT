@@ -41,4 +41,39 @@ public class AmentityService {
 
         return amentities;
     }
+
+    public List<Amentity> listAll() {
+        return (List<Amentity>) amentityRepository.findAll();
+    }
+
+    public Amentity getById(Integer id) {
+        return amentityRepository.findById(id).get();
+    }
+
+    public Amentity save(Amentity amentity) {
+        if (amentity.getId() != null) {
+            Amentity amentityDB = amentityRepository.findById(amentity.getId()).get();
+            if (amentity.getIconImage() == null)
+                amentity.setIconImage(amentityDB.getIconImage());
+
+            return amentityRepository.save(amentity);
+        }
+        return amentityRepository.save(amentity);
+    }
+
+    public void delete(Integer id) {
+        amentityRepository.deleteById(id);
+    }
+
+    public String checkName(Integer id, String name) {
+        Amentity amentity = amentityRepository.findByName(name);
+
+        if (amentity == null)
+            return "OK";
+
+        if (id != null && amentity.getId() == id)
+            return "OK";
+
+        return "Duplicated";
+    }
 }
