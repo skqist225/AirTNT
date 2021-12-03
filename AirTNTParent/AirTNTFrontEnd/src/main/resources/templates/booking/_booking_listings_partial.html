@@ -56,148 +56,90 @@
     </div>
 </div>
 
+<div
+    th:fragment="columnHeader(name, sortField)"
+    th:with="isSortableHeader=${isSortableHeader} ?: true"
+    th:remove="tag"
+>
+    <div>
+        <button class="listings__table-header" th:data-sort-field="${sortField}">
+            <div style="text-transform: uppercase">[[${name}]]</div>
+            <div class="listings__fiter-icon-container" th:if="${isSortableHeader == true}">
+                <span class="upper"></span>
+                <span class="downer"></span>
+            </div>
+        </button>
+    </div>
+</div>
+
 <div th:remove="tag" th:fragment="listingsTable(list)">
     <table id="table" th:if="${#lists.size(list) > 0}">
         <thead>
             <tr>
                 <th style="width: 7%">
-                    <div>
-                        <button class="listings__table-header" data-sort-field="id">
-                            <div>MÃ ĐẶT PHÒNG</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='Mã đặt phòng', sortField='id')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="room-name">
-                            <div>NHÀ/PHÒNG CHO THUÊ</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='NHÀ/PHÒNG CHO THUÊ', sortField='room-name')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="isComplete">
-                            <div>TRẠNG THÁI</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='Trạng thái', sortField='isComplete')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="bookingDate">
-                            <div>NGÀY ĐẶT PHÒNG</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='NGÀY ĐẶT PHÒNG', sortField='bookingDate')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="checkinDate">
-                            <div>NGÀY CHECKIN</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='NGÀY CHECKIN', sortField='checkinDate')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="checkoutDate">
-                            <div>NGÀY CHECKOUT</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='NGÀY CHECKOUT', sortField='checkoutDate')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="customer-fullName">
-                            <div>KHÁCH HÀNG</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='KHÁCH HÀNG', sortField='customer-fullName')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="siteFee">
-                            <div>PHÍ DỊCH VỤ</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='PHÍ DỊCH VỤ', sortField='siteFee')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="pricePerDay">
-                            <div>GIÁ MỖI ĐÊM</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='GIÁ MỖI ĐÊM', sortField='pricePerDay')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="numberOfDays">
-                            <div>TỔNG SỐ NGÀY</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
-                </th>
-                <th data-column="LASTMODIFIED">
-                    <div>
-                        <button class="listings__table-header" data-sort-field="totalFee">
-                            <div>TỔNG CỘNG</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='TỔNG SỐ NGÀY', sortField='numberOfDays')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="refundPaid">
-                            <div>PHÍ HOÀN TRẢ</div>
-                            <div class="listings__fiter-icon-container">
-                                <span class="upper"> </span>
-                                <span class="downer"></span>
-                            </div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='TỔNG CỘNG', sortField='totalFee')"
+                    ></div>
                 </th>
                 <th>
-                    <div>
-                        <button class="listings__table-header" data-sort-field="refundPaid">
-                            <div>THAO TÁC</div>
-                        </button>
-                    </div>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='PHÍ HOÀN TRẢ', sortField='refundPaid')"
+                    ></div>
+                </th>
+                <th>
+                    <div
+                        th:replace="booking/_booking_listings_partial :: columnHeader(name='THAO TÁC', sortField='', isSortableHeader=false)"
+                    ></div>
                 </th>
             </tr>
         </thead>
