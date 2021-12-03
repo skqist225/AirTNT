@@ -18,8 +18,7 @@
 	</properties>
 
 	<modules>
-		<module>AirTNTBackend</module>
-		<module>AirTNTFrontEnd</module>
+		<module>AirTNT</module>
 	</modules>
 
 	<dependencies>
