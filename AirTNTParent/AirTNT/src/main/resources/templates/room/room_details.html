@@ -596,39 +596,6 @@
                         </div>
                     </div>
                 </main>
-
-                <div
-                    style="
-                        position: absolute;
-                        top: 10px;
-                        right: 0;
-                        box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
-                            rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-                    "
-                    class="toast"
-                    role="alert"
-                    aria-live="assertive"
-                    aria-atomic="true"
-                    id="liveToast"
-                    data-delay="4000"
-                    animation="true"
-                >
-                    <div
-                        class="toast-header"
-                        style="display: flex; align-items: center; justify-content: space-between"
-                    >
-                        <div>
-                            <img
-                                th:src="@{/images/warning.png}"
-                                class="rounded me-2"
-                                width="16px"
-                                height="16px"
-                            />
-                            <strong class="me-auto">Warning</strong>
-                        </div>
-                    </div>
-                    <div class="toast-body" id="toast-message"></div>
-                </div>
             </div>
         </div>
 
@@ -660,7 +627,7 @@
             /*<![CDATA[*/
             const roomPrice = /*[[${room.price}]]*/ 0;
             const symbol = /*[[${room.currency.symbol}]]*/ 'đ';
-            const baseURL = /*[[@{/}]]*/ 'default';
+            const baseURL = /*[[@{/}]]*/ '/airtnt/';
             const roomId = /*[[${room.id}]]*/ 0;
             const bookedDates = /*[[${bookedDates}]]*/ [];
             const roomLongitude = /*[[${room.longitude}]]*/ '';
@@ -668,10 +635,8 @@
             const username = /*[[${room.host.fullName}]]*/ '';
             const userid = /*[[${room.host.id}]]*/ '';
             const userimage = /*[[${room.host.avatar}]]*/ '';
-            const wishlistsArr =
-                [
-                    /*[[${wishlists}]]*/
-                ] || [];
+            const wishlists = ['[[${wishlists}]]'];
+            const user = /*[[${user}]]*/ 'user';
             /*]]>*/
         </script>
         <script type="text/javascript" th:src="@{/js/helpers/get_location.js}"></script>

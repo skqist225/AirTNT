@@ -19,12 +19,12 @@ $(document).ready(async function () {
         if ($(this).data('category-id') * 1 === categoryId) setActiveTab(catContainers, $(this));
     });
 
-    buttonContainers.each(function (index) {
+    buttonContainers.each(function () {
         $(this).click(function () {
             window.location.href = `${baseURL}?categoryId=${$(this).data('category-id')}`;
         });
     });
-    addClickEventForLoveButton();
+    addClickEventForLoveButton(wishlists, user);
 });
 
 function setActiveTab(catContainer, self) {

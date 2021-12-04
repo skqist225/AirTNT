@@ -37,8 +37,8 @@
                             >
                                 <div>
                                     <img
-                                        th:src="@{${cat.iconPath}}"
-                                        alt="${cat.iconPath}"
+                                        th:src="${cat.iconPath}"
+                                        th:alt="${cat.iconPath}"
                                         width="20px"
                                         height="20px"
                                         class="cat__image"
@@ -182,8 +182,10 @@
 
         <script th:inline="javascript">
             /*<![CDATA[*/
-            const baseURL = /*[[@{/}]]*/ '/airtnt';
-            const wishlistsArr = /*[[${wishlists}]]*/ [];
+            const baseURL = /*[[@{/}]]*/ '/airtnt/';
+            let wishlists = /*[[${wishlists}]]*/ [];
+            if (wishlists === null) wishlists = [];
+            const user = /*[[${user}]]*/ 'user';
             /*]]>*/
         </script>
         <script type="text/javascript" th:src="@{/js/room/room.js}"></script>

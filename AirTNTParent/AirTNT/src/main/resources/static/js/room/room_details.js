@@ -59,7 +59,7 @@ $(document).ready(async function () {
             }
         });
 
-    addClickEventForLoveButton();
+    addClickEventForLoveButton(wishlists, user);
     updateRatingUI();
 });
 
@@ -256,15 +256,16 @@ function setEndDate(self, endDateDate, endDateMonth, endDateYear, currDate, curr
 
 function processBooking() {
     if (startDate === '' && endDate === '') {
-        var toastLiveExample = document.getElementById('liveToast');
-        $('#toast-message').text('Vui lòng chọn ngày bắt đầu và ngày kết thúc');
-        var toast = new bootstrap.Toast(toastLiveExample);
-        toast.show();
+        alertify.warning('Vui lòng chọn ngày bắt đầu và kết thúc');
+        return;
+    }
+    if (user === null) {
+        alertify.error('Vui lòng đăng nhập để đặt phòng');
         return;
     }
 
     const numberOfNights = $('#numberOfNight').text();
-    window.location.href = `${baseURL}book/${roomId}?checkin=${startDate.replace(
+    window.location.href = `${baseURL}booking/${roomId}?checkin=${startDate.replace(
         /\//g,
         '-'
     )}&checkout=${endDate.replace(/\//g, '-')}&numberOfNights=${numberOfNights}`;
