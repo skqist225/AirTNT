@@ -38,8 +38,6 @@ public class User extends BaseEntity {
 	@Column(nullable = false, length = 48)
 	private String lastName;
 
-	// @Pattern(regexp = "^MALE|FEMALE|OTHER$", message = "Vui lòng chọn giới
-	// tính.")
 	@Enumerated(EnumType.STRING)
 	@Column(length = 10, nullable = false)
 	private Sex sex;
@@ -122,9 +120,11 @@ public class User extends BaseEntity {
 		this.rooms.remove(room);
 	}
 
-	public boolean hasRole(String roleName) {
-		if (roleName == this.getRole().getName())
+	public boolean hasRole(String role) {
+		if (role.equals(this.getRole().getName())) {
 			return true;
+		}
+
 		return false;
 	}
 

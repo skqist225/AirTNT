@@ -57,4 +57,8 @@ public class State {
 		this.name = name;
 		this.country = country;
 	}
+
+	public State(String name) {
+		this.name = name;
+	}
 }
