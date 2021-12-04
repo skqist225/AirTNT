@@ -155,32 +155,4 @@ public class RoomRestController {
         else
             return "failure";
     }
-
-    @GetMapping(value = "add-to-wishlists/{roomId}")
-    public String addToWishLists(@AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable("roomId") Integer roomId) {
-        Room room = roomService.getRoomById(roomId);
-        User user = userService.getByEmail(userDetails.getUsername());
-
-        user.addToWishLists(room);
-        User savedUser = userService.save(user);
-
-        if (savedUser != null)
-            return "success";
-        return "failure";
-    }
-
-    @GetMapping(value = "remove-from-wishlists/{roomId}")
-    public String removeFromWishLists(@AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable("roomId") Integer roomId) {
-        Room room = roomService.getRoomById(roomId);
-        User user = userService.getByEmail(userDetails.getUsername());
-
-        user.removeFromWishLists(room);
-        User savedUser = userService.save(user);
-
-        if (savedUser != null)
-            return "success";
-        return "failure";
-    }
 }

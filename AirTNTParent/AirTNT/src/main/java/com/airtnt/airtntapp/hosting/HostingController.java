@@ -53,9 +53,6 @@ public class HostingController {
             @RequestParam(name = "AMENITY_IDS", required = false, defaultValue = "") String amentitiesFilter,
             @RequestParam(name = "STATUSES", required = false, defaultValue = "ACTIVE UNLISTED") String status,
             @AuthenticationPrincipal Model model) {
-        if (userDetails == null) {
-            return "redirect:/login";
-        }
 
         /*-------------------HOST------------------ */
         String userName = userDetails.getUsername();

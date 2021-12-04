@@ -7,14 +7,14 @@ import java.util.List;
 import com.airtnt.common.entity.Role;
 import com.airtnt.common.entity.User;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class AirtntUserDetails implements UserDetails {
-
     private static final long serialVersionUID = 1;
-
     private User user;
 
     public AirtntUserDetails(User user) {
@@ -24,11 +24,10 @@ public class AirtntUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Role role = user.getRole();
-        List<SimpleGrantedAuthority> authories = new ArrayList<>();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
 
-        authories.add(new SimpleGrantedAuthority(role.getName()));
-
-        return authories;
+        return authorities;
     }
 
     @Override
@@ -69,6 +68,10 @@ public class AirtntUserDetails implements UserDetails {
         return this.user.getId();
     }
 
+    public User getUser() {
+        return this.user;
+    }
+
     public void setFirstName(String firstName) {
         this.user.setFirstName(firstName);
     }
@@ -77,8 +80,13 @@ public class AirtntUserDetails implements UserDetails {
         this.user.setLastName(lastName);
     }
 
-    public boolean hasRole(String roleName) {
-        return user.hasRole(roleName);
-    }
+    protected boolean hasRole(String role) {
+        // get security context from thread local
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Admin"))) {
+            return true;
+        }
 
+        return false;
+    }
 }

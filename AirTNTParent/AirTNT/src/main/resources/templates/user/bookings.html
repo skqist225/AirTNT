@@ -383,12 +383,14 @@
         <script th:inline="javascript">
             /*<![CDATA[*/
             const baseURL = /*[[@{/}]]*/ 'default';
-            const wishlistsArr = /*[[${wishlists}]]*/ [];
+            let wishlists = /*[[${wishlists}]]*/ [];
+            if (wishlists === null) wishlists = [];
+            const user = /*[[${user}]]*/ 'user';
             /*]]>*/
         </script>
         <script>
             jQuery(document).ready(function () {
-                addClickEventForLoveButton();
+                addClickEventForLoveButton(wishlists, user);
 
                 $('.bookingDate').each(function () {
                     //customer can cancel booking if

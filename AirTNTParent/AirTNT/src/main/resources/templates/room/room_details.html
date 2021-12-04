@@ -635,8 +635,12 @@
             const username = /*[[${room.host.fullName}]]*/ '';
             const userid = /*[[${room.host.id}]]*/ '';
             const userimage = /*[[${room.host.avatar}]]*/ '';
-            const wishlists = ['[[${wishlists}]]'];
+            const wishlists =
+                [
+                    /*[[${wishlists}]]*/
+                ] || [];
             const user = /*[[${user}]]*/ 'user';
+            console.log(user);
             /*]]>*/
         </script>
         <script type="text/javascript" th:src="@{/js/helpers/get_location.js}"></script>

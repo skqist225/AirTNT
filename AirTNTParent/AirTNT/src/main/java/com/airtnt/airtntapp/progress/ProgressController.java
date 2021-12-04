@@ -120,11 +120,19 @@ public class ProgressController {
 
         float finalRatings = 0;
         List<Review> reviews = reviewService.getReviewsByBookings(bookingIds, Integer.parseInt(numberOfStars));
-        for (Review r : reviews) {
-            finalRatings += r.getFinalRating();
+
+        if (reviews.size() == 0)
+            finalRatings = 0;
+        else {
+            for (Review r : reviews) {
+                finalRatings += r.getFinalRating();
+            }
+
+            finalRatings = finalRatings / reviews.size();
         }
+
         model.addAttribute("reviews", reviews);
-        model.addAttribute("finalRatings", finalRatings / reviews.size());
+        model.addAttribute("finalRatings", finalRatings);
         model.addAttribute("includeMiddle", true);
         model.addAttribute("excludeBecomeHostAndNavigationHeader", true);
 

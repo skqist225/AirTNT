@@ -1,5 +1,7 @@
 package com.airtnt.airtntapp.security;
 
+import java.util.UUID;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -40,9 +42,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers("/**").permitAll().and().formLogin().loginPage("/login")
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/progress/**",
+                        "/user/bookings", "/hosting/listings/*", "/booking/listings/*", "/wishlists*",
+                        "/become-a-host*",
+                        "/user/personal-info", "/user/add-to-wishlists/*", "/user/remove-from-wishlists/*")
+                .authenticated()
+                .antMatchers("/admin/**").hasRole("Admin")
+                .anyRequest()
+                .permitAll().and().formLogin().loginPage("/login")
                 .usernameParameter("email").permitAll().and().logout().permitAll().and().rememberMe()
-                .key("AbcDefgHijKlmnOpqrst_1234567890").tokenValiditySeconds(365 * 24 * 60 * 60);
+                .key(UUID.randomUUID().toString()).tokenValiditySeconds(365 * 24 * 60 * 60);
         ;
     }
 

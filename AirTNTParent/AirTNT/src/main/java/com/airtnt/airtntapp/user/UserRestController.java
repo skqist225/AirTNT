@@ -3,20 +3,30 @@ package com.airtnt.airtntapp.user;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.airtnt.airtntapp.room.RoomService;
 import com.airtnt.airtntapp.security.AirtntUserDetails;
+import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/user/")
 public class UserRestController {
+
+    @Autowired
+    private RoomService roomService;
+
     @Autowired
     UserService userService;
 
@@ -25,7 +35,7 @@ public class UserRestController {
 
     private Map<String, String> checkConstraint = new HashMap<>();
 
-    @GetMapping("/user/avatar")
+    @GetMapping("avatar")
     public String getUserAvatar(@AuthenticationPrincipal AirtntUserDetails userDetails) {
         if (userDetails == null)
             return "/images/default_user_avatar.png";
@@ -34,7 +44,7 @@ public class UserRestController {
         return user.getAvatarPath();
     }
 
-    @PostMapping("/user/check-password-constraint")
+    @PostMapping("check-password-constraint")
     public String checkPasswordConstaint(@RequestBody Map<String, String> payLoad,
             @AuthenticationPrincipal AirtntUserDetails userDetails) {
         Integer userId = Integer.parseInt(payLoad.get("userId").toString());
@@ -75,7 +85,7 @@ public class UserRestController {
         return jsonObject.put("status", "OK").toString();
     }
 
-    @PostMapping("/user/check-first-name-and-last-name-constraint")
+    @PostMapping("check-first-name-and-last-name-constraint")
     public String checkFirstNameAndLastNameConstraint(@RequestBody Map<String, String> payLoad) {
 
         String firstName = payLoad.get("firstName").toString();
@@ -107,12 +117,40 @@ public class UserRestController {
         return jsonObject.put("status", "OK").toString();
     }
 
-    @PostMapping("/user/check-email-constraint")
+    @PostMapping("check-email-constraint")
     public String checkEmailConstraint(@RequestBody Map<String, String> payLoad,
             @AuthenticationPrincipal AirtntUserDetails userDetails) {
         String email = payLoad.get("email").toString();
         Integer userId = Integer.parseInt(payLoad.get("userId").toString());
 
         return userService.isEmailUnique(userId, email) ? "OK" : "Duplicated";
+    }
+
+    @GetMapping(value = "add-to-wishlists/{roomId}")
+    public String addToWishLists(@AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable("roomId") Integer roomId) {
+        Room room = roomService.getRoomById(roomId);
+        User user = userService.getByEmail(userDetails.getUsername());
+
+        user.addToWishLists(room);
+        User savedUser = userService.save(user);
+
+        if (savedUser != null)
+            return "success";
+        return "failure";
+    }
+
+    @GetMapping(value = "remove-from-wishlists/{roomId}")
+    public String removeFromWishLists(@AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable("roomId") Integer roomId) {
+        Room room = roomService.getRoomById(roomId);
+        User user = userService.getByEmail(userDetails.getUsername());
+
+        user.removeFromWishLists(room);
+        User savedUser = userService.save(user);
+
+        if (savedUser != null)
+            return "success";
+        return "failure";
     }
 }

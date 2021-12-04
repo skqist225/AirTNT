@@ -20,7 +20,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
         public List<Booking> findByRoom(Room room);
 
-        @Query("SELECT b FROM Booking b WHERE b.customer.id = :customerId AND b.room.name LIKE %:query% OR CONCAT(b.customer.firstName, ' ', b.customer.lastName) LIKE %:query% ORDER BY b.bookingDate DESC")
+        @Query("SELECT b FROM Booking b WHERE b.customer.id = :customerId AND b.room.name LIKE %:query% AND CONCAT(b.customer.firstName, ' ', b.customer.lastName) LIKE %:query% ORDER BY b.bookingDate DESC")
         public List<Booking> getByCustomer(Integer customerId, String query);
 
         @Query("SELECT b FROM Booking b WHERE b.room.id IN (:roomIds) AND b.bookingDate >= :startDate AND b.bookingDate <= :endDate")

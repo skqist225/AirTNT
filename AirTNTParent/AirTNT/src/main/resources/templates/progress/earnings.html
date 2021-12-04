@@ -162,7 +162,7 @@
                     numberOfBookingsInMonth[date.getMonth() + 1]
                 );
                 $('#earningsInCurrentMonth').text(
-                    currencySymbol + seperateNumber(feesInMonth[date.getMonth() + 1])
+                    currencySymbol + seperateNumber(feesInMonth[date.getMonth() + 1] || 0)
                 );
             });
 

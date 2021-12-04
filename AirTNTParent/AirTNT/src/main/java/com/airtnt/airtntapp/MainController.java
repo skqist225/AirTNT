@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.airtnt.airtntapp.category.CategoryService;
 import com.airtnt.airtntapp.room.RoomService;
+import com.airtnt.airtntapp.security.AirtntUserDetails;
 import com.airtnt.airtntapp.user.UserService;
+import com.airtnt.airtntapp.user.admin.UserNotFoundException;
 import com.airtnt.common.entity.Category;
 import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.User;
@@ -56,16 +58,25 @@ public class MainController {
 
         List<Room> rooms = roomService.getRoomsByCategoryId(categoryId, true, 1);
         model.addAttribute("rooms", rooms);
+        if (user == null)
+            model.addAttribute("user", null);
+        else
+            model.addAttribute("user", user.getFullName());
 
         return "index";
     }
 
     @GetMapping("/login")
-    public String viewLoginPage() {
+    public String viewLoginPage() throws UserNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return "login";
         }
+
+        AirtntUserDetails loggedInuser = (AirtntUserDetails) authentication.getPrincipal();
+        if (loggedInuser.getUser().hasRole("Admin"))
+            return "redirect:/admin/";
+
         return "redirect:/";
     }
 }

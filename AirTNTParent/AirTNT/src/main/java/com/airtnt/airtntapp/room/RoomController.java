@@ -94,7 +94,10 @@ public class RoomController {
 		model.addAttribute("avgRatings", avgRatings);
 		model.addAttribute("reviews", reviews);
 		model.addAttribute("numberOfReviews", reviews.size());
-		model.addAttribute("user", user);
+		if (user == null)
+			model.addAttribute("user", null);
+		else
+			model.addAttribute("user", user.getFullName());
 		return "room/room_details";
 	}
 

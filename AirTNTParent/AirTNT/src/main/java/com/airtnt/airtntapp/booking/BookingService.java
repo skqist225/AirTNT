@@ -94,8 +94,7 @@ public class BookingService {
     }
 
     public List<Booking> getBookingsByUser(Integer customerId, String query) {
-        List<Booking> bookings = bookingRepository.getByCustomer(customerId, query);
-        return bookings;
+        return bookingRepository.getByCustomer(customerId, query);
     }
 
     public Page<Booking> getBookingsByRooms(Integer[] roomIds, int pageNumber, Map<String, String> filters)

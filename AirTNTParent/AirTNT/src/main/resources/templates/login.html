@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Đăng ký</title>
+        <title>Đăng nhập</title>
 
         <link
             rel="stylesheet"
@@ -18,9 +18,7 @@
             <div class="main">
                 <div class="register__container">
                     <h3 class="register__header">Đăng nhập</h3>
-                    <h4 class="register__title">
-                        Chào mừng bạn đến với Airtnt
-                    </h4>
+                    <h4 class="register__title">Chào mừng bạn đến với Airtnt</h4>
                     <form th:action="@{/login}" method="post" id="registerForm">
                         <div th:if="${param.error}">
                             <p class="text-danger text-center">
@@ -28,10 +26,7 @@
                             </p>
                         </div>
                         <div th:if="${param.logout}">
-                            <p
-                                class="text-success text-center"
-                                style="font-weight: bold"
-                            >
+                            <p class="text-success text-center" style="font-weight: bold">
                                 You have been logged out.
                             </p>
                         </div>
@@ -56,26 +51,26 @@
                             />
                         </div>
                         <div style="margin-bottom: 15px">
-                            <input
-                                type="checkbox"
-                                name="remember-me"
-                            />&nbsp;Remember Me
+                            <input type="checkbox" name="remember-me" />&nbsp;Remember Me
                         </div>
-                        <input
-                            type="submit"
-                            class="btn customBtn"
-                            value="Đăng nhập"
-                        />
+                        <div style="display: flex; align-items: center">
+                            <input
+                                type="submit"
+                                class="btn customBtn"
+                                value="Đăng nhập"
+                                style="margin-right: 10px"
+                            />
+                            <a th:href="@{/user/register}" class="btn customBtn" value="Đăng ký"
+                                >Đăng ký</a
+                            >
+                        </div>
                     </form>
                 </div>
             </div>
         </main>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script
             type="text/javascript"
             th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"

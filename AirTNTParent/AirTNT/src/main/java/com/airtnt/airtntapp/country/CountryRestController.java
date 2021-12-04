@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.airtnt.airtntapp.city.CityRepository;
+import com.airtnt.airtntapp.state.StateRepository;
+import com.airtnt.common.entity.City;
 import com.airtnt.common.entity.Country;
+import com.airtnt.common.entity.State;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -26,6 +30,12 @@ public class CountryRestController {
 
     @Autowired
     CountryRepository countryRepository;
+
+    @Autowired
+    StateRepository stateRepository;
+
+    @Autowired
+    CityRepository cityRepository;
 
     @Autowired
     CountryService service;
@@ -51,6 +61,37 @@ public class CountryRestController {
         }
 
         countryRepository.saveAll(lst_country);
+        return "OK";
+    }
+
+    @PostMapping(value = "/states")
+    public String addStatesToDB(@RequestBody List<StateDTO> payload) {
+        List<StateDTO> states = payload;
+        List<State> lst_state = new ArrayList<>();
+
+        for (StateDTO s : states) {
+            State country = new State(s.getName(), s.getCode(), new Country(216));
+            lst_state.add(country);
+        }
+
+        stateRepository.saveAll(lst_state);
+        return "OK";
+    }
+
+    @PostMapping(value = "/cities")
+    public String addCitiesToDB(@RequestBody List<StateAndListCityDTO> payload) {
+        List<StateAndListCityDTO> states = payload;
+
+        List<City> lst_state = new ArrayList<>();
+
+        for (StateAndListCityDTO s : states) {
+            for (CityDTO cityDTO : s.getDistricts()) {
+                City city = new City(cityDTO.getName(), stateRepository.findByName(s.getName()));
+                lst_state.add(city);
+            }
+        }
+
+        cityRepository.saveAll(lst_state);
         return "OK";
     }
 

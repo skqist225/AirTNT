@@ -46,11 +46,6 @@ public class BookingController {
             @Param("checkin") String checkin,
             @Param("checkout") String checkout, @Param("numberOfNights") Integer numberOfNights,
             RedirectAttributes redirectAttributes, Model model) {
-        if (userDetails == null) {
-            redirectAttributes.addFlashAttribute("redirectMessage", "Vui lòng đăng nhập để đặt phòng");
-            return "redirect:/?categoryId=1";
-        }
-
         Room room = roomService.getRoomById(roomId);
         String[] checkinArr = checkin.split("-");
         String[] checkoutArr = checkout.split("-");
@@ -85,10 +80,6 @@ public class BookingController {
             @RequestParam(name = "bookingDate", required = false, defaultValue = "") String bookingDate,
             @RequestParam(name = "isComplete", required = false, defaultValue = "") String isComplete,
             Model model) throws ParseException {
-        if (userDetails == null) {
-            return "redirect:/login";
-        }
-
         User host = userService.getByEmail(userDetails.getUsername());
         List<Room> rooms = roomService.getRoomsByHostId(host);
         Integer[] roomIds = new Integer[rooms.size()];
@@ -117,9 +108,6 @@ public class BookingController {
     @GetMapping(value = "/{bookingId}/cancel")
     public String getMethodName(@PathVariable("bookingId") Integer bookingId,
             @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
-        if (userDetails == null) {
-            return "redirect:/login";
-        }
 
         Booking booking = bookingService.cancelBooking(bookingId);
         if (booking != null)
@@ -133,9 +121,6 @@ public class BookingController {
     @GetMapping(value = "/{bookingId}/approved")
     public String approveBooking(@PathVariable("bookingId") Integer bookingId,
             @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
-        if (userDetails == null) {
-            return "redirect:/login";
-        }
         User requestedUser = userService.getByEmail(userDetails.getUsername());
         Booking booking = bookingService.getBookingById(bookingId);
         User host = booking.getRoom().getHost();

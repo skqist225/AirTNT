@@ -22,24 +22,29 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-
     public static final int USERS_PER_PAGE = 4;
 
     @Autowired
-    RoleRepository roleRepo;
-    @Autowired
-    CountryRepository countryRepo;
+    private RoleRepository roleRepo;
 
     @Autowired
-    UserRepository userRepository;
+    private CountryRepository countryRepo;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private void encodePassword(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+    }
+
     public void registerUser(User user) {
         user.setRole(new Role(2));
-        encodePassword(user);
-
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         userRepository.save(user);
     }
 
@@ -68,8 +73,7 @@ public class UserService {
     }
 
     public User getCurrentUser(Integer userId) {
-        User user = userRepository.findById(userId).get();
-        return user;
+        return userRepository.findById(userId).get();
     }
 
     public User save(User user, String updatedField) {
@@ -99,11 +103,6 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    private void encodePassword(User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-    }
-
     public User save(User user) {
         boolean isUpdatingUser = (user.getId() != null);
 
@@ -115,7 +114,6 @@ public class UserService {
             } else {
                 encodePassword(user);
             }
-
         } else {
             encodePassword(user);
         }

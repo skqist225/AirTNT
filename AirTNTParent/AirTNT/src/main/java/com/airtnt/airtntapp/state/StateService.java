@@ -3,6 +3,8 @@ package com.airtnt.airtntapp.state;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import com.airtnt.common.entity.Country;
 import com.airtnt.common.entity.State;
 
@@ -12,15 +14,15 @@ public class StateService {
     StateRepository stateRepository;
 
     public State getStateByName(String stateName) {
-        State state = stateRepository.findByName(stateName);
-
-        return state;
+        return stateRepository.findByName(stateName);
     }
 
     public State addState(String stateName, String stateCode, Country country) {
         State s = new State(stateName, stateCode, country);
-        State savedState = stateRepository.save(s);
+        return stateRepository.save(s);
+    }
 
-        return savedState;
+    public List<State> listAll() {
+        return (List<State>) stateRepository.findAll();
     }
 }

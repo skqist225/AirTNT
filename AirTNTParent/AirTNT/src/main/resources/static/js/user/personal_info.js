@@ -2,9 +2,7 @@ const prefixUrl = 'http://localhost:8001/airtnt';
 
 $(document).ready(function () {
     const passwordForm = $('.formEdit_password').first();
-    const firstNameAndLastNameForm = $(
-        '.formEdit_firstNameAndLastName'
-    ).first();
+    const firstNameAndLastNameForm = $('.formEdit_firstNameAndLastName').first();
     const sexForm = $('.formEdit_sex').first();
     const birthdayForm = $('.formEdit_birthday').first();
     const emailForm = $('.formEdit_email').first();
@@ -13,10 +11,7 @@ $(document).ready(function () {
 
     const saveEditBtn = $('.saveEditBtn');
     const displayPasswordError = $('.c-validation', passwordForm);
-    const displayFirstNameAndLastNameError = $(
-        '.c-validation',
-        firstNameAndLastNameForm
-    );
+    const displayFirstNameAndLastNameError = $('.c-validation', firstNameAndLastNameForm);
     const displayBirthdayError = $('.c-validation', birthdayForm);
     const displayEmailError = $('.c-validation', emailForm);
     const displayPhoneNumberError = $('.c-validation', phoneNumberForm);
@@ -41,10 +36,8 @@ $(document).ready(function () {
                 );
             }
             if ($(this).data('edit') === 'firstNameAndLastName') {
-                const firstName =
-                    $('#firstName', firstNameAndLastNameForm).val() || '';
-                const lastName =
-                    $('#lastName', firstNameAndLastNameForm).val() || '';
+                const firstName = $('#firstName', firstNameAndLastNameForm).val() || '';
+                const lastName = $('#lastName', firstNameAndLastNameForm).val() || '';
 
                 const firstNameError = $('#firstNameError');
                 const lastNameError = $('#lastNameError');
@@ -90,13 +83,7 @@ $(document).ready(function () {
                 const email = $('#email').val();
                 const userId = $("input[name='id']", emailForm).val();
                 const emailError = $('#emailError');
-                checkEmailDuplicated(
-                    email,
-                    userId,
-                    displayEmailError,
-                    emailError,
-                    emailForm
-                );
+                checkEmailDuplicated(email, userId, displayEmailError, emailError, emailForm);
             }
             if ($(this).data('edit') === 'phoneNumber') {
                 const phoneNumber = $('#phoneNumber').val();
@@ -112,9 +99,7 @@ $(document).ready(function () {
 
                 if (Number.isNaN(phoneNumber * 1)) {
                     displayPhoneNumberError.first().removeClass('hidden');
-                    phoneNumberError.html(
-                        'Số điện thoại không được chứa ký tự chữ'
-                    );
+                    phoneNumberError.html('Số điện thoại không được chứa ký tự chữ');
                     return;
                 }
 
@@ -144,10 +129,7 @@ $(document).ready(function () {
                 $(this).parent().addClass('passwordArea');
             }
 
-            frmOn
-                .siblings('.displayWhenNormalMode')
-                .first()
-                .addClass('editMode');
+            frmOn.siblings('.displayWhenNormalMode').first().addClass('editMode');
             $('.closeBtn', $(this).parent()).addClass('editMode');
 
             const _self = $(this);
@@ -155,17 +137,13 @@ $(document).ready(function () {
             $('.editBtn').each(function () {
                 if ($(this).data('edit') !== _self.data('edit')) {
                     $(this).attr('disabled', 'true');
-                    $(this).attr(
-                        'style',
-                        'color: rgb(118, 118, 118) !important'
-                    );
+                    $(this).attr('style', 'color: rgb(118, 118, 118) !important');
                 }
             });
         });
     });
 
     const countryNameSelect = $('#countryNameSelect');
-    getStateName(countryNameSelect.children('option:selected').text());
 
     countryNameSelect.on('change', function () {
         getStateName($(this).children('option:selected').text());
@@ -184,14 +162,9 @@ function turnOffEditMode(self) {
         if ($(this).data('edit') == currentFieldOnEdit) {
             $(this).removeClass('editMode');
             $(this).parent().removeClass('editMode');
-            const formEdit = $(
-                '.formEdit_' + currentFieldOnEdit,
-                $(this).parent()
-            ).first();
+            const formEdit = $('.formEdit_' + currentFieldOnEdit, $(this).parent()).first();
             formEdit.removeClass('editMode');
-            document
-                .getElementsByClassName('formEdit_' + currentFieldOnEdit)[0]
-                .reset();
+            document.getElementsByClassName('formEdit_' + currentFieldOnEdit)[0].reset();
 
             const displayError = $('.c-validation', formEdit);
 
@@ -210,96 +183,11 @@ function turnOffEditMode(self) {
                 });
             }
 
-            formEdit
-                .siblings('.displayWhenNormalMode')
-                .first()
-                .removeClass('editMode');
+            formEdit.siblings('.displayWhenNormalMode').first().removeClass('editMode');
 
             return;
         }
     });
-}
-
-async function getStateName(countryName) {
-    let states = [];
-    const stateNameSelect = $('#stateNameSelect');
-    const userStateName = $('#userStateName').val();
-    stateNameSelect.empty();
-
-    if (countryName.toString().toLowerCase() !== 'vietnam') {
-        const {
-            data: { data },
-        } = await axios.get(
-            `http://localhost:8001/airtnt/states/${countryName
-                .toString()
-                .toLowerCase()}`
-        );
-        states = data;
-
-        let stateNameList = states.filter(name => {
-            if (
-                !name.toLowerCase().startsWith('huyện') &&
-                !name.toLowerCase().startsWith('thị xã') &&
-                !name.toLowerCase().startsWith('ấp')
-            ) {
-                return name;
-            }
-        });
-
-        stateNameList.sort().forEach(name => {
-            stateNameSelect.append(
-                $('<option>', {
-                    value: name,
-                    text: name,
-                    selected: userStateName === name,
-                })
-            );
-        });
-    } else {
-        const { data } = await axios.get(
-            'http://localhost:8001/airtnt/states/vietnam'
-        );
-        states = data;
-
-        let stateNameList = [];
-        let stateCodeList = new Map();
-
-        states.forEach(({ name, code }) => {
-            stateNameList.push(name);
-            stateCodeList.set(name, code);
-        });
-
-        const map = new Map();
-        states.forEach(({ name, districts }) => {
-            map.set(name, districts);
-        });
-
-        const stateNameDivCode = $('#stateNameDivCode');
-
-        stateNameList.sort().forEach(name => {
-            stateNameSelect.append(
-                $('<option>', {
-                    value: name,
-                    text: name,
-                    selected: userStateName === name,
-                })
-            );
-            stateNameDivCode.append(
-                $('<input>', {
-                    type: 'hidden',
-                    value: stateCodeList.get(name),
-                    name,
-                })
-            );
-        });
-
-        for (var firstKey in map) break;
-        getCityName(firstKey, map);
-
-        stateNameSelect.on('change', function () {
-            getCityName($(this).val(), map);
-        });
-    }
 }
 
 function getCityName(stateName, stateMap) {
@@ -338,14 +226,11 @@ async function checkPasswordConstraint(
     displayError,
     form
 ) {
-    const { data } = await axios.post(
-        `${prefixUrl}/user/check-password-constraint`,
-        {
-            oldPassword,
-            newPassword,
-            userId,
-        }
-    );
+    const { data } = await axios.post(`${prefixUrl}/user/check-password-constraint`, {
+        oldPassword,
+        newPassword,
+        userId,
+    });
 
     console.log(data.oldPasswordError);
     console.log(data.newPasswordError);
@@ -459,10 +344,7 @@ function checkBirthdayIsGreaterThenPresent(
         userYearOfBirthError.html('Năm không thể lớn hơn năm hiện tại');
         return;
     }
-    if (
-        date.getFullYear() === userYearOfBirth * 1 &&
-        date.getMonth() + 1 < userMonthOfBirth * 1
-    ) {
+    if (date.getFullYear() === userYearOfBirth * 1 && date.getMonth() + 1 < userMonthOfBirth * 1) {
         displayError.first().removeClass('hidden');
         userMonthOfBirthError.html('Tháng không thể lớn hơn tháng hiện tại');
         return;
@@ -471,20 +353,11 @@ function checkBirthdayIsGreaterThenPresent(
     form.submit();
 }
 
-async function checkEmailDuplicated(
-    email,
-    userId,
-    displayError,
-    emailError,
-    form
-) {
-    const { data } = await axios.post(
-        `${prefixUrl}/user/check-email-constraint`,
-        {
-            email,
-            userId,
-        }
-    );
+async function checkEmailDuplicated(email, userId, displayError, emailError, form) {
+    const { data } = await axios.post(`${prefixUrl}/user/check-email-constraint`, {
+        email,
+        userId,
+    });
 
     displayError.each(function () {
         $(this).addClass('hidden');
