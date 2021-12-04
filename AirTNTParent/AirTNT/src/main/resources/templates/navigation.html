@@ -36,20 +36,20 @@
             </li>
 
             <li class="nav-item active">
-              <a class="nav-link" th:href="@{/rooms}"
+              <a class="nav-link" th:href="@{/admin/rooms}"
                 >Rooms </span></a
               >
             </li>
 
             <li class="nav-item active">
-              <a class="nav-link" th:href="@{/settings}"
+              <a class="nav-link" th:href="@{/admin/settings}"
                 >Settings </span></a
               >
             </li>
             <li class="nav-item dropdown" style="display: flex">
               <a
                 class="nav-link cursor-pointer"
-                th:href="@{/account}"
+                th:href="@{/admin/account}"
                 sec:authentication="principal.fullname"
               >
               </a>

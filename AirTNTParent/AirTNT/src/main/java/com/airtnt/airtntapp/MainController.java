@@ -49,6 +49,8 @@ public class MainController {
         User user = null;
         if (userDetails != null) {
             user = userService.getByEmail(userDetails.getUsername());
+            if (user.hasRole("Admin"))
+                return "redirect:/admin/";
             Integer[] roomIds = new Integer[user.getRooms().size()];
             int i = 0;
             for (Room r : user.getRooms())
@@ -72,10 +74,6 @@ public class MainController {
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
             return "login";
         }
-
-        AirtntUserDetails loggedInuser = (AirtntUserDetails) authentication.getPrincipal();
-        if (loggedInuser.getUser().hasRole("Admin"))
-            return "redirect:/admin/";
 
         return "redirect:/";
     }

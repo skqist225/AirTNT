@@ -68,8 +68,8 @@ public class AirtntUserDetails implements UserDetails {
         return this.user.getId();
     }
 
-    public User getUser() {
-        return this.user;
+    public String getAvatarPath() {
+        return this.user.getAvatarPath();
     }
 
     public void setFirstName(String firstName) {
