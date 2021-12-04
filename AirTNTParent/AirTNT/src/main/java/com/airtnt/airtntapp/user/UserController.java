@@ -25,7 +25,6 @@ import com.airtnt.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -56,9 +55,6 @@ public class UserController {
 
     @Autowired
     private CityService cityService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @GetMapping("register")
     public String register(ModelMap model) {
@@ -172,11 +168,8 @@ public class UserController {
         if (updatedField.equals("avatar")) {
             if (!userAvatar.isEmpty()) {
                 String fileName = StringUtils.cleanPath(userAvatar.getOriginalFilename());
-
                 currentUser.setAvatar(fileName);
-
                 savedUser = userService.save(currentUser, "avatar");
-
                 String uploadDir = "../user-photos/" + savedUser.getId();
 
                 FileUploadUtil.cleanDir(uploadDir);
@@ -189,7 +182,7 @@ public class UserController {
         }
 
         if (updatedField.equals("password")) {
-            currentUser.setPassword(passwordEncoder.encode(newPassword));
+            userService.encodePassword(currentUser);
             savedUser = userService.save(currentUser, "password");
         }
 

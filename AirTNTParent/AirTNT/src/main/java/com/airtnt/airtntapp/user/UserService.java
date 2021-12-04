@@ -36,7 +36,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private void encodePassword(User user) {
+    public void encodePassword(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
     }
