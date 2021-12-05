@@ -337,11 +337,6 @@ function changePreviewImage(firstEl, firstIndex, secondEl, secondIndex) {
     const fr1 = fileReaderResult.get(firstEl);
     const fr2 = fileReaderResult.get(secondEl);
 
-    console.log(fr1);
-    console.log(fr2);
-    // console.log(firstIndex);
-    // console.log(secondIndex);
-
     if (firstIndex === 0) $('#thumbnailPhotos').children('img').attr('src', fr1);
     else
         $('#subImages')

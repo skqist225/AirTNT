@@ -31,6 +31,10 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
+    public Booking findById(Integer bookingId) {
+        return bookingRepository.findById(bookingId).get();
+    }
+
     public Booking getBookingById(Integer bookingId) {
         return bookingRepository.findById(bookingId).get();
     }
@@ -64,8 +68,9 @@ public class BookingService {
         for (int i = 0; i < bookingsList.size(); i++) {
             Date checkinDate = bookingsList.get(i).getCheckinDate();
             Date checkoutDate = bookingsList.get(i).getCheckoutDate();
+            LocalDateTime cancelDate = bookingsList.get(i).getCancelDate();
 
-            if (checkinDate != null & checkoutDate != null) {
+            if (checkinDate != null & checkoutDate != null && cancelDate == null) {
                 String[] checkinDate2 = checkinDate.toString().split("T")[0].split(" ")[0].split("-");
                 String[] checkoutDate2 = checkoutDate.toString().split("T")[0].split(" ")[0].split("-");
 

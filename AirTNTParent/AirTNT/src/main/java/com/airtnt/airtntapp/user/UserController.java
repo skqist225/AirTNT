@@ -3,6 +3,7 @@ package com.airtnt.airtntapp.user;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,17 +13,21 @@ import com.airtnt.airtntapp.FileUploadUtil;
 import com.airtnt.airtntapp.booking.BookingService;
 import com.airtnt.airtntapp.city.CityService;
 import com.airtnt.airtntapp.country.CountryService;
+import com.airtnt.airtntapp.review.ReviewService;
 import com.airtnt.airtntapp.security.AirtntUserDetails;
 import com.airtnt.airtntapp.state.StateService;
 import com.airtnt.common.entity.Address;
 import com.airtnt.common.entity.Booking;
 import com.airtnt.common.entity.City;
 import com.airtnt.common.entity.Country;
+import com.airtnt.common.entity.Review;
 import com.airtnt.common.entity.Room;
 import com.airtnt.common.entity.State;
+import com.airtnt.common.entity.SubRating;
 import com.airtnt.common.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -30,6 +35,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,6 +61,9 @@ public class UserController {
 
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping("register")
     public String register(ModelMap model) {
@@ -115,6 +124,15 @@ public class UserController {
         model.addAttribute("bookings", bookings);
         model.addAttribute("includeMiddle", true);
         model.addAttribute("excludeBecomeHostAndNavigationHeader", true);
+        Integer[] starLoop = new Integer[] { 1, 2, 3, 4, 5 };
+        String[] ratingLabel = new String[] { "Mức độ sạch sẽ", "Độ chính xác", "Liên lạc", "Vị trí", "Nhận phòng",
+                "Giá trị" };
+        List<RatingDTO> ratings = new ArrayList<>();
+        for (int i = 0; i < ratingLabel.length; i++) {
+            ratings.add(new RatingDTO(ratingLabel[i], starLoop));
+        }
+
+        model.addAttribute("ratings", ratings);
         return new String("user/bookings");
     }
 
@@ -231,4 +249,39 @@ public class UserController {
         ra.addFlashAttribute("user", savedUser);
         return "redirect:/user/personal-info";
     }
+
+    @GetMapping(value = "rating/{bookingId}")
+    public String userCreateReview(@PathVariable("bookingId") Integer bookingId,
+            @Param("cleanlinessRating") Integer cleanlinessRating,
+            @Param("contactRating") Integer contactRating,
+            @Param("checkinRating") Integer checkinRating,
+            @Param("accuracyRating") Integer accuracyRating,
+            @Param("locationRating") Integer locationRating,
+            @Param("valueRating") Integer valueRating,
+            @Param("comment") String comment) {
+        SubRating subRating = SubRating.builder()
+                .cleanliness(cleanlinessRating)
+                .contact(contactRating)
+                .checkin(checkinRating)
+                .accuracy(accuracyRating)
+                .location(locationRating)
+                .value(valueRating)
+                .build();
+
+        float sum = 0;
+        sum = cleanlinessRating + contactRating + checkinRating + accuracyRating + locationRating + valueRating;
+        sum /= 6;
+
+        Review review = Review.builder()
+                .comment(comment)
+                .subRating(subRating)
+                .finalRating(sum)
+                .booking(new Booking(bookingId))
+                .build();
+
+        reviewService.createReview(review);
+
+        return "redirect:/user/bookings";
+    }
+
 }

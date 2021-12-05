@@ -89,11 +89,10 @@ function setTotalPrice(manyDays) {
 
     const totalRoomPrice = roomPrice * manyDays;
     const siteFee = totalRoomPrice * 0.05;
-    console.log(siteFee);
     totalPrice = totalRoomPrice + siteFee;
 
     $('#totalPrice').text(seperateNumber(manyDays * roomPrice));
-    $('#siteFee').text(seperateNumber(siteFee));
+    $('#siteFee').text(seperateNumber(siteFee.toFixed(3)));
     $('#finalTotalPrice').text(seperateNumber(totalPrice));
 }
 

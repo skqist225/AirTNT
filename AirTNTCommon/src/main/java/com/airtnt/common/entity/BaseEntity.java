@@ -33,7 +33,7 @@ public class BaseEntity {
 	@Column(name = "updated_at")
 	private Date updatedDate;
 
-	public BaseEntity(int id) {
+	public BaseEntity(Integer id) {
 		this.id = id;
 	}
 

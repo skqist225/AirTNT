@@ -42,10 +42,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/progress/**",
-                        "/user/bookings", "/hosting/listings/*", "/booking/listings/*", "/wishlists*",
+                        "/user/bookings", "/hosting/listings/*", "/wishlists*",
                         "/become-a-host/*",
                         "/user/personal-info", "/user/add-to-wishlists/*", "/user/remove-from-wishlists/*")
                 .authenticated()
+                .antMatchers("/booking/**").authenticated()
                 .antMatchers("/admin/**").hasRole("Admin")
                 .anyRequest()
                 .permitAll().and().formLogin().loginPage("/login")

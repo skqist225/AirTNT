@@ -218,7 +218,7 @@ jQuery(document).ready(function () {
     $('.listings__link').each(function () {
         $(this).attr(
             'href',
-            `${baseURL}book/listings/${$(this).data('page')}${window.location.search}`
+            `${baseURL}hosting/listings/${$(this).data('page')}${window.location.search}`
         );
     });
 });

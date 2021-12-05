@@ -28,7 +28,7 @@ public class BookingRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/book/create-booking/{roomId}")
+    @GetMapping(value = "/booking/{roomId}/create")
     public BookingDTO createBooking(@AuthenticationPrincipal UserDetails userDetails,
             @PathVariable("roomId") Integer roomId,
             @Param("checkin") String checkin,

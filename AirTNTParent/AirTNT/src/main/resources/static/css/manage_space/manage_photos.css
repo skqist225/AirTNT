@@ -470,14 +470,6 @@ ul li.active .li-before {
     width: calc(100% / 11 * 7);
 }
 
-.innerWrapper {
-    width: 780px;
-    height: calc(calc(81px * 2) + 364px);
-    background-color: white;
-    margin-top: 40px;
-    border-radius: 16px;
-}
-
 #chooseRoomThumbnail {
     position: absolute;
     top: 0;
@@ -489,6 +481,14 @@ ul li.active .li-before {
     width: 100vw;
     height: 100vh;
     display: none;
+}
+
+.innerWrapper {
+    width: 780px;
+    height: calc(calc(81px * 2) + 364px);
+    background-color: white;
+    margin-top: 40px;
+    border-radius: 16px;
 }
 
 #boxHeader,

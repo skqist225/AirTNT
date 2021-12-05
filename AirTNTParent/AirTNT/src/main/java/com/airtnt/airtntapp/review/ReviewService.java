@@ -20,4 +20,8 @@ public class ReviewService {
     public List<Review> getReviewsByBookings(Integer[] bookingIds, Integer numberOfStars) {
         return reviewRepository.getReviewsByBookings(bookingIds, numberOfStars);
     }
+
+    public Review createReview(Review review) {
+        return reviewRepository.save(review);
+    }
 }

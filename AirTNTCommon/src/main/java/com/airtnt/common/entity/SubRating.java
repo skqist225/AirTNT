@@ -3,12 +3,18 @@ package com.airtnt.common.entity;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class SubRating {
 
 	@Column(name = "cleanliness_rating", columnDefinition = "TINYINT default 0, check(cleanliness_rating >= 0 and cleanliness_rating <= 5)")

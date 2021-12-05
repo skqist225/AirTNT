@@ -57,9 +57,13 @@ public class Booking extends BaseEntity {
 	@JoinColumn(name = "room_id", nullable = false)
 	private Room room;
 
-	@OneToOne
+	@OneToOne(mappedBy = "booking")
 	private Review review;
 
 	@Transient
 	long lastUpdated;
+
+	public Booking(Integer bookingId) {
+		super(bookingId);
+	}
 }

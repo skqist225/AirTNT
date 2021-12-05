@@ -26,7 +26,6 @@
         <link rel="stylesheet" th:href="@{/css/booking/booking.css}" />
         <link rel="stylesheet" th:href="@{/css/checkout.css}" />
         <script src="https://js.stripe.com/v3/"></script>
-        <script th:src="@{/js/checkout.js}" defer></script>
     </head>
 
     <body>
@@ -232,7 +231,7 @@
                     setLoading(true);
 
                     const { data } = await axios.get(
-                        `${baseURL}book/create-booking/${roomId}?checkin=${checkinPlain}&checkout=${checkoutPlain}&numberOfDays=${numberOfNights}&siteFee=${siteFee}`
+                        `${baseURL}booking/${roomId}/create?checkin=${checkinPlain}&checkout=${checkoutPlain}&numberOfDays=${numberOfNights}&siteFee=${siteFee}`
                     );
 
                     if (data !== null) {
@@ -241,7 +240,7 @@
                         const { error } = await stripe.confirmPayment({
                             elements,
                             confirmParams: {
-                                return_url: `http://localhost:8001/airtnt/book/success-booking`,
+                                return_url: `http://localhost:8001/airtnt/booking/success-booking`,
                             },
                         });
 
@@ -256,12 +255,6 @@
                         alert('Phòng này đã được đặt');
                         setLoading(false);
                     }
-
-                    // This point will only be reached if there is an immediate error when
-                    // confirming the payment. Otherwise, your customer will be redirected to
-                    // your `return_url`. For some payment methods like iDEAL, your customer will
-                    // be redirected to an intermediate site first to authorize the payment, then
-                    // redirected to the `return_url`.
                 }
 
                 // Fetches the payment intent status after payment submission
@@ -322,7 +315,7 @@
             });
 
             function backToRoomDetails() {
-                window.location.href = `${baseURL}rooms/${roomId}`;
+                window.location.href = `${baseURL}room/${roomId}`;
             }
         </script>
     </body>

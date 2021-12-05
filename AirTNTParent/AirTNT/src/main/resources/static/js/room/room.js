@@ -41,5 +41,5 @@ function setActiveTab(catContainer, self) {
 }
 
 function redirectToRoomDetails(self) {
-    window.location.href = `${baseURL}rooms/${self.data('room-id')}`;
+    window.location.href = `${baseURL}room/${self.data('room-id')}`;
 }
