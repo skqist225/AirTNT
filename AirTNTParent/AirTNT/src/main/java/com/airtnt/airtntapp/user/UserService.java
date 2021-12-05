@@ -103,6 +103,10 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
     public User save(User user) {
         boolean isUpdatingUser = (user.getId() != null);
 

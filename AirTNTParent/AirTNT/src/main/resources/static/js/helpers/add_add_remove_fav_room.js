@@ -1,4 +1,4 @@
-function addClickEventForLoveButton() {
+function addClickEventForLoveButton(wishlistsArr = [], user = null) {
     $('.room__likeBtn').each(function () {
         const roomId = $(this).data('room-id');
         const children = $(this).children('svg');
@@ -10,6 +10,8 @@ function addClickEventForLoveButton() {
             let getURL = '';
             let successMessage = '';
             let errorMessage = '';
+
+            if (user === null) alertify.error('Vui lòng đăng nhập để thêm yêu thích');
 
             if (children.hasClass('like')) {
                 $('.room__likeBtn').each(function () {

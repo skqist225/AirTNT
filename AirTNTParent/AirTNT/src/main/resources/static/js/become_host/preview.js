@@ -106,10 +106,6 @@ async function nextPage() {
                 'Content-Type': 'multipart/form-data',
             },
         });
-
-        if (data.status === 'OK') {
-            localStorage.removeItem('room');
-            window.location.href = `${baseURL}become-a-host/publish-celebration/${data.roomId}`;
-        }
+        if (data) window.location.href = `${baseURL}${data}`;
     }
 }

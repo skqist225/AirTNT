@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.airtnt.airtntapp.category.CategoryService;
 import com.airtnt.airtntapp.room.RoomService;
-import com.airtnt.airtntapp.security.AirtntUserDetails;
 import com.airtnt.airtntapp.user.UserService;
 import com.airtnt.airtntapp.user.admin.UserNotFoundException;
 import com.airtnt.common.entity.Category;

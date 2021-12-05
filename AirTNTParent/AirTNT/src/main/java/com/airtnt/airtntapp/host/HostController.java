@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -131,16 +130,6 @@ public class HostController {
         model.addAttribute("userName", user.getFullName());
         model.addAttribute("host", user.getId());
         return "become_host/preview";
-    }
-
-    @GetMapping(value = "publish-celebration/{roomId}")
-    public String publishCelebration(@AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable("roomId") Integer roomId, Model model) {
-        String userName = userDetails.getUsername();
-        User user = userService.getByEmail(userName);
-        model.addAttribute("userName", user.getFullName());
-        model.addAttribute("roomId", roomId);
-        return "become_host/publish_celebration";
     }
 
 }

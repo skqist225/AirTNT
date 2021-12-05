@@ -20,10 +20,7 @@
         />
 
         <link rel="stylesheet" th:href="@{/css/become_host/room_type.css}" />
-        <link
-            rel="stylesheet"
-            th:href="@{/css/become_host/publish_celebration.css}"
-        />
+        <link rel="stylesheet" th:href="@{/css/become_host/publish_celebration.css}" />
     </head>
 
     <body>
@@ -40,10 +37,7 @@
                             padding: 0 32px;
                         "
                     >
-                        <h1
-                            class="room-group__left-title"
-                            style="text-align: center; color: #fff"
-                        >
+                        <h1 class="room-group__left-title" style="text-align: center; color: #fff">
                             Hãy xem mục cho thuê của bạn!
                         </h1>
                     </div>
@@ -53,20 +47,13 @@
                        "
                             style="text-decoration: none"
                         >
-                            <img
-                                th:src="@{/images/airtntlogo.png}"
-                                alt=""
-                                id="airTntLogo"
-                            />
+                            <img th:src="@{/images/airtntlogo.png}" alt="" id="airTntLogo" />
                         </a>
                     </div>
                 </div>
                 <div class="room-publish-celebration__right">
                     <div class="room-publish-celebration__right-first">
-                        <button
-                            class="become-a-host__right-cancelBtn"
-                            onclick="backtoHomePage();"
-                        >
+                        <button class="become-a-host__right-cancelBtn" onclick="backtoHomePage();">
                             <span style="font-weight: 500">Thoát</span>
                         </button>
                     </div>
@@ -94,14 +81,11 @@
                                 text-align: center;
                             "
                         >
-                            Chủ nhà là trung tâm trong mọi hoạt động của chúng
-                            tôi và chúng tôi rất mong bạn sẽ được trải nghiệm sự
-                            kỳ diệu của việc đón tiếp khách.
+                            Chủ nhà là trung tâm trong mọi hoạt động của chúng tôi và chúng tôi rất
+                            mong bạn sẽ được trải nghiệm sự kỳ diệu của việc đón tiếp khách.
                         </div>
                     </div>
-                    <div
-                        style="width: 100%; height: 1px; border: 1px solid #222"
-                    ></div>
+                    <div style="width: 100%; height: 1px; border: 1px solid #222"></div>
                     <div class="room-group__right-last">
                         <div>
                             <a
@@ -115,10 +99,7 @@
                                 >Quay lại</a
                             >
                         </div>
-                        <button
-                            class="become-a-host__right-startBtn"
-                            onclick="nextPage();"
-                        >
+                        <button class="become-a-host__right-startBtn" onclick="nextPage();">
                             <span style="font-weight: 500">Tiếp theo</span>
                         </button>
                     </div>
@@ -127,10 +108,7 @@
         </main>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script
-            type="text/javascript"
-            th:src="@{/webjars/jquery/jquery.min.js}"
-        ></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 
         <script th:inline="javascript">
             /*<![CDATA[*/
@@ -139,7 +117,9 @@
             /*]]>*/
         </script>
         <script>
-            jQuery(document).ready(function () {});
+            jQuery(document).ready(function () {
+                if (roomId) localStorage.removeItem('room');
+            });
 
             function backtoHomePage() {
                 window.location.href = baseURL;
