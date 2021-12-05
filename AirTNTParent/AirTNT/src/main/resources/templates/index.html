@@ -56,7 +56,7 @@
                     <th:block th:each="room, itr : ${rooms}">
                         <div class="room__container">
                             <div class="room__image__container">
-                                <a th:href="${'/airtnt/rooms/' + room.id}">
+                                <a th:href="${'/airtnt/room/' + room.id}">
                                     <div class="image__slider">
                                         <th:block th:each="image, itr2 : ${room.images}">
                                             <img

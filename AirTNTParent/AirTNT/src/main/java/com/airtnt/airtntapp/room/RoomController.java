@@ -142,7 +142,6 @@ public class RoomController {
 
 	@GetMapping(value = "room/{roomId}/publish-celebration")
 	public String publishCelebration(@AuthenticationPrincipal UserDetails userDetails,
-			@ModelAttribute RoomPostDTO payload,
 			@PathVariable("roomId") Integer roomId, Model model) throws IOException {
 		User user = userService.getByEmail(userDetails.getUsername());
 		model.addAttribute("userName", user.getFullName());
@@ -215,7 +214,7 @@ public class RoomController {
 					StandardCopyOption.REPLACE_EXISTING);
 		}
 
-		return "room/" + savedRoom.getId() + "/publish-celebration";
+		return "redirect:/" + "room/" + savedRoom.getId() + "/publish-celebration";
 	}
 
 	@GetMapping(value = "room/{roomId}/delete")

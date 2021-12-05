@@ -169,7 +169,7 @@ public class UserController {
             if (!userAvatar.isEmpty()) {
                 String fileName = StringUtils.cleanPath(userAvatar.getOriginalFilename());
                 currentUser.setAvatar(fileName);
-                savedUser = userService.save(currentUser, "avatar");
+                savedUser = userService.saveUser(currentUser);
                 String uploadDir = "../user-photos/" + savedUser.getId();
 
                 FileUploadUtil.cleanDir(uploadDir);
@@ -177,34 +177,34 @@ public class UserController {
             } else {
                 if (user.getAvatar().isEmpty())
                     user.setAvatar(null);
-                savedUser = userService.save(user, "avatar");
+                savedUser = userService.saveUser(user);
             }
         }
 
         if (updatedField.equals("password")) {
             userService.encodePassword(currentUser);
-            savedUser = userService.save(currentUser, "password");
+            savedUser = userService.saveUser(currentUser);
         }
 
         if (updatedField.equals("firstNameAndLastName")) {
             currentUser.setFirstName(user.getFirstName());
             currentUser.setLastName(user.getLastName());
-            savedUser = userService.save(currentUser, "firstNameAndLastName");
+            savedUser = userService.saveUser(currentUser);
         }
 
         if (updatedField.equals("birthday")) {
             currentUser.setBirthday(LocalDate.of(userYearOfBirth, userMonthOfBirth, userDayOfBirth));
-            savedUser = userService.save(currentUser, "birthday");
+            savedUser = userService.saveUser(currentUser);
         }
 
         if (updatedField.equals("email")) {
             currentUser.setEmail(user.getEmail());
-            savedUser = userService.save(currentUser, "email");
+            savedUser = userService.saveUser(currentUser);
         }
 
         if (updatedField.equals("phoneNumber")) {
             currentUser.setPhoneNumber(user.getPhoneNumber());
-            savedUser = userService.save(currentUser, "phoneNumber");
+            savedUser = userService.saveUser(currentUser);
         }
 
         if (updatedField.equals("address")) {
@@ -225,7 +225,7 @@ public class UserController {
             String aprtNoAndStreet = request.getParameter("address.aprtNoAndStreet");
             Address newAddress = new Address(country, state, city, aprtNoAndStreet);
             currentUser.setAddress(newAddress);
-            savedUser = userService.save(currentUser, "address");
+            savedUser = userService.saveUser(currentUser);
         }
 
         ra.addFlashAttribute("user", savedUser);

@@ -41,10 +41,13 @@ public class UserService {
         user.setPassword(encodedPassword);
     }
 
+    public boolean isPasswordMatch(String oldPass, String newPass) {
+        return passwordEncoder.matches(newPass, oldPass);
+    }
+
     public void registerUser(User user) {
         user.setRole(new Role(2));
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
+        encodePassword(user);
         userRepository.save(user);
     }
 
@@ -76,10 +79,6 @@ public class UserService {
         return userRepository.findById(userId).get();
     }
 
-    public User save(User user, String updatedField) {
-        return userRepository.save(user);
-    }
-
     @Transactional
     public int verifyPhoneNumber(Integer userId) {
         return userRepository.verifyPhoneNumber(userId);
@@ -109,7 +108,7 @@ public class UserService {
 
     public User save(User user) {
         boolean isUpdatingUser = (user.getId() != null);
-
+        System.out.println("get called" + System.nanoTime());
         if (isUpdatingUser) {
             User existingUser = userRepository.findById(user.getId()).get();
 

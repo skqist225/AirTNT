@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,10 +27,7 @@ public class UserRestController {
     private RoomService roomService;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     private Map<String, String> checkConstraint = new HashMap<>();
 
@@ -72,7 +68,7 @@ public class UserRestController {
             return jsonObject.toString();
         }
 
-        if (!passwordEncoder.matches(oldPassword, currentUser.getPassword())) {
+        if (!userService.isPasswordMatch(oldPassword, currentUser.getPassword())) {
             jsonObject.put("oldPasswordError", "Mật khẩu cũ không hợp lệ!!!");
             return jsonObject.toString();
         }
@@ -133,7 +129,7 @@ public class UserRestController {
         User user = userService.getByEmail(userDetails.getUsername());
 
         user.addToWishLists(room);
-        User savedUser = userService.save(user);
+        User savedUser = userService.saveUser(user);
 
         if (savedUser != null)
             return "success";
@@ -147,7 +143,7 @@ public class UserRestController {
         User user = userService.getByEmail(userDetails.getUsername());
 
         user.removeFromWishLists(room);
-        User savedUser = userService.save(user);
+        User savedUser = userService.saveUser(user);
 
         if (savedUser != null)
             return "success";

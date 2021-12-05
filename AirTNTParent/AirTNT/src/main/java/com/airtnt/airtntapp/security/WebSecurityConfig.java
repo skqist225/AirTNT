@@ -1,7 +1,5 @@
 package com.airtnt.airtntapp.security;
 
-import java.util.UUID;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -52,7 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .permitAll().and().formLogin().loginPage("/login")
                 .usernameParameter("email").permitAll().and().logout().permitAll().and().rememberMe()
-                .key(UUID.randomUUID().toString()).tokenValiditySeconds(365 * 24 * 60 * 60);
+                .rememberMeCookieName("rememberme")
+                .key("remember-me-token").tokenValiditySeconds(365 * 24 * 60 * 60).alwaysRemember(true);
         ;
     }
 
